@@ -1,6 +1,7 @@
 {
   "short_name": "drop",
   "name": "Drop",
+  "gcm_sender_id": "593836075156",
   "icons": [
     {
       "src": "launcher-icon-4x.png",

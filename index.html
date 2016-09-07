@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./src/favicon.ico">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <title>React App</title>
   </head>
   <body>
@@ -22,6 +22,13 @@
      <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js')
+        .then(function(reg){
+          reg.pushManager.subscribe({
+            userVisibleOnly: true
+          }).then(function(sub) {
+            console.log('endpoint:', sub.endpoint);
+          });
+        })
         .catch(function(ex) {
           console.warn(ex);
           console.warn('(This warning can be safely ignored outside of the production build.)');
