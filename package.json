@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "onsenui": "^2.0.0-rc.18",
+    "react-onsenui": "^0.7.7",
     "react-scripts": "0.4.1"
   },
   "dependencies": {
