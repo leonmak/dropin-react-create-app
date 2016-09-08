@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
 import '../styles/Map.css';
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl from "react-mapbox-gl";
+// import { Layer, Feature } from "react-mapbox-gl";
 
 const position = [103.8198, 1.3224];
 
