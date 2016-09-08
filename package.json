@@ -3,20 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "onsenui": "^2.0.0-rc.18",
-    "react-onsenui": "^0.7.7",
     "react-scripts": "0.4.1"
   },
   "dependencies": {
     "leaflet": "^0.7.7",
-    "onsenui": "^2.0.0-rc.18",
+    "material-ui": "^0.15.4",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-mapbox-gl": "^0.10.0",
-    "react-onsenui": "^0.7.7",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
     "react-router-redux": "^4.0.5",
+    "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "sw-precache": "^4.0.0"

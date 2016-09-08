@@ -7,9 +7,13 @@ import configureStore from './store/configureStore';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import './index.css';
-import 'onsenui/css/onsenui.css';
-import 'onsenui/css/onsen-css-components-blue-theme.css';
 import 'leaflet/dist/leaflet.css'
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 const store = configureStore();
 
