@@ -11,6 +11,8 @@ import configureStore from './store/configureStore';
 
 import './index.css';
 import 'leaflet/dist/leaflet.css'
+import 'font-awesome/css/font-awesome.css'
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941

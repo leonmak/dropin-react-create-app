@@ -33,8 +33,8 @@ export class BottomBar extends Component {
             onTouchTap={() => this.select(1)}
           />
           <BottomNavigationItem
-            label="Drop Message"
-            icon={Icons.MUI('map')}
+            className="add-drop-btn"
+            icon={Icons.FA('tint')}
             onTouchTap={() => this.select(2)}
           />
           <BottomNavigationItem

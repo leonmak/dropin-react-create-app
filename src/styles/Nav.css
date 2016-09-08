@@ -3,3 +3,13 @@
   width: 100%;
   bottom: 0;
 }
+
+.add-drop-btn {
+    background-color: #00bcd4 !important;
+}
+
+.add-drop-btn > div > i {
+    font-size: 42px;
+    color: white;
+}
+
