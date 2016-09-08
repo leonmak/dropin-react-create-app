@@ -1,22 +1,20 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import '../styles/Map.css';
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
-const position = [51.505, -0.09];
+const position = [103.8198, 1.3224];
 
 const MapPage = props => (
-  <Map center={position} zoom={13}>
-    <TileLayer
-      url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  <div>
+    <ReactMapboxGl
+      style="mapbox://styles/mapbox/streets-v8"
+      accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+      zoom={[16]}
+      pitch={50}
+      center={position}
     />
-    <Marker position={position}>
-      <Popup>
-        <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
-      </Popup>
-    </Marker>
-  </Map>
+  </div>
 );
 
 export default MapPage;

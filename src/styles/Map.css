@@ -1,4 +1,5 @@
-.leaflet-container {
+.mapboxgl-map {
     height: 400px;
     width: 50%;
 }
+

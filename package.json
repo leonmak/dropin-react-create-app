@@ -12,7 +12,7 @@
     "onsenui": "^2.0.0-rc.18",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
-    "react-leaflet": "^0.12.1",
+    "react-mapbox-gl": "^0.10.0",
     "react-onsenui": "^0.7.7",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
@@ -25,7 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build && cp manifest.json build/ && sw-precache --root='build/' --static-file-globs='build/**/!(*map*)'",
     "build-serve": "npm run build && pushstate-server build",
-    "load-env": "source .env | npm start",
+    "load-env-start": "$(cat .env | xargs) && npm start",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
