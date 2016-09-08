@@ -23,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build && cp manifest.json build/ && sw-precache --root='build/' --static-file-globs='build/**/!(*map*)'",
     "build-serve": "npm run build && pushstate-server build",
+    "load-env": "source .env | npm start",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
