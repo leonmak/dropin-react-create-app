@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
+import {browserHistory} from 'react-router';
 
 import * as Icons from '../utils/Icons';
 import '../styles/Nav.css'
@@ -14,8 +15,9 @@ export class BottomBar extends Component {
 		}
 	}
 
-  select(idx) {
-    this.setState({idx})
+  select(idx, url) {
+    this.setState({idx});
+    browserHistory.push(url);
   }
 
   render() {
@@ -25,27 +27,27 @@ export class BottomBar extends Component {
           <BottomNavigationItem
             label="Recents"
             icon={Icons.MUI('list')}
-            onTouchTap={() => this.select(0)}
+            onTouchTap={() => this.select(0, 'list')}
           />
           <BottomNavigationItem
             label="Map"
             icon={Icons.MUI('map')}
-            onTouchTap={() => this.select(1)}
+            onTouchTap={() => this.select(1, 'map')}
           />
           <BottomNavigationItem
             className="add-drop-btn"
             icon={Icons.FA('tint')}
-            onTouchTap={() => this.select(2)}
+            onTouchTap={() => this.select(2, 'add')}
           />
           <BottomNavigationItem
             label="Profile"
             icon={Icons.MUI('person_pin')}
-            onTouchTap={() => this.select(3)}
+            onTouchTap={() => this.select(3, 'profile')}
           />
           <BottomNavigationItem
             label="Settings"
             icon={Icons.MUI('build')}
-            onTouchTap={() => this.select(4)}
+            onTouchTap={() => this.select(4, 'settings')}
           />
         </BottomNavigation>
       </Paper>
