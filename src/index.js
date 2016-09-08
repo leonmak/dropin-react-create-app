@@ -9,6 +9,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import './index.css';
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components-blue-theme.css';
+import 'leaflet/dist/leaflet.css'
 
 const store = configureStore();
 
