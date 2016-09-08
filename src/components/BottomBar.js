@@ -25,7 +25,7 @@ export class BottomBar extends Component {
       <Paper zDepth={1} className="bottom-navigation">
         <BottomNavigation selectedIndex={this.state.idx}>
           <BottomNavigationItem
-            label="Recents"
+            label="Feed"
             icon={Icons.MUI('list')}
             onTouchTap={() => this.select(0, 'list')}
           />
