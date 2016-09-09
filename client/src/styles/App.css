@@ -18,10 +18,24 @@
   font-size: large;
 }
 
-#footer {
+html,body{
+    height: 100%
+}
+
+#holder{
+    min-height: 100%;
+    position:relative;
+}
+
+#body{
+    padding-bottom: 50px;    /* height of footer */
+}
+
+footer{
+    width:100%;
     position: fixed;
-    bottom: 0;
-    width: 100%;
+    left: 0;
+    bottom: 0; 
 }
 
 @keyframes App-logo-spin {

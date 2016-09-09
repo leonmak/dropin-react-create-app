@@ -3,9 +3,9 @@ import {BottomBar} from './BottomBar';
 
 const App = (props) => {
 	return (
-		<div>
-		<div>{props.children}</div>
-		<div id="footer"><BottomBar /></div>
+		<div id="holder">
+		<div id="body">{props.children}</div>
+		<footer><BottomBar /></footer>
 		</div>
 		);
 	}
