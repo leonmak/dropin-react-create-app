@@ -9,11 +9,24 @@ export class ListItem extends Component{
 		return(
 			<div className="paper-div">
 
-			<Paper className="main-container" zDepth={1}>
+			<Paper zDepth={1}>
 
 			<p id="emoji">&#x1f601;</p>
 
 			<p id="title">{this.props.title}</p>
+
+			<div id="container">
+
+			<div>
+			<p id="replies">{this.props.replies} replies</p>
+			<p id="distance">{this.props.distance} from you</p>
+			</div>
+			
+			<div id="votes">
+			<p>{this.props.votes}</p>
+			</div>
+
+			</div>
 			
 			<div className="button-div">
 			<RaisedButton 

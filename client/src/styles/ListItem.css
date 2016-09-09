@@ -6,6 +6,14 @@
 	text-align: center;
 }
 
+#container{
+	display: flex;
+}
+
+#votes{
+	float: right;
+}
+
 .button-div{
 	margin: 10px 10px 10px 10px;
 }

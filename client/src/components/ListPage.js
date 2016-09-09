@@ -3,13 +3,14 @@ import '../styles/List.css';
 import {ListItem} from './ListItem';
 
 //dummy data
+//changed location from [1.2970879,103.773379] [lat,lng] to distance from you in meters
 var data = [
 {
 	"id": "001",
         "emoticon": "F09F98AA", //utf-8 encoded sleepy face
         "title": "Today's event in LT7 is sooooo boring!",
         "votes": 4,
-        "location": [1.2970879,103.773379],
+        "distance": 1560,
         "time": "2016-08-23T18:25:43.511Z",
         "replies": 10
     },
@@ -18,7 +19,7 @@ var data = [
     	"emoticon": "F09F98A1",
     	"title": "Who else is angry at the guy who just cut our queue at the drink store!",
     	"votes": 10,
-    	"location": [1.2970333,103.7737478],
+    	"distance": 10876,
     	"time": "2016-09-06T12:45:43.511Z",
     	"replies": 5
     },
@@ -27,7 +28,7 @@ var data = [
     	"emoticon": "F09F988D",
     	"title": "To the cute guy studying outside the LT, WOWOW",
     	"votes": 6,
-    	"location": [1.2970444,103.7737992],
+    	"distance": 9887,
     	"time": "2016-09-08T11:06:43.511Z",
     	"replies": 12
     },
@@ -36,7 +37,7 @@ var data = [
     	"emoticon": "F09F98B9",
     	"title": "We dont drink and derive LOL",
     	"votes": 15,
-    	"location": [1.2970333,103.7737996],
+    	"distance": 765,
     	"time": "2016-09-08T11:06:43.511Z",
     	"replies": 10
     }
@@ -55,7 +56,10 @@ var data = [
 
     		for(var i=0;i<data.length;i++){
     			var title = data[i].title;
-    			feed.push(<ListItem title={title} />);
+    			var replies = data[i].replies;
+    			var distance = data[i].distance/1000+"km";
+    			var votes = data[i].votes;
+    			feed.push(<ListItem title={title} replies={replies} distance={distance} votes={votes}/>);
     		}
 
     		return (
