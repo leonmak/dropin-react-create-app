@@ -6,7 +6,7 @@ import ReactMapboxGl from "react-mapbox-gl";
 function geoListener(callback) {
   navigator.geolocation.watchPosition(
     ({ coords, timestamp }) => callback(coords),
-    (err) => alert('Unable to find position - ' + err.message), 
+    (err) => alert('Unable to find position - ' + err.message),
     {
       enableHighAccuracy: true,
       timeout: 15000
@@ -34,9 +34,9 @@ class MapPage extends Component {
     return (
       <div>
         <ReactMapboxGl
-          style="mapbox://styles/mapbox/streets-v8"
-          accessToken='pk.eyJ1IjoiZ2lvbmd0bzM1IiwiYSI6ImNpc3NtdzJ1ODAwaGMyb29hbzU1bnY4amUifQ.vt5Dk7_fo_hROC84-DKsrw'
-          zoom={[16]}
+          style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
+          accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
+          zoom={[18]}
           pitch={50}
           center={this.state.center}
         />
