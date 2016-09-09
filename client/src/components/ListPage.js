@@ -1,21 +1,70 @@
 import React, { Component } from 'react';
 import '../styles/List.css';
+import {ListItem} from './ListItem';
 
-class ListPage extends Component {
+//dummy data
+var data = [
+{
+	"id": "001",
+        "emoticon": "F09F98AA", //utf-8 encoded sleepy face
+        "title": "Today's event in LT7 is sooooo boring!",
+        "votes": 4,
+        "location": [1.2970879,103.773379],
+        "time": "2016-08-23T18:25:43.511Z",
+        "replies": 10
+    },
+    {
+    	"id": "002",
+    	"emoticon": "F09F98A1",
+    	"title": "Who else is angry at the guy who just cut our queue at the drink store!",
+    	"votes": 10,
+    	"location": [1.2970333,103.7737478],
+    	"time": "2016-09-06T12:45:43.511Z",
+    	"replies": 5
+    },
+    {
+    	"id": "003",
+    	"emoticon": "F09F988D",
+    	"title": "To the cute guy studying outside the LT, WOWOW",
+    	"votes": 6,
+    	"location": [1.2970444,103.7737992],
+    	"time": "2016-09-08T11:06:43.511Z",
+    	"replies": 12
+    },
+    {
+    	"id": "004",
+    	"emoticon": "F09F98B9",
+    	"title": "We dont drink and derive LOL",
+    	"votes": 15,
+    	"location": [1.2970333,103.7737996],
+    	"time": "2016-09-08T11:06:43.511Z",
+    	"replies": 10
+    }
+    ];
 
-	state = {
-		location: [103.8198, 1.3224]
-	}
+    class ListPage extends Component {
+
+    	state = {
+    		location: [103.8198, 1.3224]
+    	}
 
 
-	render() {
-		return (
-			<div>
-			list
-			</div>
-			);
-	}
+    	render() {
 
-}
+    		var feed = [];
 
-export default ListPage;
+    		for(var i=0;i<data.length;i++){
+    			var title = data[i].title;
+    			feed.push(<ListItem title={title} />);
+    		}
+
+    		return (
+    			<div className="container">
+    			{feed}
+    			</div>
+    			);
+    	}
+
+    }
+
+    export default ListPage;
