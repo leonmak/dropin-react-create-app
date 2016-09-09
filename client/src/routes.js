@@ -6,12 +6,15 @@ import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage.js';
 import MapPage from './components/MapPage.js';
 import NotFoundPage from './components/NotFoundPage.js';
+import ListPage from './components/ListPage.js';
+
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="map" component={MapPage}/>
+    <Route path="list" component={ListPage}/>
     <Route path="*" component={NotFoundPage}/>
   </Route>
 );

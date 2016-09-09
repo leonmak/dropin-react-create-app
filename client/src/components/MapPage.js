@@ -16,7 +16,7 @@ function geoListener(callback) {
 
 class MapPage extends Component {
   state = {
-    location: [103.8198, 1.3224]
+    location: [1.3224,103.8198]
   }
 
   updateLocation(coords) {
