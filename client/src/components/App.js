@@ -4,8 +4,8 @@ import {BottomBar} from './BottomBar';
 const App = (props) => {
 	return (
 		<div>
-		{props.children}
-		<BottomBar />
+		<div>{props.children}</div>
+		<div id="footer"><BottomBar /></div>
 		</div>
 		);
 	}
