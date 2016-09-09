@@ -1,3 +1,7 @@
+/*.Listitem{
+  text-align: center;
+}*/
+
 #emoji{
 	text-align: center;
 }
@@ -12,6 +16,14 @@
 
 #votes{
 	float: right;
+}
+
+#votes_text{
+	text-align: center;
+}
+
+#list{
+	text-align: center;
 }
 
 .button-div{

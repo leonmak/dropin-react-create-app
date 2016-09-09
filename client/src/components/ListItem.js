@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+
+import * as Icons from '../utils/Icons';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
+
 import '../styles/ListItem.css'
-import * as Icons from '../utils/Icons';
+
 
 export class ListItem extends Component{
 
@@ -24,7 +29,11 @@ export class ListItem extends Component{
 			</div>
 			
 			<div id="votes">
-			<p>{this.props.votes}</p>
+			<FlatButton icon={Icons.MUI('keyboard_arrow_up')} onClick={this.props.upvote}/>
+			<p id="votes_text">{this.props.votes}</p>
+			<FlatButton
+			icon={Icons.MUI('keyboard_arrow_down')}
+			/>
 			</div>
 
 			</div>
