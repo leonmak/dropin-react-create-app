@@ -34,10 +34,11 @@ class MapPage extends Component {
     return (
       <div>
         <ReactMapboxGl
+          containerStyle={{height: window.innerHeight - 56}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[18]}
-          pitch={50}
+          pitch={60}
           center={this.state.center}
         />
       </div>
