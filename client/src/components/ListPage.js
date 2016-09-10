@@ -59,7 +59,8 @@ var data = [
     			var replies = data[i].replies;
     			var distance = data[i].distance/1000+"km";
     			var votes = data[i].votes;
-    			feed.push(<ListItem title={title} replies={replies} distance={distance} votes={votes}/>);
+                var key = data[i].id;
+    			feed.push(<ListItem key={key} title={title} replies={replies} distance={distance} votes={votes}/>);
     		}
 
     		return (
