@@ -7,13 +7,29 @@ import * as Icons from '../utils/Icons';
 import '../styles/Nav.css'
 
 export class BottomBar extends Component {
-	constructor(props){
-		super(props);
-
-		this.state = {
-			idx: 0
-		}
+	state = {
+		idx: this.urlToIdx(this.props.url)
 	}
+
+  urlToIdx(url) {
+    let urlFmt = url.substring(1);
+    // If there are subroutes eg: /list/recent
+    // urlFmt = urlFmt.indexOf('/') > -1 ? url.substring(0, url.indexOf('/')) : urlFmt;
+    switch (urlFmt) {
+      case 'list':
+        return 0;
+      case 'map':
+        return 1;
+      case 'add':
+        return 2;
+      case 'profile':
+        return 3;
+      case 'settings':
+        return 4;
+      default:
+        return 0;
+    }
+  }
 
   select(idx, url) {
     this.setState({idx});

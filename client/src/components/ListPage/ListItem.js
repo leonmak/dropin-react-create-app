@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import * as Icons from '../utils/Icons';
+import * as Icons from '../../utils/Icons';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
-import '../styles/ListItem.css'
+import '../../styles/ListItem.css'
 
 var VotingBox = React.createClass({
 	render: function(){
@@ -40,15 +40,15 @@ export class ListItem extends Component{
 			<p id="replies">{Icons.MUI('chat')}{this.props.replies} replies</p>
 			<p id="distance">{Icons.MUI('place')}{this.props.distance} from you</p>
 			</div>
-			
+
 			<VotingBox id="votes-container" votes={this.props.votes}/>
 
 			</div>
-			
+
 			<div className="button-div">
-			<RaisedButton 
-			label="Drop in" 
-			primary={true} 
+			<RaisedButton
+			label="Drop in"
+			primary={true}
 			fullWidth={true} />
 			</div>
 
