@@ -10,21 +10,34 @@ var moment = require('moment');
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
 
-var VotingBox = React.createClass({
+var ItemVoting = React.createClass({
 	render: function(){
 		return(
 			<div>
-			<FlatButton icon={Icons.MUI('keyboard_arrow_up')} onClick={this.props.upvote}/>
-			<p>{this.props.votes}</p>
-			<FlatButton
-			icon={Icons.MUI('keyboard_arrow_down')}
-			/>
+			<FlatButton icon={Icons.FA('angle-up')} onClick={this.props.upvote}/>
+			<br></br>
+			{this.props.votes}
+			<br></br>
+			<FlatButton icon={Icons.FA('angle-down')}/>
 			</div>
 			);
 	}
 });
-/*
-<ReactTimeAgo date={this.props.date} time_style='twitter' locale="en-GB"/>*/
+
+/*{Icons.MUI('place')}
+*/
+var ItemDetails = React.createClass({
+	render: function(){
+		return(
+			<div>
+			<p id="replies">{Icons.FAFixedWidth('comments')}{this.props.replies} replies
+			<br></br>
+			{Icons.FAFixedWidth('map-marker')}{this.props.distance} from you | {this.props.time}
+			</p>
+			</div>
+			);
+	}
+});
 
 
 export class ListItem extends Component{
@@ -35,6 +48,9 @@ export class ListItem extends Component{
 
 		return(
 
+			<div className="row center-xs">
+			<div className="col-xs-8">
+
 			<Paper id="top-container" zDepth={1}>
 
 			<p className="center-text">&#x1f601;</p>
@@ -44,13 +60,11 @@ export class ListItem extends Component{
 			<div className="row between-xs">
 
 			<div className="col-xs-8">
-			<p id="replies">{Icons.MUI('chat')}{this.props.replies} replies</p>
-			<p id="distance">{Icons.MUI('place')}{this.props.distance} from you | {time}
-			</p>
+			<ItemDetails replies={this.props.replies} distance={this.props.distance} time={time}/>
 			</div>
 
 			<div className="col-xs-4">
-			<VotingBox id="votes-container" votes={this.props.votes}/>
+			<ItemVoting id="votes-container" votes={this.props.votes}/>
 			</div>
 
 			</div>
@@ -63,6 +77,9 @@ export class ListItem extends Component{
 			</div>
 
 			</Paper>
+
+			</div>
+			</div>
 
 			);
 	}
