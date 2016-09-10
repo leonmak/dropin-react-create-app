@@ -10,6 +10,7 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 
 import './index.css';
+import './styles/flexboxgrid.css'
 import 'leaflet/dist/leaflet.css'
 import 'font-awesome/css/font-awesome.css'
 
