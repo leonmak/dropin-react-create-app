@@ -24,8 +24,6 @@ var ItemVoting = React.createClass({
 	}
 });
 
-/*{Icons.MUI('place')}
-*/
 var ItemDetails = React.createClass({
 	render: function(){
 		return(
@@ -34,6 +32,24 @@ var ItemDetails = React.createClass({
 			<br></br>
 			{Icons.FAFixedWidth('map-marker')}{this.props.distance} from you | {this.props.time}
 			</p>
+			</div>
+			);
+	}
+});
+
+var ItemTitle = React.createClass({
+	render: function(){
+		return(
+			<div className="row center-xs">
+			<div className="col-xs-2">
+			{Icons.FAFixedWidth('quote-left')}
+			</div>
+			<div className="col-xs-8">
+			{this.props.title}
+			</div>
+			<div className="col-xs-2">
+			{Icons.FAFixedWidth('quote-right')}
+			</div>
 			</div>
 			);
 	}
@@ -53,17 +69,17 @@ export class ListItem extends Component{
 
 			<Paper id="top-container" zDepth={1}>
 
-			<p className="center-text">&#x1f601;</p>
+			<p>&#x1f601;</p>
 
-			<p className="center-text">{this.props.title}</p>
+			<ItemTitle title={this.props.title}/>
 
 			<div className="row between-xs">
 
-			<div className="col-xs-8">
+			<div id="details-container" className="col-xs-8">
 			<ItemDetails replies={this.props.replies} distance={this.props.distance} time={time}/>
 			</div>
 
-			<div className="col-xs-4">
+			<div className="col-xs-3">
 			<ItemVoting id="votes-container" votes={this.props.votes}/>
 			</div>
 

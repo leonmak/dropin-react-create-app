@@ -1,6 +1,6 @@
-.center-text{
+/*.center-text{
 	text-align: center;
-}
+}*/
 
 .button-div{
 	margin: 10px 10px 10px 10px;
@@ -13,7 +13,13 @@
 	padding: 5px 5px 5px 5px;
 }
 
-#inner-container{
+#details-container{
+	text-align: left;
+	opacity: 50%;
+	font-size: 12px;
+}
+
+/*#inner-container{
 	display: flex;
 }
 
@@ -24,4 +30,4 @@
 
 #replies-container{
 	float:left;
-}
+}*/
