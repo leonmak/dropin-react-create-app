@@ -74,7 +74,7 @@ class MapPage extends Component {
           </Layer>
           <Layer
             type="symbol"
-            layout={{ "icon-image": "harbor-15", "icon-size": 1.3 }}>
+            layout={{ "icon-image": "map-pin", "icon-size": 1.3 , "icon-color": "#00a4b8"}}>
             <Feature coordinates={this.state.center}/>
           </Layer>
 
