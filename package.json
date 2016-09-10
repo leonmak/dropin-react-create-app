@@ -15,19 +15,24 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-stage-0": "^6.5.0",
     "body-parser": "^1.15.2",
+    "bookshelf": "^0.10.0",
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "flexboxgrid": "^6.3.1",
     "foreman": "^2.0.0",
     "fs": "0.0.1-security",
+    "knex": "^0.11.10",
+    "lodash": "^4.15.0",
     "mysql": "^2.11.1",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "when": "^3.7.7"
   },
   "devDependencies": {
     "json-loader": "^0.5.4"
   },
   "scripts": {
     "start": "nf start -p 3000",
-    "server": "API_PORT=3001 ./node_modules/.bin/babel-node server.js"
+    "migrate": "node server/migrate.js",
+    "server": "API_PORT=3001 ./node_modules/.bin/babel-node server/server.js"
   }
 }
