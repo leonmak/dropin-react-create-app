@@ -1,28 +1,4 @@
-/*.Listitem{
-  text-align: center;
-}*/
-
-#emoji{
-	text-align: center;
-}
-
-#title{
-	text-align: center;
-}
-
-#container{
-	display: flex;
-}
-
-#votes{
-	float: right;
-}
-
-#votes_text{
-	text-align: center;
-}
-
-#list{
+.center-text{
 	text-align: center;
 }
 
@@ -30,6 +6,23 @@
 	margin: 10px 10px 10px 10px;
 }
 
-.paper-div{
-	margin: 10px 10px 10px 10px;
+#top-container{
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	padding: 5px 5px 5px 5px;
+	max-width: 500px;
+}
+
+#inner-container{
+	/*display: flex;*/
+}
+
+#votes-container{
+	float: none;
+	display: inline-block;
+}	
+
+#replies-container{
+	float:left;
 }
