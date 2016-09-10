@@ -2,12 +2,48 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 const http = require('http').Server(app);
 const io = require("socket.io")(http);
+const passport = require('passport');
+const Strategy = require('passport-facebook').Strategy;
+
 import { Users, Posts, Comments } from './database';
+
+console.log(process.env.CLIENT_ID);
+console.log(process.env.CLIENT_SECRET);
+
+passport.use(new Strategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: 'http://localhost:3001/auth/facebook'
+  },
+  function(accessToken, refreshToken, profile, callback) {
+    return callback(null, profile);
+  }));
+
+passport.serializeUser(function(user, callback) {
+  callback(null, user);
+});
+
+passport.deserializeUser(function(obj, callback) {
+  callback(null, obj);
+});
 
 app.set('port', (process.env.API_PORT || 3001));
 
+// app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/login/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 app.get('/api/users', (req, res) => {
 
@@ -18,6 +54,12 @@ app.get('/api/users', (req, res) => {
     console.error(err);
   });
 });
+
+app.get('/api/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.json(req.user);
+  });
 
 app.get('/api/chat', (req, res) => {
 
