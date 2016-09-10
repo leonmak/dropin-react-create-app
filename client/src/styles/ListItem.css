@@ -15,12 +15,12 @@
 }
 
 #inner-container{
-	/*display: flex;*/
+	display: flex;
 }
 
 #votes-container{
-	float: none;
-	display: inline-block;
+	float: right;
+	align-items: stretch;
 }	
 
 #replies-container{
