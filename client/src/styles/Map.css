@@ -1,4 +1,11 @@
 .mapboxgl-map {
-    width: 100%;
+  width: 100%;
 }
 
+.custom-marker {
+  /*background-image: url('https://placekitten.com/g/200/200');*/
+  position:absolute;
+  z-index:1;
+  display:block;
+  border-radius:50%;
+}

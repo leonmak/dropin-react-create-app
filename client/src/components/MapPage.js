@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/Map.css';
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-
+import {browserHistory} from 'react-router'
 
 function geoListener(callback) {
   navigator.geolocation.watchPosition(
@@ -32,6 +32,40 @@ class MapPage extends Component {
     geoListener(this.updateLocation.bind(this));
   }
 
+  createFaceMarker(coordinates, imgUrl) {
+    return (map)=>{
+      const self = this, width = 48, height = 48;
+      // Return the x/y position from coordinates
+      // var width = 48, height = 48;
+      let position = map.project(coordinates);
+      // Create a custom marker and add it to the map
+      let marker = document.createElement('div');
+      marker.className = 'custom-marker';
+      marker.style.backgroundImage = `url(${imgUrl})`;
+      marker.style.width = width + 'px';
+      marker.style.height = height + 'px';
+
+      // Set the top + left position of the marker
+      // Based on the coordinates and half the size of its shape
+      marker.style.top = position.y - height / 2 + 'px';
+      marker.style.left = position.x - width / 2 + 'px';
+
+      // Display a popup when hovering over the marker
+      marker.addEventListener('click', function(e) {
+        browserHistory.push('/');
+      });
+
+      // Append the marker to the map.
+      map.getContainer().appendChild(marker);
+      map.on('move', function() {
+        // Update the x/y coordinates based on the new center of the map.
+        position = map.project(self.state.center);
+        marker.style.top = position.y - height / 2 + 'px';
+        marker.style.left = position.x - width / 2 + 'px';
+      });
+    }
+  }
+
   createGeoJSONCircle(center, radiusInKm, points = 64) {
     let coords = { latitude: center[1], longitude: center[0] };
     let km = radiusInKm;
@@ -55,6 +89,7 @@ class MapPage extends Component {
     return (
       <div>
         <ReactMapboxGl
+          onStyleLoad={this.createFaceMarker(this.state.center, "https://avatars.io/facebook/leonmak")}
           containerStyle={{height: window.innerHeight - 56}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
