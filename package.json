@@ -20,6 +20,7 @@
     "flexboxgrid": "^6.3.1",
     "foreman": "^2.0.0",
     "fs": "0.0.1-security",
+    "moment": "^2.14.1",
     "mysql": "^2.11.1",
     "socket.io": "^1.4.8"
   },

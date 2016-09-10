@@ -17,7 +17,8 @@ export class List extends Component {
         var replies = feedItem.replies;
         var distance = feedItem.distance/1000+"km";
         var votes = feedItem.votes;
-        return <ListItem key={idx} title={title} replies={replies} distance={distance} votes={votes}/>;
+        var time = feedItem.time;
+        return <ListItem key={idx} title={title} replies={replies} distance={distance} votes={votes} date={time}/>;
       } )}
       </div>
     );

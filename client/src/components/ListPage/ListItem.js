@@ -5,6 +5,7 @@ import * as Icons from '../../utils/Icons';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
+var moment = require('moment');
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -22,11 +23,16 @@ var VotingBox = React.createClass({
 			);
 	}
 });
+/*
+<ReactTimeAgo date={this.props.date} time_style='twitter' locale="en-GB"/>*/
 
 
 export class ListItem extends Component{
 
 	render(){
+
+		var time = moment(this.props.date).fromNow();
+
 		return(
 
 			<Paper id="top-container" zDepth={1}>
@@ -37,9 +43,10 @@ export class ListItem extends Component{
 
 			<div className="row between-xs">
 
-			<div className="col-xs-6">
+			<div className="col-xs-8">
 			<p id="replies">{Icons.MUI('chat')}{this.props.replies} replies</p>
-			<p id="distance">{Icons.MUI('place')}{this.props.distance} from you</p>
+			<p id="distance">{Icons.MUI('place')}{this.props.distance} from you | {time}
+			</p>
 			</div>
 
 			<div className="col-xs-4">
