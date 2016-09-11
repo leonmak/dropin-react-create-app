@@ -7,12 +7,12 @@ const Strategy = require('passport-facebook').Strategy;
 
 import { Users, Posts, Comments } from './database';
 
-console.log(process.env.CLIENT_ID);
-console.log(process.env.CLIENT_SECRET);
+console.log(process.env.FB_CLIENT_ID);
+console.log(process.env.FB_CLIENT_SECRET);
 
 passport.use(new Strategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+    clientID: process.env.FB_CLIENT_ID,
+    clientSecret: process.env.FB_CLIENT_SECRET,
     callbackURL: 'http://localhost:3001/auth/facebook'
   },
   function(accessToken, refreshToken, profile, callback) {
@@ -39,7 +39,7 @@ app.use(passport.session());
 app.get('/login/facebook',
   passport.authenticate('facebook'));
 
-app.get('/auth/facebook', 
+app.get('/auth/facebook',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');

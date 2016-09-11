@@ -30,7 +30,6 @@
     "redux-form": "^6.0.2",
     "redux-form-material-ui": "^4.0.1",
     "socket.io": "^1.4.8",
-    "mysql": "^2.11.1",
     "when": "^3.7.7"
   },
   "devDependencies": {
