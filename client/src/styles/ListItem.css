@@ -1,33 +1,94 @@
-/*.center-text{
-	text-align: center;
-}*/
+.top-container{
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 5px;
+  border-radius: 0px 0px 9px 9px !important;
+}
 
 .button-div{
-	margin: 10px 10px 10px 10px;
+  margin: -5px;
+}
+.button-div > button {
+  width: 100%;
+  color: #FFF !important;
+  border-radius: 0px 0px 9px 9px !important;
+  height: 48px !important;
+}
+.button-div > button:hover {
+  width: 100%;
+  color: #00bcd4 !important;
+}
+.button-div > button > div > span {
+  font-weight: 100 !important;
+  font-size: 18px !important;
+  letter-spacing: 3px !important;
 }
 
-#top-container{
-	margin: auto;
-	margin-bottom: 20px;
-	margin-top: 20px;
-	padding: 5px 5px 5px 5px;
+.item-description {
+  color: #808080 !important;
 }
 
-#details-container{
-	text-align: left;
-	opacity: 50%;
-	font-size: 12px;
+.item-details-container {
+  margin: 9px 0;
+  text-align: left;
+  opacity: 50% !important;
+  font-size: 12px;
+  margin: 12px;
+  padding: 0 9px;
 }
 
+.item-voting {
+  text-align: center;
+}
+
+.details {
+  margin: 2px 0;
+}
+
+.item-title-container {
+  margin: 9px 0;
+}
+.item-title {
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.quote-top {
+  transform: rotateY(180deg);
+  position: absolute;
+  left: 5%;
+  font-size: 21px;
+}
+
+.quote-top > span {
+  color: #f2f2f2 !important;
+  font-size: 33px !important;
+}
+
+.quote-btm {
+  position: absolute;
+  right: 5%;
+  font-size: 21px;
+}
+
+.quote-btm > span {
+  color: #f2f2f2 !important;
+  font-size: 33px !important;
+}
+
+.votes-container {
+  margin: -12px 0;
+}
 /*#inner-container{
-	display: flex;
+  display: flex;
 }
 
 #votes-container{
-	float: right;
-	align-items: stretch;
-}	
+  float: right;
+  align-items: stretch;
+}
 
 #replies-container{
-	float:left;
+  float:left;
 }*/

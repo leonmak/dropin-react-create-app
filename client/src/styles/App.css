@@ -25,17 +25,19 @@ html,body{
 #holder{
     min-height: 100%;
     position:relative;
+    background-color: #f2f2f2;
 }
 
 #body{
     padding-bottom: 50px;    /* height of footer */
+    background-color: #f2f2f2;
 }
 
 footer{
     width:100%;
     position: fixed;
     left: 0;
-    bottom: 0; 
+    bottom: 0;
 }
 
 @keyframes App-logo-spin {

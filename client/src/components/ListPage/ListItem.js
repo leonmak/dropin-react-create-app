@@ -1,102 +1,79 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import * as Icons from '../../utils/Icons';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
-var moment = require('moment');
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import moment from 'moment';
+import EmojiDisplay from './EmojiDisplay';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
 
-var ItemVoting = React.createClass({
-	render: function(){
-		return(
-			<div>
-			<FlatButton icon={Icons.FA('angle-up')} onClick={this.props.upvote}/>
-			<br></br>
-			{this.props.votes}
-			<br></br>
-			<FlatButton icon={Icons.FA('angle-down')}/>
-			</div>
-			);
-	}
-});
+const ItemVoting = (props) => (
+  <div className="row item-voting">
+    <div className="col-xs-12">
+      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_up')}</IconButton>
+    </div>
+    <div className="col-xs-12 votes-container">{props.votes}</div>
+    <div className="col-xs-12">
+      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_down')}</IconButton>
+    </div>
+  </div>
+);
 
-var ItemDetails = React.createClass({
-	render: function(){
-		return(
-			<div>
-			<p id="replies">{Icons.FAFixedWidth('comments')}{this.props.replies} replies
-			<br></br>
-			{Icons.FAFixedWidth('map-marker')}{this.props.distance} from you | {this.props.time}
-			</p>
-			</div>
-			);
-	}
-});
+const ItemDetails = (props) => (
+  <div className="row item-details-container">
+    <div className="col-xs-12 details">
+      {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
+    </div>
+    <div className="col-xs-12 details">
+      {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {props.distance} away - {props.time}</span>
+    </div>
+  </div>
+);
 
-var ItemTitle = React.createClass({
-	render: function(){
-		return(
-			<div className="row center-xs">
-			<div className="col-xs-2">
-			{Icons.FAFixedWidth('quote-left')}
-			</div>
-			<div className="col-xs-8">
-			{this.props.title}
-			</div>
-			<div className="col-xs-2">
-			{Icons.FAFixedWidth('quote-right')}
-			</div>
-			</div>
-			);
-	}
-});
+const ItemTitle = (props) => (
+  <div className="row center-xs">
+    <div className="quote-top">
+      {Icons.MUI('format_quote')}
+    </div>
+    <div className="col-xs-10 item-title">
+      {props.title}
+    </div>
+    <div className="quote-btm">
+      {Icons.MUI('format_quote')}
+    </div>
+  </div>
+);
 
+const ListItem = props => (
+  <div className="row center-xs">
+    <div className="col-xs-11 col-md-4">
+      <Paper className="top-container" zDepth={0}>
+        <EmojiDisplay emojiUni={props.emojiUni} />
+        <ItemTitle title={props.title}/>
 
-export class ListItem extends Component{
+        <div className="row middle-xs item-description">
+          <div className="col-xs-1"/>
+          <div className="col-xs-2">
+            <ItemVoting votes={props.votes}/>
+          </div>
+          <div className="col-xs-8">
+            <ItemDetails
+              replies={props.replies}
+              distance={props.distance}
+              time={ moment(props.date).fromNow()}/>
+          </div>
+        </div>
 
-	render(){
+        <div className="button-div">
+          <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff" />
+        </div>
+      </Paper>
+    </div>
+  </div>
+);
 
-		var time = moment(this.props.date).fromNow();
-
-		return(
-
-			<div className="row center-xs">
-			<div className="col-xs-8">
-
-			<Paper id="top-container" zDepth={1}>
-
-			<p>&#x1f601;</p>
-
-			<ItemTitle title={this.props.title}/>
-
-			<div className="row between-xs">
-
-			<div id="details-container" className="col-xs-8">
-			<ItemDetails replies={this.props.replies} distance={this.props.distance} time={time}/>
-			</div>
-
-			<div className="col-xs-3">
-			<ItemVoting id="votes-container" votes={this.props.votes}/>
-			</div>
-
-			</div>
-
-			<div className="button-div">
-			<RaisedButton
-			label="Drop in"
-			primary={true}
-			fullWidth={true} />
-			</div>
-
-			</Paper>
-
-			</div>
-			</div>
-
-			);
-	}
-}
+export default ListItem;
