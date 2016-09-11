@@ -12,7 +12,7 @@ export class TopBar extends Component {
 	render(){
 		return(
 			<AppBar
-			title={<span id="title">Drop</span>}
+			title={<span id="title">drop</span>}
 			onTitleTouchTap={handleTouchTap}
 			showMenuIconButton={false}
 			/>
