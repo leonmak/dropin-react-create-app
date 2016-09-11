@@ -3,6 +3,7 @@ import { reduxForm, Field } from 'redux-form'
 
 import { TextField } from 'redux-form-material-ui'
 import FlatButton from 'material-ui/FlatButton'
+import EmojiInput from './EmojiInput'
 
 const handler = reset => values =>
   new Promise(resolve => {
@@ -50,6 +51,8 @@ class AddForm extends Component {
         <FlatButton onTouchTap={reset} label="Clear" disabled={pristine || submitting} />
         </div>
         </div>
+
+        <EmojiInput />
 
       </form>
     )

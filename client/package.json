@@ -15,6 +15,7 @@
     "pushstate-server": "^1.14.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "react-emoji-picker": "^1.0.12",
     "react-mapbox-gl": "^0.10.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
