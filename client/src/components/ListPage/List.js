@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../../styles/List.css';
 import {ListItem} from './ListItem';
 
