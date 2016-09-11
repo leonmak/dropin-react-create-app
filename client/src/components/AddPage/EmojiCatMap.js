@@ -432,4 +432,4 @@ module.exports = [
   { name: "eggplant", alternatives: "food, vegetable", category: "objects" },
   { name: "tomato", alternatives: "food, fruit", category: "objects" },
   { name: "corn", alternatives: "food, vegetable", category: "objects" },
-
+]
