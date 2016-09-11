@@ -116,7 +116,7 @@ class MapPage extends Component {
           <Layer
             type="symbol"
             layout={{ "icon-image": "1f0cf", "icon-size": 1 }}>
-            <Feature coordinates={[this.state.center[0]+0.01,this.state.center[1]]}/>
+            <Feature coordinates={[this.state.center[0]+0.0005,this.state.center[1]]}/>
           </Layer>
 
         </ReactMapboxGl>
