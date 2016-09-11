@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import EmojiPicker from './EmojiPicker';
 import emojiMap from './EmojiCatMap';
+import TextField from 'material-ui/TextField';
 
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
   position: 'absolute',
-  left: 0, top: '7.9rem',
+  left: 0, top: '12rem',
   backgroundColor: 'white',
   width: '100%',
   padding: '.3em 0',
@@ -61,6 +62,7 @@ class EmojiInput extends Component {
 
   updateState(e) {
     this.setState({emoji: e.target.value})
+    console.log(this.state.emoji)
   }
 
   setEmoji(emoji) {
@@ -86,13 +88,15 @@ class EmojiInput extends Component {
 
   render() {
     return (
-      <p ref="emoji">
-        <label htmlFor="emoji">Emoji</label>
-        <input name="emoji" id="emoji" value={this.state.emoji} autoComplete="off"
+      <div ref="emoji">
+        <TextField
+          floatingLabelText="Choose Emoji" name="emoji" id="emoji"
+          value={this.state.emoji} autoComplete="off"
           type={this.state.showEmojiPicker ? "search" : "text"}
-          onChange={this.updateState} onKeyDown={this.grabKeyPress}/>
+          onChange={this.updateState}
+          onKeyDown={this.grabKeyPress} />
         {this.emojiPicker()}
-      </p>
+      </div>
     )
   }
 

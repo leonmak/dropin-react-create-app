@@ -34,7 +34,9 @@ class AddForm extends Component {
     return (
       <form onSubmit={ handleSubmit(handler(reset)) }>
         <h1>Drop a new message</h1>
+        <EmojiInput />
         <Field name="emoji" component={TextField} hintText="Choose emoji"/>
+
 
         <div className="row">
         <div className="col-xs-12">
@@ -52,7 +54,6 @@ class AddForm extends Component {
         </div>
         </div>
 
-        <EmojiInput />
 
       </form>
     )

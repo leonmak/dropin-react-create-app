@@ -7,7 +7,7 @@ import {List} from './List';
 var data = [
   {
     "id": "001",
-    "emoticon": "F09F98AA", //utf-8 encoded sleepy face
+    "emojiUni": "1f600", //utf-8 encoded sleepy face
     "title": "Today's event in LT7 is sooooo boring!",
     "votes": 4,
     "distance": 1560,
@@ -16,7 +16,7 @@ var data = [
   },
   {
    "id": "002",
-   "emoticon": "F09F98A1",
+   "emojiUni": "1f601",
    "title": "Who else is angry at the guy who just cut our queue at the drink store!",
    "votes": 10,
    "distance": 10876,
@@ -25,7 +25,7 @@ var data = [
   },
   {
    "id": "003",
-   "emoticon": "F09F988D",
+   "emojiUni": "1f602",
    "title": "To the cute guy studying outside the LT, WOWOW",
    "votes": 6,
    "distance": 9887,
@@ -34,7 +34,7 @@ var data = [
   },
   {
    "id": "004",
-   "emoticon": "F09F98B9",
+   "emojiUni": "1f603",
    "title": "We dont drink and derive LOL",
    "votes": 15,
    "distance": 765,
