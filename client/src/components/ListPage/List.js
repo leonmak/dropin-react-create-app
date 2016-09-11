@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../styles/List.css';
 import {ListItem} from './ListItem';
 
 export class List extends Component {
@@ -11,11 +10,11 @@ export class List extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
       {this.props.feed.map((feedItem,idx) => {
         var title = feedItem.title;
         var replies = feedItem.replies;
-        var distance = feedItem.distance/1000+"km";
+        var distance = feedItem.distance/1000+" km";
         var votes = feedItem.votes;
         var time = feedItem.time;
         return <ListItem key={idx} title={title} replies={replies} distance={distance} votes={votes} date={time}/>;

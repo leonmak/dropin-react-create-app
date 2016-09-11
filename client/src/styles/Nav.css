@@ -4,6 +4,10 @@
   bottom: 0;
 }
 
+.bottom-navigation > div > button {
+  min-width: 60px !important;
+}
+
 .add-drop-btn {
     background-color: #00bcd4 !important;
 }
