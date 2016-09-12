@@ -15,7 +15,7 @@ export class Profile extends Component {
   render() {
     return(
       <div>
-      <div className="row center-xs top-container">
+      <div className="row center-xs profile-container">
       <div className="col-xs-12 bg-blue-200">
       Hello, {this.state.profile} !
       </div>
