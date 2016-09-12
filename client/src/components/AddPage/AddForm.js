@@ -52,7 +52,6 @@ class AddForm extends Component {
         <div className="row center-xs">
         <div className="col-xs-12">
         <FlatButton type="submit" label="Submit" disabled={pristine || submitting} />
-        <FlatButton onTouchTap={reset} label="Clear" disabled={pristine || submitting} />
         </div>
         </div>
 

@@ -32,7 +32,7 @@ activeTabStyle.borderBottom = '3px solid #f2f2f2';
 var bodyStyle = {
   display: 'block',
   margin: '0.3em 0 0',
-  maxHeight: '12.5em',
+  maxHeight: '12.9rem',
   overflowY: 'scroll',
 }
 

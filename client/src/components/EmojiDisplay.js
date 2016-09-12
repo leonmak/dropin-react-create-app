@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
-import EmojiUniToAnnotation from '../../utils/emoji-unicode-to-annotation';
+import EmojiUniToAnnotation from '../utils/emoji-unicode-to-annotation';
 
 const EmojiDisplay = React.createClass({
 

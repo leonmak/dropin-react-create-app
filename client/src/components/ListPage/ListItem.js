@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
-import EmojiDisplay from './EmojiDisplay';
+import EmojiDisplay from '../EmojiDisplay';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';

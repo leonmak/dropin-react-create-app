@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import EmojiPicker from './EmojiPicker';
 import emojiMap from './EmojiCatMap';
 import TextField from 'material-ui/TextField';
+import EmojiDisplayAnnotation from '../EmojiDisplayAnnotation';
 
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
   position: 'absolute',
-  left: 0, top: '15rem',
+  left: 0, top: '16.13rem',
   backgroundColor: '#f2f2f2',
   width: '100%',
-  padding: '2.5em 0 0',
   borderBottom: '1px solid #00bcd4',
   borderTop: 'none',
   zIndex: '2'
@@ -98,6 +98,7 @@ class EmojiInput extends Component {
     const { input: { value, onChange }, meta: { error, pristine } } = this.props
     return (
       <div ref="emoji">
+        <EmojiDisplayAnnotation emoji={value} />
         <TextField name="emoji" id="emoji"
           floatingLabelText={this.props.hintText}
           value={value}
