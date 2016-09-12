@@ -9,7 +9,7 @@ var emojiPickerStyles = {
   left: 0, top: '15rem',
   backgroundColor: '#f2f2f2',
   width: '100%',
-  padding: '2.5em 0',
+  padding: '2.5em 0 0',
   borderBottom: '1px solid #00bcd4',
   borderTop: 'none',
   zIndex: '2'
@@ -95,7 +95,7 @@ class EmojiInput extends Component {
 
   // note: destructuring this.props.input.onChange to onChange
   render() {
-    const { input: { value, onChange }, meta:{error, invalid, pristine} } = this.props
+    const { input: { value, onChange }, meta: { error, pristine } } = this.props
     return (
       <div ref="emoji">
         <TextField name="emoji" id="emoji"
