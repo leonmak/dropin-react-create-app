@@ -15,9 +15,13 @@ function geoListener(callback) {
 }
 
 class MapPage extends Component {
-  state = {
-    center: [103.8198, 1.3224],
-    zoom: 18
+  constructor(props) {
+    super(props);
+    this.state = {
+      center: [103.8198, 1.3224],
+      zoom: 18
+    }
+    this.updateLocation = this.updateLocation.bind(this);
   }
 
   updateLocation(coords) {
@@ -28,8 +32,8 @@ class MapPage extends Component {
 
   }
 
-  componentWillMount() {
-    geoListener(this.updateLocation.bind(this));
+  componentDidMount() {
+    geoListener(this.updateLocation);
   }
 
   createFaceMarker(coordinates, imgUrl) {
