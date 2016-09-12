@@ -7,13 +7,10 @@ const Strategy = require('passport-facebook').Strategy;
 
 import { Users, Posts, Comments } from './database';
 
-console.log(process.env.FB_CLIENT_ID);
-console.log(process.env.FB_CLIENT_SECRET);
-
 passport.use(new Strategy({
     clientID: process.env.FB_CLIENT_ID,
     clientSecret: process.env.FB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/auth/facebook'
+    callbackURL: 'http://localhost:3001/facebook/auth'
   },
   function(accessToken, refreshToken, profile, callback) {
     return callback(null, profile);
@@ -36,11 +33,11 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/login/facebook',
+app.get('/facebook/login',
   passport.authenticate('facebook'));
 
-app.get('/auth/facebook',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+app.get('/facebook/auth',
+  passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
   function(req, res) {
     res.redirect('/');
   });
