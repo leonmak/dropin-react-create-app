@@ -4,7 +4,7 @@ import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import {browserHistory} from 'react-router'
 
 function geoListener(callback) {
-  navigator.geolocation.watchPosition(
+  return navigator.geolocation.watchPosition(
     ({ coords, timestamp }) => callback(coords),
     (err) => console.log('Unable to find position - ' + err.message),
     {
@@ -21,6 +21,7 @@ class MapPage extends Component {
       center: [103.8198, 1.3224],
       zoom: 18
     }
+    this.geoId = null;
     this.updateLocation = this.updateLocation.bind(this);
   }
 
@@ -33,7 +34,11 @@ class MapPage extends Component {
   }
 
   componentDidMount() {
-    geoListener(this.updateLocation);
+    this.geoId = geoListener(this.updateLocation);
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.geoId);
   }
 
   createFaceMarker(coordinates, imgUrl) {
