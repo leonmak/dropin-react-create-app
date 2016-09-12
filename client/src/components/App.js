@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import {BottomBar} from './BottomBar';
 import {TopBar} from './TopBar';
 import Headroom from 'react-headroom';
-import { RouteTransition } from 'react-router-transition';
+// import { RouteTransition } from 'react-router-transition';
 
 
 const App = (props) => {
@@ -12,14 +12,7 @@ const App = (props) => {
       <Headroom><TopBar/></Headroom>
 
       <div id="body">
-        <RouteTransition
-          pathname={props.location.pathname}
-          atEnter={{ opacity: 0.5 }}
-          atLeave={{ opacity: 0 }}
-          atActive={{ opacity: 1 }}
-        >
-          {props.children}
-        </RouteTransition>
+        {props.children}
       </div>
 
       <BottomBar url={props.location.pathname} />
