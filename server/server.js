@@ -52,11 +52,11 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-app.get('/api/profile',
+app.get('/api/user', 
   require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
+  (req, res) => { 
     res.json(req.user);
-  });
+});
 
 app.get('/api/chat', (req, res) => {
 
