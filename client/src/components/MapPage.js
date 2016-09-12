@@ -90,7 +90,7 @@ class MapPage extends Component {
       <div>
         <ReactMapboxGl
           onStyleLoad={this.createFaceMarker(this.state.center, "https://avatars.io/facebook/leonmak")}
-          containerStyle={{height: window.innerHeight - 56}}
+          containerStyle={{height: window.innerHeight - 56 - 64}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[this.state.zoom]}
