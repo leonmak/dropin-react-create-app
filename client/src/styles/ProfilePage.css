@@ -1,11 +1,32 @@
 .profile-container{
-	height: 100px;
+	height: 42vh;
+  color: #ffffff;
 }
 
-.middle-container{
-	height: 50px;
+.profile-fb{
+  margin-top: 6vh;
+}
+.profile-fb > h2{
+  margin: 1vh;
+}
+.profile-fb > a {
+  color: white;
+  text-decoration: none;
+  border: 1px white;
+  padding: 5px;
+  border: 2px solid #FFFFFF;
+  border-radius: 30px;
+  font-size: 12px;
 }
 
-#profile{
-	margin: -50px 0px 0px 0px;
+.profile-pic{
+  margin-top: 3vh;
+  margin-bottom: -9vh;
+}
+.profile-pic > img {
+  border: 5px solid #FFFFFF;
+}
+
+.profile-stat > p {
+  margin: 0;
 }

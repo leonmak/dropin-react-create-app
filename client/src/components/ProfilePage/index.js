@@ -1,17 +1,25 @@
 import React, {Component} from 'react';
-import {Profile} from './Profile';
-import {ProfileDetails} from './ProfileDetails';
-import '../../styles/colors.css';
+import ProfileStats from './ProfileStats';
+
 import '../../styles/ProfilePage.css';
 
+var user = {
+  "id": "001",
+  "name": "Leon Mak",
+  "facebookId": "590597559",
+  "drops": 1,
+  "picks": 12,
+  "comments": 12,
+};
+
 class ProfilePage extends Component{
+
 	render() {
 		return (
 			<div>
-			<Profile/>
-			<ProfileDetails/>
+  			<ProfileStats user={user} />
 			</div>
-			
+
 			)
 	}
 }
