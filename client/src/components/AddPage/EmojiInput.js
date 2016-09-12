@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField';
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
   position: 'absolute',
-  left: 0, top: '12rem',
+  left: 0, top: '15rem',
   backgroundColor: 'white',
   width: '100%',
   padding: '.3em 0',
@@ -51,22 +51,26 @@ class EmojiInput extends Component {
   }
 
   validateEmoji() {
+    const { input: { value, onChange } } = this.props;
     const matched = emojiMap.filter((emoji) => {
-      return `:${emoji.name}:` === this.state.emoji
+      return `:${emoji.name}:` === value
     })
 
     if(matched.length === 0) {
-      this.setState({emoji: ""})
+      onChange(null);
     }
   }
 
-  updateState(e) {
-    this.setState({emoji: e.target.value})
-    console.log(this.state.emoji)
+  updateState(onChange) {
+    return e => {
+      onChange(e.target.value);
+    }
   }
 
-  setEmoji(emoji) {
-    this.setState({emoji})
+  setEmoji(onChange) {
+    return emoji => {
+      onChange(emoji);
+    }
   }
 
   // allows selecting first emoji by pressing "Enter" without submitting form
@@ -77,24 +81,30 @@ class EmojiInput extends Component {
   }
 
   emojiPicker() {
+    const { input: { value, onChange } } = this.props
+
     if(this.state.showEmojiPicker) {
       return (
         <EmojiPicker
-          style={emojiPickerStyles} onSelect={this.setEmoji}
-          query={this.state.emoji}  />
+          style={emojiPickerStyles} onSelect={this.setEmoji(onChange)}
+          query={value}  />
       )
     }
   }
 
+  // note: destructuring this.props.input.onChange to onChange
   render() {
+    const { input: { value, onChange }, meta:{error, invalid, pristine} } = this.props
     return (
       <div ref="emoji">
-        <TextField
-          floatingLabelText="Choose Emoji" name="emoji" id="emoji"
-          value={this.state.emoji} autoComplete="off"
+        <TextField name="emoji" id="emoji"
+          floatingLabelText={this.props.hintText}
+          value={value}
           type={this.state.showEmojiPicker ? "search" : "text"}
-          onChange={this.updateState}
-          onKeyDown={this.grabKeyPress} />
+          onChange={this.updateState(onChange)}
+          onKeyDown={this.grabKeyPress}
+          errorStyle={{marginLeft: "-80%"}}
+          errorText={!pristine ? error : ""} />
         {this.emojiPicker()}
       </div>
     )

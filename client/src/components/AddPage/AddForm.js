@@ -7,22 +7,25 @@ import EmojiInput from './EmojiInput'
 
 const handler = reset => values =>
   new Promise(resolve => {
-    setTimeout(() => {  // simulate server latency
+    setTimeout(() => {
+      // simulate server latency
       window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`)
       resolve()
+
+      // reset form after submit
       reset();
     }, 500)
   })
 
 const validate = values => {
-  const errors = {}
-  const requiredFields = [ 'message' ]
+  const errors = {};
+  const requiredFields = [ 'message' , 'emoji' ];
   requiredFields.forEach(field => {
     if (!values[ field ]) {
       errors[ field ] = 'Required'
     }
-  })
-  return errors
+  });
+  return errors;
 }
 
 
@@ -34,17 +37,16 @@ class AddForm extends Component {
     return (
       <form onSubmit={ handleSubmit(handler(reset)) }>
         <h1>Drop a new message</h1>
-        <EmojiInput />
-        <Field name="emoji" component={TextField} hintText="Choose emoji"/>
+        <Field name="emoji" component={EmojiInput} hintText="Choose Emoji"/>
 
 
         <div className="row">
-        <div className="col-xs-12">
-        <Field name="message" component={TextField} hintText=""
-          floatingLabelText="Drop a message" floatingLabelStyle={{left: 0}}
-          errorStyle={{marginLeft: "-80%"}}
-          multiLine={true} rows={2}/>
-        </div>
+          <div className="col-xs-12">
+          <Field name="message" component={TextField} hintText=""
+            floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
+            errorStyle={{marginLeft: "-80%"}}
+            multiLine={true} rows={2}/>
+          </div>
         </div>
 
         <div className="row center-xs">
