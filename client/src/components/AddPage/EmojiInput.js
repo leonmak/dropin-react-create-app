@@ -7,10 +7,10 @@ import TextField from 'material-ui/TextField';
 var emojiPickerStyles = {
   position: 'absolute',
   left: 0, top: '15rem',
-  backgroundColor: 'white',
+  backgroundColor: '#f2f2f2',
   width: '100%',
-  padding: '.3em 0',
-  borderBottom: '1px solid #0074d9',
+  padding: '2.5em 0',
+  borderBottom: '1px solid #00bcd4',
   borderTop: 'none',
   zIndex: '2'
 };
@@ -86,7 +86,8 @@ class EmojiInput extends Component {
     if(this.state.showEmojiPicker) {
       return (
         <EmojiPicker
-          style={emojiPickerStyles} onSelect={this.setEmoji(onChange)}
+          style={emojiPickerStyles}
+          onSelect={this.setEmoji(onChange)}
           query={value}  />
       )
     }

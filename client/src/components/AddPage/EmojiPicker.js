@@ -27,7 +27,7 @@ var activeTabStyle = {};
 for (var key in tabStyle) {
   if(key) activeTabStyle[key] = tabStyle[key];
 }
-activeTabStyle.borderBottom = '3px solid white';
+activeTabStyle.borderBottom = '3px solid #f2f2f2';
 
 var bodyStyle = {
   display: 'block',
