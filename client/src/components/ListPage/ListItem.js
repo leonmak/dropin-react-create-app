@@ -41,7 +41,7 @@ const ItemDetails = (props) => (
       {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
     </div>
     <div className="col-xs-12 details">
-      {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {props.distance} away - {props.time}</span>
+      {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {props.distance}m away - {props.time}</span>
     </div>
   </div>
 );
@@ -92,14 +92,14 @@ const ListItem = props => (
 
         <div className="button-div">
 
-        <FlatButton onTouchTap={ ()=> goToURL(`/drop/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drop/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
 
         </div>
 
       </Paper>
     </div>
   </div>
-);
+)
 
 /*onTouchTap={()=>()}*/
 

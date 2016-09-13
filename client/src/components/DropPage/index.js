@@ -1,10 +1,10 @@
 import React from 'react';
 import {Drop} from './Drop';
 
-//api call used here
-// /api/comments/:dropid/comments
+// api call get all comments from feedId
+// /api/feed/:feedId/comments
 
-//sorted in chronological order	
+//sorted in chronological order
 
 var comments = [
 {
@@ -68,22 +68,21 @@ var comments = [
 
 //not sure how to get this data from the other page, passing data around with react-router?
 var drop = {
-    "id": "001",
-    "username":"Larry",
-	"userId":"004",
-	"userAvatar":"http://dropdev.com/avatar/004",
-    "emojiUni": "1f600", //utf-8 encoded sleepy face
-    "title": "I cannot find any food today!!!",
-    "votes": 4,
-    "distance": 1560,
-    "time": "2016-08-23T18:25:43.511Z",
-    "replies": 7
+  "id": "001",
+  "username":"Larry",
+  "userId":"004",
+  "userAvatar":"as21dfa004",
+  "emojiUni": "1f600", //utf-8 encoded sleepy face
+  "title": "I cannot find any food today!!!",
+  "votes": 4,
+  "distance": 1560,
+  "time": "2016-08-23T18:25:43.511Z",
+  "replies": 7
 }
 
 
 const DropPage = (props) => (
-	<Drop comments={comments}
-	drop={drop}/>
-	)
+	<Drop comments={comments} drop={drop} />
+)
 
 export default DropPage;
