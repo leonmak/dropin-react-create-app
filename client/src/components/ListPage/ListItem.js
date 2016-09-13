@@ -6,12 +6,10 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
-import EmojiDisplay from '../EmojiDisplay';
+import EmojiDisplay from './EmojiDisplay';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
-
-import {Link} from 'react-router';
 
 const ItemVoting = (props) => (
   <div className="row item-voting">
@@ -76,10 +74,9 @@ const ListItem = props => (
         </div>
 
         <div className="button-div">
-        <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
-          <Link to={`/drop/${props.dropId}`}>
-          <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
-          </Link>
+
+        <FlatButton href={`/drop/${props.dropId}`} label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+
         </div>
 
       </Paper>

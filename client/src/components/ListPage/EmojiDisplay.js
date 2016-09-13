@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
-import EmojiUniToAnnotation from '../utils/emoji-unicode-to-annotation';
+import EmojiUniToAnnotation from '../../utils/emoji-unicode-to-annotation';
 
 const EmojiDisplay = React.createClass({
 
@@ -11,7 +11,7 @@ const EmojiDisplay = React.createClass({
   render() {
     return (
       <p>
-        <span>{ this.emojify(`:${EmojiUniToAnnotation[this.props.emojiUni]}:`, {attributes: {width:'30px', height:'30px'} }) }</span>
+        <span>{ this.emojify(`:${EmojiUniToAnnotation[this.props.emojiUni]}:`, {attributes: {width:'90px', height:'90px'} }) }</span>
       </p>
     );
   }

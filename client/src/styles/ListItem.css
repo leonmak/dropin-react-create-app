@@ -9,17 +9,17 @@
 .button-div{
   margin: -5px;
 }
-.button-div > button {
+.button-div > a {
   width: 100%;
   color: #FFF !important;
   border-radius: 0px 0px 9px 9px !important;
   height: 48px !important;
 }
-.button-div > button:hover {
+.button-div > a:hover {
   width: 100%;
   color: #00bcd4 !important;
 }
-.button-div > button > div > span {
+.button-div > a > div > span {
   font-weight: 100 !important;
   font-size: 18px !important;
   letter-spacing: 3px !important;
