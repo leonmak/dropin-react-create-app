@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
-import EmojiDisplay from '../EmojiDisplay';
+import EmojiDisplay from './EmojiDisplay';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -48,6 +48,11 @@ const ItemTitle = (props) => (
   </div>
 );
 
+/*function select(url) {
+    this.setState({idx});
+    browserHistory.push(url);
+  }*/
+
 const ListItem = props => (
   <div className="row center-xs">
     <div className="col-xs-11 col-md-4">
@@ -69,11 +74,16 @@ const ListItem = props => (
         </div>
 
         <div className="button-div">
-          <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff" />
+
+        <FlatButton href={`/drop/${props.dropId}`} label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+
         </div>
+
       </Paper>
     </div>
   </div>
 );
+
+/*onTouchTap={()=>()}*/
 
 export default ListItem;

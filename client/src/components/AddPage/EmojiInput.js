@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import EmojiPicker from './EmojiPicker';
 import emojiMap from './EmojiCatMap';
 import TextField from 'material-ui/TextField';
-import EmojiDisplayAnnotation from '../EmojiDisplayAnnotation';
+import EmojiDisplayAnnotation from './EmojiDisplayAnnotation';
 
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
