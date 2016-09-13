@@ -20,7 +20,6 @@ const ProfileStats = ({user}) => (
     <div className="col-xs-12 ">
       <div className="row center-xs">
         <div className="col-xs-3 profile-stat"><p>{user.drops}</p><small>{text.pluralizer('drop', user.drops)}</small></div>
-        <div className="col-xs-3 profile-stat"><p>{user.picks}</p><small>{text.pluralizer('pick', user.picks)}</small></div>
         <div className="col-xs-3 profile-stat"><p>{user.comments}</p><small>{text.pluralizer('comment', user.comments)}</small></div>
       </div>
     </div>

@@ -10,7 +10,6 @@ const user = {
   "name": "Leon Mak",
   "facebookId": "590597559",
   "drops": 1,
-  "picks": 12,
   "comments": 12,
 };
 
