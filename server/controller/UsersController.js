@@ -3,6 +3,17 @@ const ERROR_NOT_FOUND = "Not found";
 
 var UsersController = {};
 
+UsersController.findUserId = function(facebook_id) {
+	var promise = new Promise(function(resolve, reject) {
+		Users.where('facebook_id', facebook_id).fetch().then(function(user) {
+			resolve(user.id);
+		}).catch(function(err) {
+			reject(ERROR_NOT_FOUND);
+		});
+	})
+	return promise;
+}
+
 UsersController.getUsers = function(req, res) {
 	Users.fetchAll().then(function(users) {
 		res.json(users.toJSON());

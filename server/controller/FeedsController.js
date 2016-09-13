@@ -1,4 +1,5 @@
 import { Posts } from '../database';
+var UsersController = require('./UsersController');
 const ERROR_NOT_FOUND = "Not found";
 
 var FeedsController = {};
@@ -20,16 +21,20 @@ FeedsController.getFeed = function(req, res) {
 	})
 }
 
+// {user_id:, title: , longitude: , latitude: }
 FeedsController.post = function(req, res) {
-	console.log(req);
-	const postHash = {
-		user_id: req.user,
-		title: req.body.title,
-		longitude: req.body.longitude,
-		latitude: req.body.latitude,
-	}
-	new Posts().save(postHash).then(function(post) {
-		res.json(post);
+	UsersController.findUserId(req.user.id).then(function(user_id) {
+		const postHash = {
+			user_id: user_id,
+			title: req.body.title,
+			longitude: req.body.longitude,
+			latitude: req.body.latitude,
+		}
+		new Posts().save(postHash).then(function(post) {
+			res.json(post);
+		}).catch(function(err) {
+			res.json({error: err});
+		});
 	}).catch(function(err) {
 		res.json({error: err});
 	});
