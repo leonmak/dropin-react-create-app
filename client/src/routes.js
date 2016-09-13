@@ -8,11 +8,15 @@ import MapPage from './components/MapPage';
 import ProfilePage from './components/ProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ListPage from './components/ListPage';
+import DropPage from './components/DropPage';
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={ListPage}/>
-    <Route path="list" component={ListPage}/>
+    <Route path="list" component={ListPage}>
+    	
+    </Route>
+    <Route path="/drop/:dropId" component={DropPage}/>
     <Route path="map" component={MapPage}/>
     <Route path="profile" component={ProfilePage}/>
     <Route path="add" component={AddPage}/>

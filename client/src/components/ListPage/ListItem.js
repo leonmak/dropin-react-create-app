@@ -11,6 +11,8 @@ import EmojiDisplay from '../EmojiDisplay';
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
 
+import {Link} from 'react-router';
+
 const ItemVoting = (props) => (
   <div className="row item-voting">
     <div className="col-xs-12">
@@ -48,6 +50,11 @@ const ItemTitle = (props) => (
   </div>
 );
 
+/*function select(url) {
+    this.setState({idx});
+    browserHistory.push(url);
+  }*/
+
 const ListItem = props => (
   <div className="row center-xs">
     <div className="col-xs-11 col-md-4">
@@ -69,11 +76,17 @@ const ListItem = props => (
         </div>
 
         <div className="button-div">
-          <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff" />
+        <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+          <Link to={`/drop/${props.dropId}`}>
+          <FlatButton label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+          </Link>
         </div>
+
       </Paper>
     </div>
   </div>
 );
+
+/*onTouchTap={()=>()}*/
 
 export default ListItem;

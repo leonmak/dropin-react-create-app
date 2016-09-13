@@ -19,8 +19,17 @@ export class List extends Component {
           , votes = feedItem.votes
           , time = feedItem.time
           , emojiUni = feedItem.emojiUni
+          , dropId = feedItem.id
 
-        return <ListItem key={idx} title={title} replies={replies} distance={distance} votes={votes} date={time} emojiUni={emojiUni}/>;
+        return <ListItem 
+        key={idx} 
+        title={title} 
+        replies={replies} 
+        distance={distance} 
+        votes={votes} 
+        date={time} 
+        emojiUni={emojiUni}
+        dropId={dropId}/>;
       } )}
       </div>
     );
