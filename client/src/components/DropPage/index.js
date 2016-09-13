@@ -69,6 +69,9 @@ var comments = [
 //not sure how to get this data from the other page, passing data around with react-router?
 var drop = {
     "id": "001",
+    "username":"Larry",
+	"userId":"004",
+	"userAvatar":"http://dropdev.com/avatar/004",
     "emojiUni": "1f600", //utf-8 encoded sleepy face
     "title": "I cannot find any food today!!!",
     "votes": 4,
