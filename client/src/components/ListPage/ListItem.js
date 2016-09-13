@@ -68,7 +68,7 @@ const ListItem = props => (
           <div className="col-xs-2">
             <ItemVoting votes={props.votes}/>
           </div>
-          <div className="col-xs-8">
+          <div className="col-xs-9">
             <ItemDetails
               replies={props.replies}
               distance={props.distance}
