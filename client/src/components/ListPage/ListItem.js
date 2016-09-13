@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
-import {browserHistory} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -26,6 +26,17 @@ const ItemVoting = (props) => (
 
 const ItemDetails = (props) => (
   <div className="row item-details-container">
+    { !props.isProfile &&
+    <div className="col-xs-12 details">
+      {Icons.FAFixedWidth('user')}
+      <strong>&nbsp;
+        {props.userId > -1
+          ? <span>Posted by: <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link></span>
+          : <span>Posted by: {props.username}</span>
+        }
+      </strong>
+    </div>
+    }
     <div className="col-xs-12 details">
       {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
     </div>
@@ -72,7 +83,10 @@ const ListItem = props => (
             <ItemDetails
               replies={props.replies}
               distance={props.distance}
-              time={ moment(props.date).fromNow()}/>
+              time={ moment(props.date).fromNow()}
+              userId={props.userId}
+              username={props.username}
+              isProfile={props.isProfile} />
           </div>
         </div>
 

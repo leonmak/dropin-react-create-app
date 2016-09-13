@@ -7,9 +7,9 @@ import {List} from './List';
 var data = [
 {
   "id": "001",
-  "username":"Larry",
-  "userId":"004",
-  "userAvatar":"http://dropdev.com/avatar/004",
+  "username":"Anonymous",
+  "userId":"-1",
+  "userAvatar":"AnonId",
   "emojiUni": "1f600",
   "title": "Today's event in LT7 is sooooo boring!",
   "votes": 4,

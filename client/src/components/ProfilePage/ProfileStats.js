@@ -58,9 +58,9 @@ const ProfileStats = ({user}) => (
     <div className="col-xs-12 ">
     <Tabs>
       <Tab label="Top Drops" >
-        <List feed={data} />
+        <List feed={data} isProfile={true}/>
       </Tab>
-      <Tab label="Top Comments" >
+      <Tab label="Recent Comments" >
         <div><h2>Tab two</h2><p>This isasdfa asdfasdf a an example tab.</p><p>You can put any sort of HTML or react component in here. It even keeps the component state!</p></div>
       </Tab>
     </Tabs>
