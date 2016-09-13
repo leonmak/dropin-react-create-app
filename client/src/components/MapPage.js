@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/Map.css';
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
-import {browserHistory} from 'react-router'
+import {browserHistory} from 'react-router';
+import * as fb from '../utils/facebook-url';
 
 function geoListener(callback) {
   return navigator.geolocation.watchPosition(
@@ -95,37 +96,39 @@ class MapPage extends Component {
   };
 
   render() {
+    const {center, zoom} = this.state;
+    const {user} = this.props;
     return (
       <div>
         <ReactMapboxGl
-          onStyleLoad={this.createFaceMarker(this.state.center, "https://avatars.io/facebook/leonmak")}
+          onStyleLoad={this.createFaceMarker(center, fb.profileImg(user.fbId))}
           containerStyle={{height: window.innerHeight - 56 - 64}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
-          zoom={[this.state.zoom]}
+          zoom={[zoom]}
           pitch={60}
-          center={this.state.center}>
+          center={center}>
 
           <Layer
             type="fill"
             paint={{ "fill-color": "#00bcd4", "fill-opacity": 0.2 }}>
-            <Feature coordinates={this.createGeoJSONCircle(this.state.center, 0.1)}/>
+            <Feature coordinates={this.createGeoJSONCircle(center, 0.1)}/>
           </Layer>
           <Layer
             type="fill"
             paint={{ "fill-color": "#00bcd4", "fill-opacity": 0.1 }}>
-            <Feature coordinates={this.createGeoJSONCircle(this.state.center, 0.09)}/>
+            <Feature coordinates={this.createGeoJSONCircle(center, 0.09)}/>
           </Layer>
           <Layer
             type="symbol"
             layout={{ "icon-image": "Map_marker", "icon-size": 0.3 }}>
-            <Feature coordinates={this.state.center}/>
+            <Feature coordinates={center}/>
           </Layer>
         {/* Example using custom uploaded svgs */}
           <Layer
             type="symbol"
             layout={{ "icon-image": "1f0cf", "icon-size": 1 }}>
-            <Feature coordinates={[this.state.center[0]+0.0005,this.state.center[1]]}/>
+            <Feature coordinates={[center[0]+0.0005,center[1]]}/>
           </Layer>
 
         </ReactMapboxGl>

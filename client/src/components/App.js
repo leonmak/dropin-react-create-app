@@ -4,15 +4,30 @@ import {TopBar} from './TopBar';
 import Headroom from 'react-headroom';
 // import { RouteTransition } from 'react-router-transition';
 
+// TODO: connect user to prop
+const user = {
+  "id": "001",
+  "name": "Leon Mak",
+  "facebookId": "590597559",
+  "drops": 1,
+  "picks": 12,
+  "comments": 12,
+};
 
 const App = (props) => {
+  const childrenWithProps = React.Children.map(props.children,
+    (child) => React.cloneElement(child, {
+      user: user
+    })
+  );
+
   return (
     <div id="holder">
 
       <Headroom><TopBar/></Headroom>
 
       <div id="body">
-        {props.children}
+        {childrenWithProps}
       </div>
 
       <BottomBar url={props.location.pathname} />
