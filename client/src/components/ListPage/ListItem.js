@@ -7,6 +7,7 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
+import {browserHistory} from 'react-router';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -53,6 +54,8 @@ const ItemTitle = (props) => (
     browserHistory.push(url);
   }*/
 
+const goToURL = url => browserHistory.push(url);
+
 const ListItem = props => (
   <div className="row center-xs">
     <div className="col-xs-11 col-md-4">
@@ -75,7 +78,7 @@ const ListItem = props => (
 
         <div className="button-div">
 
-        <FlatButton href={`/drop/${props.dropId}`} label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
+        <FlatButton onTouchTap={ ()=> goToURL(`/drop/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/>
 
         </div>
 
