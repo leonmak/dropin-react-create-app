@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var LoginCheck = require('connect-ensure-login');
 import { Users, Posts, Comments } from './database';
-var UserController = require('./controller/UsersController');
+var UsersController = require('./controller/UsersController');
+var FeedsController = require('./controller/FeedsController');
 
 const loginCheck = LoginCheck.ensureLoggedIn('/login');
 
@@ -17,9 +18,11 @@ module.exports = function(passport) {
       res.redirect('/');
     });
 
-  router.get('/api/users', UserController.getUsers);
+  router.get('/api/users', UsersController.getUsers);
+  router.get('/api/users/:id', UsersController.getUser);
 
-  router.get('/api/users/:id', UserController.getUser);
+  router.get('/api/feeds', FeedsController.getFeeds);
+  router.post('/api/feeds', FeedsController.post);
 
   router.get('/api/profile', loginCheck, (req, res) => { 
     res.json(req.user);

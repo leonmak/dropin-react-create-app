@@ -1,9 +1,9 @@
 import { Users } from '../database';
 const ERROR_NOT_FOUND = "Not found";
 
-var UserController = {};
+var UsersController = {};
 
-UserController.getUsers = function(req, res) {
+UsersController.getUsers = function(req, res) {
 	Users.fetchAll().then(function(users) {
 		res.json(users.toJSON());
 	}).catch(function(err) {
@@ -11,7 +11,7 @@ UserController.getUsers = function(req, res) {
 	});
 }
 
-UserController.getUser = function(req, res) {
+UsersController.getUser = function(req, res) {
 	const id = req.params.id;
 	Users.where('id', id).fetch().then(function(user) {
 		res.json(user.toJSON());
@@ -20,12 +20,12 @@ UserController.getUser = function(req, res) {
 	})
 }
 
-UserController.createUser = function(access_token, profile) {
+UsersController.createUser = function(accessToken, profile) {
 	Users.where('facebook_id', profile.id).fetch().then(function(user) {
 		if (user) {
 			// update access token
 			user.save({
-				facebook_token: access_token,
+				facebook_token: accessToken,
 				facebook_profile_img: profile.photos.length > 0 ? profile.photos[0].value : null
 			});
 		} else {
@@ -34,11 +34,15 @@ UserController.createUser = function(access_token, profile) {
 				facebook_id: profile.id,
 				facebook_name: profile.displayName,
 				facebook_profile_img: profile.photos.length > 0 ? profile.photos[0].value : null,
-				facebook_token: access_token
+				facebook_token: accessToken
 			}
-			new Users().save(userHash);
+			new Users().save(userHash).then(function(user) {
+
+			}).catch(function(err) {
+				res.json({error: err});
+			});
 		}
 	});
 }
 
-module.exports = UserController;
+module.exports = UsersController;
