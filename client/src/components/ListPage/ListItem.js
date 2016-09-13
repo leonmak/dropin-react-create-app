@@ -54,7 +54,7 @@ const ItemTitle = (props) => (
     browserHistory.push(url);
   }*/
 
-const goToURL = url => browserHistory.push(url);
+const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
 
 const ListItem = props => (
   <div className="row center-xs">
