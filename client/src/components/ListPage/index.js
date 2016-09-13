@@ -10,7 +10,7 @@ var data = [
   "username":"Larry",
   "userId":"004",
   "userAvatar":"http://dropdev.com/avatar/004",
-  "emojiUni": "1f600", 
+  "emojiUni": "1f600",
   "title": "Today's event in LT7 is sooooo boring!",
   "votes": 4,
   "distance": 1560,
@@ -57,6 +57,6 @@ var data = [
 
 const ListPage = (props) => (
   <List feed={data} />
-  )
+)
 
 export default ListPage;
