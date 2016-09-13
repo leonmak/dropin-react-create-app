@@ -13,10 +13,10 @@ import DropPage from './components/DropPage';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={ListPage}/>
-    <Route path="list" component={ListPage}>
-    	
+    <Route path="drop">
+      <IndexRoute component={ListPage}/>
+      <Route path=":dropId" component={DropPage}/>
     </Route>
-    <Route path="/drop/:dropId" component={DropPage}/>
     <Route path="map" component={MapPage}/>
     <Route path="profile" component={ProfilePage}/>
     <Route path="add" component={AddPage}/>
