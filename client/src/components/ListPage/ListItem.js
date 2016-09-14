@@ -31,8 +31,8 @@ const ItemDetails = (props) => (
       {Icons.FAFixedWidth('user')}
       <strong>&nbsp;
         {props.userId > -1
-          ? <span>Posted by: <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link></span>
-          : <span>Posted by: {props.username}</span>
+          ? <span> Posted by: <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link></span>
+          : <span> Posted by: {props.username}</span>
         }
       </strong>
     </div>
@@ -69,7 +69,7 @@ const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
 
 const ListItem = props => (
   <div className="row center-xs">
-    <div className="col-xs-11 col-md-12">
+    <div className="col-xs-11 col-sm-4">
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
         <ItemTitle title={props.title}/>

@@ -11,7 +11,7 @@ export class List extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginBottom: "27px"}}>
       {this.props.feed.map((feedItem,idx) => {
         let {title, replies, votes, time, emojiUni, id, distance, userId, username} = feedItem;
         distance = distance/1000+" km";

@@ -2,7 +2,9 @@
 	height: 42vh;
   color: #ffffff;
 }
-
+.profile-container > div {
+    padding-bottom: 27px;
+}
 .profile-fb{
   margin-top: 6vh;
 }

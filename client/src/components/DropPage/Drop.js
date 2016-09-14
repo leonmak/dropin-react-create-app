@@ -7,7 +7,6 @@ export class Drop extends Component {
     let {title, replies, votes, time, emojiUni, id, distance, userId, username} = this.props.drop;
 
 		return (
-		<div className="row center-xs">
 		<ListItem
         userId={userId}
         username={username}
@@ -20,7 +19,6 @@ export class Drop extends Component {
         dropId={id}
         isProfile={false}
         isDrop={true} />
-		</div>
 		)
 	}
 
