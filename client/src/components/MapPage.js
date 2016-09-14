@@ -95,7 +95,7 @@ class MapPage extends Component {
 
   setupMap(user, center) {
     return map => {
-      this.createFaceMarker(center, fb.profileImg(user.facebookId), map)
+      this.createFaceMarker(center, fb.profileImg(user.facebookId, 48), map)
     }
   }
 
@@ -106,7 +106,7 @@ class MapPage extends Component {
     return (
       <div>
         <ReactMapboxGl
-          onStyleLoad={setupMap(user, center)}
+          onStyleLoad={this.setupMap(user, center)}
           containerStyle={{height: window.innerHeight - 56 - 64}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
