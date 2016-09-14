@@ -1,7 +1,8 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {List} from '../ListPage/List'
+import {List} from '../ListPage/List';
+import {CommentsList} from '../CommentsList';
 
 import * as fb from '../../utils/facebook-url';
 import * as text from '../../utils/text';
@@ -34,7 +35,7 @@ var data = [
   },
 ]
 
-const ProfileStats = ({user}) => (
+const ProfileStats = ({user, comments}) => (
   <div>
   <div className="row center-xs profile-container bg-cyan-300">
     <div className="col-xs-12 profile-pic">
@@ -61,7 +62,7 @@ const ProfileStats = ({user}) => (
         <List feed={data} isProfile={true}/>
       </Tab>
       <Tab label="Recent Comments" >
-        <div><h2>Tab two</h2><p>This isasdfa asdfasdf a an example tab.</p><p>You can put any sort of HTML or react component in here. It even keeps the component state!</p></div>
+        <CommentsList comments={comments} isProfile={true}/>
       </Tab>
     </Tabs>
     </div>

@@ -69,7 +69,7 @@ const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
 
 const ListItem = props => (
   <div className="row center-xs">
-    <div className="col-xs-11 col-md-4">
+    <div className="col-xs-11 col-md-12">
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
         <ItemTitle title={props.title}/>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Drop} from './Drop';
+import {CommentsList} from '../CommentsList'
 
 // api call get all comments from feedId
 // /api/feed/:feedId/comments
@@ -82,7 +83,10 @@ var drop = {
 
 
 const DropPage = (props) => (
-	<Drop comments={comments} drop={drop} />
+  <div>
+  	<Drop drop={drop} />
+    <CommentsList comments={comments} />
+  </div>
 )
 
 export default DropPage;
