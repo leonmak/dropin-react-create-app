@@ -37,9 +37,12 @@ app.use(passport.session());
 app.use('/', routesConfig(passport));
 
 io.on('connection',function(socket){
-  socket.on('get msg',function(data){
-    var dataClient=data;
-    io.emit('set msg',JSON.stringify(dataClient));
+  console.log("client connected");
+  socket.on('send message',function(data){
+    socket.broadcast.emit('send message', data);
+    // var dataClient=data;
+    // io.emit('set msg',JSON.stringify(dataClient));
+    console.log(data);
   });
 });
 

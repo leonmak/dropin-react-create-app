@@ -1,5 +1,6 @@
 import React from 'react';
 import {Drop} from './Drop';
+import {CommentsInput} from './CommentsInput';
 import {CommentsList} from '../CommentsList';
 
 
@@ -104,6 +105,7 @@ var drop = {
 const DropPage = (props) => (
   <div>
   	<Drop drop={drop} />
+  	<CommentsInput />
     <CommentsList comments={comments} />
   </div>
 )
