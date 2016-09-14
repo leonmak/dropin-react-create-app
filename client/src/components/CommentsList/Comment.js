@@ -21,9 +21,11 @@ const Comment = props => (
         </div>
         <div className="col-xs-2">
           { props.isProfile &&
+            <Link to={`/drops/props.dropId`}>
             <IconButton tooltip="Go to feed" touch={true} iconStyle={{color: '#808080'}}>
               {Icons.MUI('keyboard_arrow_right')}
             </IconButton>
+            </Link>
           }
         </div>
       </div>

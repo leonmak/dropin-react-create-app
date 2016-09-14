@@ -15,7 +15,7 @@ export default class BottomBar extends Component {
     let urlFmt = url.substring(1);
     urlFmt = urlFmt.indexOf('/') > -1 ? url.substring(0, url.indexOf('/')) : urlFmt;
     switch (urlFmt) {
-      case 'drop':
+      case 'drops':
         return 0;
       case 'map':
         return 1;
@@ -38,7 +38,7 @@ export default class BottomBar extends Component {
     return (
       <Paper zDepth={1} className="bottom-navigation">
         <BottomNavigation selectedIndex={this.urlToIdx(this.props.url)}>
-          <BottomNavigationItem onTouchTap={this.goToURL('/drop')} label="Feed" icon={Icons.MUI('list')} />
+          <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
           <BottomNavigationItem onTouchTap={this.goToURL('/map')} label="Map" icon={Icons.MUI('map')} />
           <BottomNavigationItem onTouchTap={this.goToURL('/add')} className="add-drop-btn" icon={Icons.FA('tint')} />
           <BottomNavigationItem onTouchTap={this.goToURL('/profile')} label="Profile" icon={Icons.MUI('person_pin')} />

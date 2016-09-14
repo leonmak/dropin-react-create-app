@@ -92,7 +92,7 @@ const ListItem = props => (
 
         <div className="button-div">
 
-        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drop/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
 
         </div>
 
