@@ -24,6 +24,7 @@ export class CommentsList extends Component {
           isProfile={this.props.isProfile} />
         }
       )}
+      
       </div>
     );
   }

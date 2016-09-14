@@ -10,7 +10,7 @@ const Comment = props => (
   <div className="row center-xs">
     <div className="col-xs-11 col-md-6 comment-container">
       <div className="row middle-xs">
-        <div className="col-xs-10">
+        <div className="col-xs-8">
           <div className="comment">
           <p>{props.text}</p>
           { !props.isProfile

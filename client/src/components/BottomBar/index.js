@@ -3,12 +3,15 @@ import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigati
 import Paper from 'material-ui/Paper';
 import {browserHistory} from 'react-router';
 
+import { Provider } from 'react-redux';
+
 import * as Icons from '../../utils/Icons';
 import '../../styles/Nav.css'
 
 export default class BottomBar extends Component {
 	state = {
-		idx: this.urlToIdx(this.props.url)
+		idx: this.urlToIdx(this.props.url),
+    showBottomBar: true
 	}
 
   urlToIdx(url) {
@@ -16,17 +19,17 @@ export default class BottomBar extends Component {
     urlFmt = urlFmt.indexOf('/') > -1 ? url.substring(0, url.indexOf('/')) : urlFmt;
     switch (urlFmt) {
       case 'drops':
-        return 0;
+      return 0;
       case 'map':
-        return 1;
+      return 1;
       case 'add':
-        return 2;
+      return 2;
       case 'profile':
-        return 3;
+      return 3;
       case 'settings':
-        return 4;
+      return 4;
       default:
-        return undefined;
+      return undefined;
     }
   }
 
@@ -34,17 +37,25 @@ export default class BottomBar extends Component {
     return ()=>browserHistory.push(url);
   }
 
+  /*BottomBar.contextTypes = {
+
+  };*/
+
   render() {
     return (
+      <div>
+      { this.state.showBottomBar ? 
       <Paper zDepth={1} className="bottom-navigation">
-        <BottomNavigation selectedIndex={this.urlToIdx(this.props.url)}>
-          <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
-          <BottomNavigationItem onTouchTap={this.goToURL('/map')} label="Map" icon={Icons.MUI('map')} />
-          <BottomNavigationItem onTouchTap={this.goToURL('/add')} className="add-drop-btn" icon={Icons.FA('tint')} />
-          <BottomNavigationItem onTouchTap={this.goToURL('/profile')} label="Profile" icon={Icons.MUI('person_pin')} />
-          <BottomNavigationItem onTouchTap={this.goToURL('/settings')} label="Settings" icon={Icons.MUI('build')} />
-        </BottomNavigation>
+      <BottomNavigation selectedIndex={this.urlToIdx(this.props.url)}>
+      <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
+      <BottomNavigationItem onTouchTap={this.goToURL('/map')} label="Map" icon={Icons.MUI('map')} />
+      <BottomNavigationItem onTouchTap={this.goToURL('/add')} className="add-drop-btn" icon={Icons.FA('tint')} />
+      <BottomNavigationItem onTouchTap={this.goToURL('/profile')} label="Profile" icon={Icons.MUI('person_pin')} />
+      <BottomNavigationItem onTouchTap={this.goToURL('/settings')} label="Settings" icon={Icons.MUI('build')} />
+      </BottomNavigation>
       </Paper>
-    )
+      : null }
+      </div>
+      )
   }
 }

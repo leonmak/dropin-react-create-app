@@ -1,6 +1,25 @@
 import React from 'react';
 import {Drop} from './Drop';
-import {CommentsList} from '../CommentsList'
+import {CommentsList} from '../CommentsList';
+
+
+import * as actionCreators from '../../actions';
+import { bindActionCreators } from 'redux';
+
+/*state = {
+    showBottomBar: false
+}
+
+function mapStateToProps(state) {
+  return { todos: state.showBottomBar }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    todoActions: bindActionCreators(todoActionCreators, dispatch),
+    counterActions: bindActionCreators(counterActionCreators, dispatch)
+  }
+}*/
 
 // api call get all comments from feedId
 // /api/feed/:feedId/comments

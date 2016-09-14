@@ -1,5 +1,6 @@
 .comment-container {
   padding: 20px 16px 0;
+  border-radius: 9px 9px 9px 9px !important;
 }
 .comment-container > div {
   background-color: #ffffff;

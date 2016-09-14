@@ -3,7 +3,7 @@
   margin-bottom: 0;
   margin-top: 20px;
   padding: 5px;
-  border-radius: 0px 0px 9px 9px !important;
+  border-radius: 9px 9px 9px 9px !important;
 }
 
 .button-div{
@@ -98,4 +98,4 @@
 
 #replies-container{
   float:left;
-}*/
+  }*/
