@@ -15,6 +15,9 @@ var Posts = bookshelf.Model.extend({
 	hasTimestamps: true,
 	user: function() {
 		return this.belongsTo(User);
+	},
+	comments: function() {
+		return this.hasMany(Comments);
 	}
 });
 

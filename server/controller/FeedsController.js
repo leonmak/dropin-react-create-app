@@ -1,5 +1,6 @@
 import { Posts } from '../database';
 var UsersController = require('./UsersController');
+
 const ERROR_NOT_FOUND = "Not found";
 
 var FeedsController = {};
