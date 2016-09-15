@@ -6,11 +6,13 @@ import * as Icons from "../../utils/Icons";
 
 import "../../styles/Comment.css";
 
-const Comment = props => (
+const Comment = props => {
+  const commentColWidth = props.isProfile ? 10 : 12;
+  return (
   <div className="row center-xs">
     <div className="col-xs-11 col-md-6 comment-container">
       <div className="row middle-xs">
-        <div className="col-xs-8">
+        <div className={`col-xs-${commentColWidth}`}>
           <div className="comment">
           <p>{props.text}</p>
           { !props.isProfile
@@ -32,5 +34,6 @@ const Comment = props => (
     </div>
   </div>
 )
+}
 
 export default Comment;
