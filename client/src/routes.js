@@ -8,7 +8,7 @@ import MapPage from './components/MapPage';
 import ProfilePage from './components/ProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ListPage from './components/ListPage';
-import DropPage from './components/DropPage';
+import DropPage from './containers/DropPage';
 import SettingsPage from './components/SettingsPage';
 
 export default (

@@ -1,11 +1,7 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
 import {CommentsInput} from './CommentsInput';
 import {CommentsList} from '../CommentsList';
-
-
-// import * as actionCreators from '../../actions';
-// import { bindActionCreators } from 'redux';
 
 /*state = {
     showBottomBar: false
@@ -26,6 +22,8 @@ function mapDispatchToProps(dispatch) {
 // /api/feed/:feedId/comments
 
 //sorted in chronological order
+
+
 
 var comments = [
 {
@@ -89,10 +87,10 @@ var comments = [
 
 //not sure how to get this data from the other page, passing data around with react-router?
 var drop = {
-  "id": "001",
-  "username":"Larry",
-  "userId":"004",
-  "userAvatar":"as21dfa004",
+	"id": "001",
+	"username":"Larry",
+	"userId":"004",
+	"userAvatar":"as21dfa004",
   "emojiUni": "1f600", //utf-8 encoded sleepy face
   "title": "I cannot find any food today!!!",
   "votes": 4,
@@ -102,12 +100,46 @@ var drop = {
 }
 
 
-const DropPage = (props) => (
-  <div>
-  	<Drop drop={drop} />
-  	<CommentsInput />
-    <CommentsList comments={comments} />
-  </div>
-)
 
-export default DropPage;
+
+
+class DropComponent extends Component {
+
+	render() {
+
+		//console.log({bottomBarVisibility});
+			return (
+			<div>
+			<Drop drop={drop} />
+			<button type="button" onClick={()=>this.props.hideBottomBar(false)}>show bottom bar</button>
+			<button type="button" onClick={()=>this.props.hideBottomBar(true)}>show bottom bar</button>
+			<button type="button" onClick={()=>console.log(this.props)}>see state</button>
+			
+			<CommentsInput />
+			<CommentsList comments={comments} />
+			</div>
+			)
+	}
+}
+
+
+
+DropComponent.propTypes = {
+  hideBottomBar: PropTypes.func.isRequired,
+  toggleTopBarBackButton: PropTypes.func.isRequired
+};
+
+
+export default DropComponent;
+
+
+
+/*const DropComponent = (props) => (
+	<div>
+	<Drop drop={drop} />
+	<CommentsInput />
+	<CommentsList comments={comments} />
+	</div>
+	)
+
+export default DropComponent;*/

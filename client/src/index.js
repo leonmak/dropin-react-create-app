@@ -15,8 +15,6 @@ import './styles/colors.css'
 import 'leaflet/dist/leaflet.css'
 import 'font-awesome/css/font-awesome.css'
 
-import { toggleBottomBarVisibility } from './actions'
-
 
 // Needed for onTouchTap - MUI
 // http://stackoverflow.com/a/34015469/988941
@@ -27,6 +25,8 @@ const store = configureStore();
 
 // React-Redux-Router for props.location
 const history = syncHistoryWithStore(browserHistory, store);
+
+/*
 
 // Log the initial state
 console.log(store.getState());
@@ -41,7 +41,7 @@ let unsubscribe = store.subscribe(() =>
 store.dispatch(toggleBottomBarVisibility(true));
 store.dispatch(toggleBottomBarVisibility(false));
 
-unsubscribe()
+unsubscribe()*/
 
 ReactDOM.render(
   <Provider store={store}>

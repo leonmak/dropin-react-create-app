@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import React, {Component} from 'react';
-
-class SettingsPage extends Component {
-  render() {
-    return (
-      <div className="row center-xs">
-        <div className="col-xs-12">
-            <Settings />
-        </div>
-      </div>
-    )
-  }
-}
-
-export default SettingsPage;
-=======
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import * as fb from '../../utils/facebook-url';
@@ -34,4 +17,3 @@ const SettingsPage = (props) => (
 )
 
 export default SettingsPage;
->>>>>>> 64b63eca7433ddd9a464190ae4ba01d1e55aba4e

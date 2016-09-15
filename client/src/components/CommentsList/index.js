@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
 
-import { toggleBottomBarVisibility } from '../../actions'
+
 
 
 export class CommentsList extends Component {
@@ -10,13 +10,7 @@ export class CommentsList extends Component {
     location: [103.8198, 1.3224]
   }
 
-  //{this.store}.dispatch(toggleBottomBarVisibility(true));
-
-
   render() {
-
-    /*const store=this.context;
-    console.log(store);*/
 
 
     return (
