@@ -8,6 +8,9 @@ import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
+import { CloudinaryImage } from 'react-cloudinary';
+import ReactPlayer from 'react-player';
+import SoundPlayer from '../SoundPlayer';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -73,9 +76,14 @@ const ListItem = props => (
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
         <ItemTitle title={props.title}/>
-
-        <div className="row middle-xs item-description">
-          <div className="col-xs-1"/>
+        {!props.isDrop &&
+          <div className="row center-xs item-media-icon">
+          {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
+          {props.imageId && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
+          {props.imageId && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
+          </div>
+        }
+        <div className="row center-xs middle-xs item-description">
           <div className="col-xs-2">
             <ItemVoting votes={props.votes}/>
           </div>
@@ -89,6 +97,17 @@ const ListItem = props => (
               isProfile={props.isProfile} />
           </div>
         </div>
+
+        {/* Media content */}
+
+        {props.isDrop && props.imageId &&
+          <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
+
+        {props.isDrop && props.videoUrl &&
+          <ReactPlayer url={props.videoUrl} width="100%" height="auto" />}
+
+        {props.isDrop && props.soundCloudUrl &&
+          <SoundPlayer resolveUrl={props.soundCloudUrl} />}
 
         <div className="button-div">
 

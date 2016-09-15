@@ -38,7 +38,10 @@
   margin: 12px;
   padding: 0 9px;
 }
-
+.item-media-icon > div > span {
+    color: #808080 !important;
+    padding-top: 9px;
+}
 .item-voting {
   text-align: center;
 }
@@ -86,6 +89,11 @@
 
 .votes-container {
   margin: -12px 0;
+}
+
+.drop-image {
+  width: 100%;
+  border-radius: 6px;
 }
 /*#inner-container{
   display: flex;

@@ -9,7 +9,8 @@ import * as Icons from '../../utils/Icons';
 import '../../styles/Nav.css'
 
 export default class BottomBar extends Component {
-	state = {
+	
+  state = {
     showBottomBar: true
 	}
 

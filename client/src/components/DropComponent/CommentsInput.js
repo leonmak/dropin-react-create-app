@@ -14,7 +14,8 @@ export class CommentsInput extends Component {
     }
 
     idPacket() {
-        return {Id: "comment:{0}".format(this.props.dropId)};
+        this.socketId = "comment:{0}".format(this.props.dropId);
+        return {channelId: this.socketId};
     }
 
     initialize() {
@@ -27,8 +28,7 @@ export class CommentsInput extends Component {
 
     componentDidMount() {
         socket.on('init', this.initialize)
-        socket.on('comment:send', this.messageReceive);
-        this.messageReceive.bind(this));
+        socket.on('comment:send', this.messageReceive.bind(this));
     }
 
     // handleMessageSubmit(message) {
@@ -49,7 +49,7 @@ export class CommentsInput extends Component {
         var messages = this.state.messages;
         messages.push(message);
         console.log(JSON.stringify(messages));
-        socket.emit('send:message', socketPacket();
+        socket.emit('send:message', socketPacket());
         this.setState({messages: messages});
     }
 
