@@ -87,6 +87,11 @@
 .votes-container {
   margin: -12px 0;
 }
+
+.drop-image {
+  width: 100%;
+  border-radius: 6px;
+}
 /*#inner-container{
   display: flex;
 }

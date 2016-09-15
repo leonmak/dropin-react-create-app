@@ -5,6 +5,7 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { cloudinaryConfig } from 'react-cloudinary';
 
 import routes from './routes';
 import configureStore from './store/configureStore';
@@ -14,6 +15,9 @@ import './styles/flexboxgrid.css'
 import './styles/colors.css'
 import 'leaflet/dist/leaflet.css'
 import 'font-awesome/css/font-awesome.css'
+
+// Cloudinary display img
+cloudinaryConfig({ cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME });
 
 // Needed for onTouchTap - MUI
 // http://stackoverflow.com/a/34015469/988941

@@ -8,6 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
+import { CloudinaryImage } from 'react-cloudinary';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -89,6 +90,8 @@ const ListItem = props => (
               isProfile={props.isProfile} />
           </div>
         </div>
+
+        {(props.isDrop && props.imageId) && <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
 
         <div className="button-div">
 
