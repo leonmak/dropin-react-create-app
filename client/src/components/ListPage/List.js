@@ -13,7 +13,7 @@ export class List extends Component {
     return (
       <div style={{marginBottom: "27px"}}>
       {this.props.feed.map((feedItem,idx) => {
-        let {title, replies, votes, time, emojiUni, id, distance, userId, username} = feedItem;
+        let {title, replies, votes, time, emojiUni, id, distance, userId, username, imageId, videoUrl, soundCloudUrl} = feedItem;
 
         return <ListItem
         userId={userId}
@@ -26,6 +26,10 @@ export class List extends Component {
         date={time}
         emojiUni={emojiUni}
         dropId={id}
+        imageId={imageId}
+        videoUrl={videoUrl}
+        soundCloudUrl={soundCloudUrl}
+        isDrop={false}
         isProfile={this.props.isProfile}/>;
       } )}
       </div>
