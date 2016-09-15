@@ -29,56 +29,63 @@ var comments = [
 {
 	"id":"001",
 	"username":"Leon",
+  "dropId": "0123adf",
 	"userId":"001",
-	"userAvatar":"http://dropdev.com/avatar/001",
+	"userAvatarId":"drop/asdf123",
 	"text":"maybe you should czech the fridge",
 	"createdAt": "2016-08-23T18:25:43.511Z"
 },
 {
 	"id":"002",
 	"username":"Thanh",
+  "dropId": "0123adf",
 	"userId":"002",
-	"userAvatar":"http://dropdev.com/avatar/002",
+	"userAvatarId":"drop/sdfa123",
 	"text":"im russian to the kitchen",
 	"createdAt": "2016-08-23T18:49:43.511Z"
 },
 {
 	"id":"003",
 	"username":"Leon",
+  "dropId": "0123adf",
 	"userId":"001",
-	"userAvatar":"http://dropdev.com/avatar/001",
+	"userAvatarId":"drop/asdf2",
 	"text":"maybe you will find some turkey",
 	"createdAt": "2016-08-23T18:51:22.664Z"
 },
 {
 	"id":"004",
 	"username":"Thanh",
+  "dropId": "0123adf",
 	"userId":"002",
-	"userAvatar":"http://dropdev.com/avatar/002",
+	"userAvatarId":"drop/anonafa2341Id",
 	"text":"we have some but it is covered in a layer of greece",
 	"createdAt": "2016-08-23T19:01:22.664Z"
 },
 {
 	"id":"005",
 	"username":"anon",
+  "dropId": "0123adf",
 	"userId":"-1",
-	"userAvatar":"http://dropdev.com/avatar/anon",
+	"userAvatarId":"drop/anonId",
 	"text":"i think i'll settle for some chile",
 	"createdAt": "2016-08-23T19:04:22.664Z"
 },
 {
 	"id":"006",
 	"username":"anon",
+  "dropId": "0123adf",
 	"userId":"-1",
-	"userAvatar":"http://dropdev.com/avatar/anon",
+	"userAvatarId":"drop/anonId",
 	"text":"that sounds appetizing, i would love a canada chile as well",
 	"createdAt": "2016-08-23T19:04:27.664Z"
 },
 {
 	"id":"007",
 	"username":"Kai Yi",
+  "dropId": "0123adf",
 	"userId":"003",
-	"userAvatar":"http://dropdev.com/avatar/003",
+	"userAvatarId":"drop/asf2341",
 	"text":"denmark your name on it",
 	"createdAt": "2016-08-24T00:00:35.664Z"
 }

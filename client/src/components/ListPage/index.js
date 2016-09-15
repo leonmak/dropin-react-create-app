@@ -7,7 +7,7 @@ import {List} from './List';
 var data = [
 {
   "dropId": "001",
-  "username":"Anonymous",
+  "username":"Anon",
   "userId":"-1",
   "userAvatarId":"ANONID",
   "emojiUni": "1f600",

@@ -31,12 +31,12 @@
 }
 
 .item-details-container {
-  margin: 9px 0;
   text-align: left;
   opacity: 50% !important;
   font-size: 12px;
   margin: 12px;
   padding: 0 9px;
+  padding-left: 0;
 }
 .item-media-icon > div > span {
     color: #808080 !important;
