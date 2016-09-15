@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
-// import './.css';
 
 export default class ImageUpload extends Component {
   constructor(props) {
-    console.log(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL)
     super(props);
 
     this.state = {
@@ -44,15 +42,13 @@ export default class ImageUpload extends Component {
 
   render() {
     return (
-      <form>
-        <div>
-          <Dropzone
-            onDrop={this.onImageDrop.bind(this)}
-            multiple={false}
-            accept="image/*">
-            <div>Drop an image or click to select a file to upload.</div>
-          </Dropzone>
-        </div>
+      <div>
+        <Dropzone
+          onDrop={this.onImageDrop.bind(this)}
+          multiple={false}
+          accept="image/*">
+          <div>Drop an image or click to select a file to upload.</div>
+        </Dropzone>
 
         <div>
           {this.state.uploadedFileCloudinaryUrl === '' ? null :
@@ -61,7 +57,8 @@ export default class ImageUpload extends Component {
             <img alt={this.state.uploadedFileCloudinaryUrl} src={this.state.uploadedFileCloudinaryUrl} />
           </div>}
         </div>
-      </form>
+      </div>
+
     )
   }
 }

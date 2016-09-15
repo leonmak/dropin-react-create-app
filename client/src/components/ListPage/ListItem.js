@@ -56,17 +56,18 @@ const ItemVoting = (props) => (
 
 const ItemDetails = (props) => (
   <div className="row item-details-container">
-    { !props.isProfile &&
+
     <div className="col-xs-12 details">
       {Icons.FAFixedWidth('user')}
       <strong>&nbsp;
         {props.userId > -1
-          ? <span> Posted by <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link> {props.time}</span>
+          ? <span> Posted { !props.isProfile &&
+              <span>by <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link> </span>}
+              {props.time}</span>
           : <span> Posted by {props.username} {props.time}</span>
         }
       </strong>
     </div>
-    }
     <div className="col-xs-12 details">
       {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
     </div>

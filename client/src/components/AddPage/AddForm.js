@@ -36,7 +36,7 @@ class AddForm extends Component {
 
     return (
       <form onSubmit={ handleSubmit(handler(reset)) }>
-        <h1>Drop a new message</h1>
+        <h1>New message</h1>
         <Field name="emoji" component={EmojiInput} hintText="Choose Emoji"/>
 
 

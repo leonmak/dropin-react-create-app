@@ -18,6 +18,7 @@ export class List extends Component {
         return <ListItem
           {...feedItem}
           key={idx}
+          isProfile={this.props.isProfile}
           userLocation={this.props.userLocation}
           isDrop={false}
           />;
