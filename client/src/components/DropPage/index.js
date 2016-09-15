@@ -105,7 +105,7 @@ var drop = {
 const DropPage = (props) => (
   <div>
   	<Drop drop={drop} />
-  	<CommentsInput />
+  	<CommentsInput userId={props.userId} dropId={props.dropId} />
     <CommentsList comments={comments} />
   </div>
 )

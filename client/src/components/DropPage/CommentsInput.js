@@ -13,16 +13,22 @@ export class CommentsInput extends Component {
         this.setState({messages: messages});
     }
 
-    // initialize() {
-    //     // var {name} = data;
-    //     // this.setState(user: name);
-    //     console.log("init");
-    //     socket.emit('user initialized', {msg: "user connect"});       
-    // }
+    idPacket() {
+        return {Id: "comment:{0}".format(this.props.dropId)};
+    }
+
+    initialize() {
+        socket.emit('client:initialized', idPacket());       
+    }
+
+    socketPacket() {
+        return {dropID: this.props.dropId, state: this.state};
+    }
 
     componentDidMount() {
-        // socket.on('init', this.initialize)
-        socket.on('send message', this.messageReceive.bind(this));
+        socket.on('init', this.initialize)
+        socket.on('comment:send', this.messageReceive);
+        this.messageReceive.bind(this));
     }
 
     // handleMessageSubmit(message) {
@@ -33,6 +39,7 @@ export class CommentsInput extends Component {
     // }
 
     sendMessage(e) {
+        e.preventDefault();
         console.log("sended");
         console.log(this.myTextInput.value);
         var message = {
@@ -42,7 +49,7 @@ export class CommentsInput extends Component {
         var messages = this.state.messages;
         messages.push(message);
         console.log(JSON.stringify(messages));
-        socket.emit('send message', message);
+        socket.emit('send:message', socketPacket();
         this.setState({messages: messages});
     }
 

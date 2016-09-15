@@ -6,6 +6,7 @@ const routesConfig = require('./server/routes');
 const passport = require('passport');
 const strategy = require('passport-facebook').Strategy;
 const FacebookController = require('./server/controller/FacebookController');
+var clientSockets = [];
 
 passport.use(new strategy({
     clientID: process.env.FB_CLIENT_ID,
@@ -38,12 +39,25 @@ app.use('/', routesConfig(passport));
 
 io.on('connection',function(socket){
   console.log("client connected");
-  socket.on('send message',function(data){
-    socket.broadcast.emit('send message', data);
-    // var dataClient=data;
-    // io.emit('set msg',JSON.stringify(dataClient));
-    console.log(data);
-  });
+  socket.emit('init');
+  socket.on('client:initialized', function(data) {
+    clientSockets.push({id: data.id, socket: socket});
+  })
+  for (event in eventType) {
+    socket.on(eventType, function(data) {
+      for (client in clientSockets) {
+        if (data.id == client.id) {
+          client.emit(eventType, data);
+        }
+      }
+      if (event.substring(0, 7) == 'comment') {
+        // update comment database
+      }
+      if (event.substring(0, 4) == 'feed') {
+        // update feed database
+      }
+    }
+  }
 });
 
 http.listen(app.get('port'), () => {
