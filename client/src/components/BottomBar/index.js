@@ -3,7 +3,7 @@ import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigati
 import Paper from 'material-ui/Paper';
 import {browserHistory} from 'react-router';
 
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 
 import * as Icons from '../../utils/Icons';
 import '../../styles/Nav.css'
@@ -44,7 +44,7 @@ export default class BottomBar extends Component {
   render() {
     return (
       <div>
-      { this.state.showBottomBar ? 
+      { this.state.showBottomBar ?
       <Paper zDepth={1} className="bottom-navigation">
       <BottomNavigation selectedIndex={this.urlToIdx(this.props.url)}>
       <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
