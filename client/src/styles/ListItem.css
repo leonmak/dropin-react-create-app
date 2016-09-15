@@ -38,7 +38,10 @@
   margin: 12px;
   padding: 0 9px;
 }
-
+.item-media-icon > div > span {
+    color: #808080 !important;
+    padding-top: 9px;
+}
 .item-voting {
   text-align: center;
 }
