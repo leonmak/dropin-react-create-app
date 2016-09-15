@@ -14,7 +14,7 @@ var data = [
   "title": "Today's event in LT7 is sooooo boring!",
   "votes": 4,
   "distance": 1560,
-  "videoId": "tntOCGkgt98",
+  "videoUrl": "https://www.youtube.com/watch?v=tntOCGkgt98",
   "time": "2016-08-23T18:25:43.511Z",
   "replies": 10
 },

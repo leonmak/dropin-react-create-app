@@ -4,7 +4,7 @@ import ListItem from '../ListPage/ListItem';
 export class Drop extends Component {
 
 	render() {
-    let {title, replies, votes, time, emojiUni, id, distance, userId, username, imageId, videoId, soundCloudUrl} = this.props.drop;
+    let {title, replies, votes, time, emojiUni, id, distance, userId, username, imageId, videoUrl, soundCloudUrl} = this.props.drop;
 
 		return (
 		<ListItem
@@ -19,7 +19,7 @@ export class Drop extends Component {
         dropId={id}
         isProfile={false}
         imageId={imageId}
-        videoId={videoId}
+        videoUrl={videoUrl}
         soundCloudUrl={soundCloudUrl}
         isDrop={true} />
 		)

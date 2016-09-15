@@ -1,0 +1,12 @@
+.soundcloud-player {
+  padding: 9px;
+}
+.soundcloud-track {
+  margin: 0;
+  text-align: left;
+}
+.soundcloud-username {
+  margin: -1px 0 4px;
+  font-size: 12px;
+  text-align: left;
+}
