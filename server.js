@@ -7,6 +7,7 @@ const passport = require('passport');
 const strategy = require('passport-facebook').Strategy;
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
+var FeedsController = require('./server/controller/FeedsController');
 // var clientSockets = [];
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
@@ -46,7 +47,10 @@ io.on('connection',function(socket){
   socket.on('client:sendEvent', function(packet) {
     socket.broadcast.emit('server:sendEvent', packet);
     if (packet.event == 'comment:send') {
-      CommentsController.comment(packet.data.userId, packet.data.postId, packet.data.text);
+      CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
+    }
+    if (packet.event == 'feed:send') {
+      FeedsController.directPost(packet.data.userId, packet.data.text);      
     }
   })
   // based on feeds/ comments or ... no need

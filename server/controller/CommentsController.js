@@ -27,7 +27,7 @@ CommentsController.getComment = function(req, res) {
 	})
 }
 
-CommentsController.comment = function(userId, postId, text, res = null) {
+CommentsController.directComment = function(userId, postId, text, res = null) {
 	const commentHash = {
 		post_id: postId,
 		user_id: userId,
@@ -45,9 +45,9 @@ CommentsController.comment = function(userId, postId, text, res = null) {
 	});
 }
 
-CommentsController.commentRequest = function(req, res) {
+CommentsController.comment = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(userId) {
-		CommentsController.comment(userId, req.params.post_id, req.body.text, res);
+		this.directComment(userId, req.params.post_id, req.body.text, res);
 	}).catch(function(err) {
 		res.json({error: err});
 	});

@@ -50,7 +50,7 @@ export default class SocketHandler {
 			case COMMENTS_SOCKET:
 		    return {channelId: this.channelId, event: "comment:send", data: {userId: data.userId, postId: data.postId, text: data.text}};
 		  case FEEDS_SOCKET:
-		    return {channelId: this.channelId, event: "feed:send", data: {userId: data.userId, text: data.text}};
+		    return {channelId: this.channelId, event: "feed:send", data: {userId: data.userId, title: data.title, longitude: data.longitude, latitude: data.latitude}};
 		  case VOTES_SOCKET:
 		    return {channelId: this.channelId, event: "vote:send", data: {userId: data.userId, postId: data.postId, voteType: data.voteType}};
 		  default:
@@ -63,9 +63,9 @@ export default class SocketHandler {
     socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
 	}
 
-	post(userId, text) {
+	post(userId, title, longitude, latitude) {
 		console.log("sended post");
-		socket.emit('client:sendEvent', this._packSocket({userId, text}));
+		socket.emit('client:sendEvent', this._packSocket({userId, title, longitude, latitude}));
 	}
 
 	vote(userId, postId, voteType) {
