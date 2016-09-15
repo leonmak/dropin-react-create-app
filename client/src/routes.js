@@ -9,6 +9,7 @@ import ProfilePage from './components/ProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ListPage from './components/ListPage';
 import DropPage from './components/DropPage';
+import SettingsPage from './components/SettingsPage';
 
 export default (
   <Route path="/" component={App}>
@@ -21,6 +22,7 @@ export default (
     <Route path="profile" component={ProfilePage}/>
     <Route path="add" component={AddPage}/>
     <Route path="about" component={AboutPage}/>
+    <Route path="settings" component={SettingsPage} />
     <Route path="*" component={NotFoundPage}/>
   </Route>
 );
