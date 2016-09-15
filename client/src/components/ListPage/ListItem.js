@@ -61,8 +61,8 @@ const ItemDetails = (props) => (
       {Icons.FAFixedWidth('user')}
       <strong>&nbsp;
         {props.userId > -1
-          ? <span> Posted by: <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link></span>
-          : <span> Posted by: {props.username}</span>
+          ? <span> Posted by <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link> {props.time}</span>
+          : <span> Posted by {props.username} {props.time}</span>
         }
       </strong>
     </div>
@@ -70,9 +70,9 @@ const ItemDetails = (props) => (
     <div className="col-xs-12 details">
       {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
     </div>
-    {!props.isDrop &&
+    {!props.isDrop && props.userLocation &&
       <div className="col-xs-12 details">
-        {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {getDistanceFromUser(props.location, props.userLocation)}km away - {props.time}</span>
+        {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {getDistanceFromUser(props.location, props.userLocation)}km away</span>
       </div>
     }
   </div>
