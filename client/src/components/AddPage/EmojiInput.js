@@ -102,6 +102,7 @@ class EmojiInput extends Component {
         <TextField name="emoji" id="emoji"
           floatingLabelText={this.props.hintText}
           value={value}
+          fullWidth={true}
           type={this.state.showEmojiPicker ? "search" : "text"}
           onChange={this.updateState(onChange)}
           onKeyDown={this.grabKeyPress}

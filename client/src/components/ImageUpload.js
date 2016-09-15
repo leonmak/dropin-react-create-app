@@ -1,60 +1,58 @@
 import React, { Component } from 'react';
-import Dropzone from 'react-dropzone';
 import request from 'superagent';
+import LinearProgress from 'material-ui/LinearProgress';
+import FlatButton from 'material-ui/FlatButton';
+import * as Icons from '../utils/Icons'
+
+const inputStyle = { cursor: 'pointer', position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, width: '100%', opacity: 0, zIndex: 1, };
 
 export default class ImageUpload extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      uploading: false,
       uploadedFile: null,
-      uploadedFileCloudinaryUrl: ''
+      uploadedUrl: ''
     };
+
+    this.onImageDrop = this.onImageDrop.bind(this);
   }
 
-  onImageDrop(files) {
-    this.setState({
-      uploadedFile: files[0]
-    });
-
+  onImageDrop(e) {
+    const files = e.currentTarget.files;
+    this.setState({ uploadedFile: files[0] });
     this.handleImageUpload(files[0]);
   }
 
   handleImageUpload(file) {
-    console.log(file)
+    this.setState({uploading: true});
     let upload = request.post(process.env.REACT_APP_CLOUDINARY_UPLOAD_URL)
-                     .field('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
-                     .field('file', file);
+                   .field('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
+                   .field('file', file);
 
     upload.end((err, response) => {
-      if (err) {
-        console.error(err);
-      }
-
+      if (err) { console.error(err) }
       if (response.body.secure_url !== '') {
-        console.log(response.body)
-        this.setState({
-          uploadedFileCloudinaryUrl: response.body.secure_url
-        });
+        this.props.input.onChange(response.body.public_id);
+        this.setState({ uploadedUrl: response.body.secure_url, uploading: false });
       }
     });
   }
 
   render() {
+    const {uploading, uploadedUrl, uploadedFile} = this.state;
     return (
       <div>
-        <Dropzone
-          onDrop={this.onImageDrop.bind(this)}
-          multiple={false}
-          accept="image/*">
-          <div>Drop an image or click to select a file to upload.</div>
-        </Dropzone>
-
+      <FlatButton primary={true} className="upload-img-btn" icon={Icons.MUI('camera_alt')} label="upload Image">
+        <input onChange={this.onImageDrop} type="file" accept="image/*" style={inputStyle} />
+      </FlatButton>
+        { uploading && <LinearProgress mode="indeterminate" />}
         <div>
-          {this.state.uploadedFileCloudinaryUrl === '' ? null :
+          {uploadedUrl === '' ? null :
           <div>
-            <p>{this.state.uploadedFile.name}</p>
-            <img alt={this.state.uploadedFileCloudinaryUrl} src={this.state.uploadedFileCloudinaryUrl} />
+            <img className="uploaded-img" alt={uploadedUrl} src={uploadedUrl} />
+            <small>{uploadedFile.name}</small>
           </div>}
         </div>
       </div>
