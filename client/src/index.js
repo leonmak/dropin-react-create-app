@@ -18,13 +18,14 @@ import 'font-awesome/css/font-awesome.css'
 import { toggleBottomBarVisibility } from './actions'
 
 
-// Needed for onTouchTap
+// Needed for onTouchTap - MUI
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+// Redux
 const store = configureStore();
 
-// Create an enhanced history that syncs navigation events with the store
+// React-Redux-Router for props.location
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Log the initial state

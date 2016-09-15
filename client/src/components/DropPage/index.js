@@ -4,8 +4,8 @@ import {CommentsInput} from './CommentsInput';
 import {CommentsList} from '../CommentsList';
 
 
-import * as actionCreators from '../../actions';
-import { bindActionCreators } from 'redux';
+// import * as actionCreators from '../../actions';
+// import { bindActionCreators } from 'redux';
 
 /*state = {
     showBottomBar: false
