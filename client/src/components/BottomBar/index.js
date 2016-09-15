@@ -10,14 +10,19 @@ import '../../styles/Nav.css'
 
 export default class BottomBar extends Component {
 	state = {
-		idx: this.urlToIdx(this.props.url),
     showBottomBar: true
 	}
 
   urlToIdx(url) {
-    let urlFmt = url.substring(1);
-    urlFmt = urlFmt.indexOf('/') > -1 ? url.substring(0, url.indexOf('/')) : urlFmt;
-    switch (urlFmt) {
+    let urlFmt = url.substring(1).toLowerCase();
+    // /drops -> drops
+    let urlArr = urlFmt.split('/');
+    const firstLvl = urlArr[0];
+    if(urlArr.length > 1 && firstLvl === "drops") {
+      // drops/:id have second lvl
+      return -1;
+    }
+    switch (firstLvl) {
       case 'drops':
       return 0;
       case 'map':
@@ -42,11 +47,12 @@ export default class BottomBar extends Component {
   };*/
 
   render() {
+    const tabIdx = this.urlToIdx(this.props.url)
     return (
       <div>
-      { this.state.showBottomBar ?
+      { tabIdx !== -1 &&
       <Paper zDepth={1} className="bottom-navigation">
-      <BottomNavigation selectedIndex={this.urlToIdx(this.props.url)}>
+      <BottomNavigation selectedIndex={tabIdx}>
       <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
       <BottomNavigationItem onTouchTap={this.goToURL('/map')} label="Map" icon={Icons.MUI('map')} />
       <BottomNavigationItem onTouchTap={this.goToURL('/add')} className="add-drop-btn" icon={Icons.FA('tint')} />
@@ -54,8 +60,8 @@ export default class BottomBar extends Component {
       <BottomNavigationItem onTouchTap={this.goToURL('/settings')} label="Settings" icon={Icons.MUI('build')} />
       </BottomNavigation>
       </Paper>
-      : null }
+      }
       </div>
-      )
+    )
   }
 }
