@@ -1,12 +1,9 @@
 .profile-container{
-	height: 42vh;
+  min-height: 300px;
   color: #ffffff;
 }
-.profile-container > div {
-    padding-bottom: 27px;
-}
 .profile-fb{
-  margin-top: 6vh;
+  margin-top: -18px;
 }
 .profile-fb > h2{
   margin: 1vh;
@@ -22,8 +19,7 @@
 }
 
 .profile-pic{
-  margin-top: 3vh;
-  margin-bottom: -9vh;
+  margin-top: 21px;
 }
 .profile-pic > img {
   border: 5px solid #FFFFFF;

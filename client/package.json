@@ -35,7 +35,8 @@
     "redux-form-material-ui": "^4.0.1",
     "redux-thunk": "^2.1.0",
     "superagent": "^2.2.0",
-    "sw-precache": "^4.0.0"
+    "sw-precache": "^4.0.0",
+    "valid-url": "^1.0.9"
   },
   "scripts": {
     "start": "react-scripts start",
