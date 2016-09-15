@@ -12,6 +12,7 @@ import { CloudinaryImage } from 'react-cloudinary';
 import ReactPlayer from 'react-player';
 import SoundPlayer from '../SoundPlayer';
 import geolib from 'geolib';
+import {CommentsInput} from './CommentsInput';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
@@ -117,6 +118,8 @@ const ListItem = props => (
         <div className="button-div">
 
         {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+  
+        <CommentsInput dropId={props.dropId}/>
 
         </div>
 

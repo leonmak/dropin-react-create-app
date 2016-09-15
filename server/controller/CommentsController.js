@@ -27,21 +27,27 @@ CommentsController.getComment = function(req, res) {
 	})
 }
 
-CommentsController.comment = function(req, res) {
-	UsersController.findUserId(req.user.id).then(function(user_id) {
-		const commentHash = {
-			post_id: req.params.post_id,
-			user_id: user_id,
-			text: req.body.text
-		}
-		console.log(commentHash);
-		const comment = new Comments;
-		console.log(Object.getOwnPropertyNames(comment));
-		new Comments().save(commentHash).then(function(comment) {
+CommentsController.comment = function(userId, postId, text, res = null) {
+	const commentHash = {
+		post_id: postId,
+		user_id: userId,
+		text: text
+	}
+	const comment = new Comments;
+	new Comments().save(commentHash).then(function(comment) {
+		if (res !== null) {
 			res.json(comment);
-		}).catch(function(err) {
+		}
+	}).catch(function(err) {
+		if (res !== null) {
 			res.json({error: err});
-		});
+		}
+	});
+}
+
+CommentsController.commentRequest = function(req, res) {
+	UsersController.findUserId(req.user.id).then(function(userId) {
+		CommentsController.comment(userId, req.params.post_id, req.body.text, res);
 	}).catch(function(err) {
 		res.json({error: err});
 	});

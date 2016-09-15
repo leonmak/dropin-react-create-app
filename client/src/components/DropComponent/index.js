@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
-import {CommentsInput} from './CommentsInput';
 import {CommentsList} from '../CommentsList';
 
 /*state = {
@@ -125,7 +124,6 @@ class DropComponent extends Component {
 			<button type="button" onClick={()=>this.props.hideBottomBar(true)}>show bottom bar</button>
 			<button type="button" onClick={()=>console.log(this.props)}>see state</button>
 			
-			<CommentsInput dropId={this.props.dropId} userId={this.props.userId}/>
 			<CommentsList comments={comments} />
 			</div>
 			)
@@ -136,7 +134,7 @@ class DropComponent extends Component {
 
 DropComponent.propTypes = {
   hideBottomBar: PropTypes.func.isRequired,
-  toggleTopBarBackButton: PropTypes.func.isRequired
+  toggleTopBarBackButton: PropTypes.func.isRequired,
 };
 
 
@@ -147,7 +145,6 @@ export default DropComponent;
 /*const DropComponent = (props) => (
 	<div>
 	<Drop drop={drop} />
-	<CommentsInput />
 	<CommentsList comments={comments} />
 	</div>
 	)

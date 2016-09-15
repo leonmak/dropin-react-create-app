@@ -6,50 +6,42 @@ export class CommentsInput extends Component {
     messages: [{text: "hihi"}],
   }
 
-    messageReceive(message) {
-        console.log("received");
-        var messages = this.state.messages;
-        messages.push(message);
-        this.setState({messages: messages});
+    channelId = "comment:" + this.props.dropId;
+
+    messageReceive(packet) {
+        if (packet.channelId == this.channelId) {
+            console.log("received");
+            const message = {text: packet.data.text};
+            var messages = this.state.messages;
+            messages.push(message);
+            this.setState({messages: messages});
+        }
     }
 
     idPacket() {
-        this.socketId = "comment:{0}".format(this.props.dropId);
-        return {channelId: this.socketId};
+        return {channelId: this.channelId};
     }
 
-    initialize() {
-        socket.emit('client:initialized', idPacket());       
-    }
-
-    socketPacket() {
-        return {dropID: this.props.dropId, state: this.state};
+    socketPacket(message) {
+        // data of the form {sender (get from session), postId, text}
+        return {channelId: this.channelId, event: "comment:send", data: {userId: 1, postId: this.props.dropId, text: message}};
     }
 
     componentDidMount() {
-        socket.on('init', this.initialize)
-        socket.on('comment:send', this.messageReceive.bind(this));
+        socket.emit('client:initialized', this.idPacket());       
+        socket.on('server:sendEvent', this.messageReceive.bind(this));
     }
-
-    // handleMessageSubmit(message) {
-    //  var {messages} = this.state;
-    //  messages.push(message);
-    //  this.setState({messages});
-    //  socket.emit('send:message', message);
-    // }
 
     sendMessage(e) {
         e.preventDefault();
         console.log("sended");
-        console.log(this.myTextInput.value);
         var message = {
             // user : this.props.user,
             text : this.myTextInput.value
         }
         var messages = this.state.messages;
         messages.push(message);
-        console.log(JSON.stringify(messages));
-        socket.emit('send:message', socketPacket());
+        socket.emit('client:sendEvent', this.socketPacket(message.text));
         this.setState({messages: messages});
     }
 
