@@ -14,7 +14,7 @@ export class List extends Component {
       <div style={{marginBottom: "27px"}}>
       {this.props.feed.map((feedItem,idx) => {
         let {title, replies, votes, time, emojiUni, id, distance, userId, username} = feedItem;
-        distance = distance;
+        //distance = distance;
 
         return <ListItem
         userId={userId}
