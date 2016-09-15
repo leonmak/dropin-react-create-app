@@ -124,8 +124,13 @@ class DropComponent extends Component {
 			<button type="button" onClick={()=>this.props.hideBottomBar(false)}>show bottom bar</button>
 			<button type="button" onClick={()=>this.props.hideBottomBar(true)}>show bottom bar</button>
 			<button type="button" onClick={()=>console.log(this.props)}>see state</button>
+<<<<<<< HEAD
 			
 			<CommentsInput dropId={this.props.dropId} userId={this.props.userId}/>
+=======
+
+			<CommentsInput />
+>>>>>>> 2f5c90b390b508da8af79e46702ec7b7c3301067
 			<CommentsList comments={comments} />
 			</div>
 			)

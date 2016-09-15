@@ -8,6 +8,8 @@ const strategy = require('passport-facebook').Strategy;
 const FacebookController = require('./server/controller/FacebookController');
 var clientSockets = [];
 
+const EVENT_TYPE = ['comment:send', 'feed:send']
+
 passport.use(new strategy({
     clientID: process.env.FB_CLIENT_ID,
     clientSecret: process.env.FB_CLIENT_SECRET,
@@ -41,22 +43,22 @@ io.on('connection',function(socket){
   console.log("client connected");
   socket.emit('init');
   socket.on('client:initialized', function(data) {
-    clientSockets.push({id: data.id, socket: socket});
-  })
-  for (event in eventType) {
-    socket.on(eventType, function(data) {
+    clientSockets.push({channelId: data.channelId, socket: socket});
+  });
+  for (var event in EVENT_TYPE) {
+    socket.on(event, function(data) {
       for (client in clientSockets) {
-        if (data.id == client.id) {
+        if (data.channelId == client.channelId) {
           client.emit(eventType, data);
         }
       }
-      if (event.substring(0, 7) == 'comment') {
+      if (event == 'comment:send') {
         // update comment database
       }
-      if (event.substring(0, 4) == 'feed') {
+      if (event == 'feed:send') {
         // update feed database
       }
-    }
+    });
   }
 });
 
