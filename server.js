@@ -7,7 +7,7 @@ const passport = require('passport');
 const strategy = require('passport-facebook').Strategy;
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
-var clientSockets = [];
+// var clientSockets = [];
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
@@ -42,9 +42,7 @@ app.use('/', routesConfig(passport));
 
 io.on('connection',function(socket){
   console.log("client connected");
-  socket.on('client:initialized', function(packet) {
-    clientSockets.push({channelId: packet.channelId, socket: socket});
-  });
+
   socket.on('client:sendEvent', function(packet) {
     socket.broadcast.emit('server:sendEvent', packet);
     if (packet.event == 'comment:send') {
@@ -52,6 +50,9 @@ io.on('connection',function(socket){
     }
   })
   // based on feeds/ comments or ... no need
+  // socket.on('client:initialized', function(packet) {
+  //   clientSockets.push({channelId: packet.channelId, socket: socket});
+  // });
   // for (var eventidx in EVENT_TYPE) {
   //   const event = EVENT_TYPE[eventidx];
   //   socket.on(event, function(packet) {

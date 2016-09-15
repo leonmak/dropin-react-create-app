@@ -1,51 +1,46 @@
 import React, {Component} from 'react';
+import SocketHandler from '../../SocketHandler';
+
+var FEEDS_SOCKET = "feeds";
+var COMMENTS_SOCKET = "comments";
+var VOTES_SOCKET = "votes";
 
 export class CommentsInput extends Component {
-    
-  state = {
-    messages: [{text: "hihi"}],
-  }
 
-    channelId = "comment:" + this.props.dropId;
+    socketHandler = new SocketHandler();
 
-    messageReceive(packet) {
-        if (packet.channelId == this.channelId) {
-            console.log("received");
-            const message = {text: packet.data.text};
-            var messages = this.state.messages;
-            messages.push(message);
-            this.setState({messages: messages});
-        }
-    }
-
-    idPacket() {
-        return {channelId: this.channelId};
-    }
-
-    socketPacket(message) {
-        // data of the form {sender (get from session), postId, text}
-        return {channelId: this.channelId, event: "comment:send", data: {userId: 1, postId: this.props.dropId, text: message}};
+    state = {
+        messages: [{text: "hihi"}],
     }
 
     componentDidMount() {
-        socket.emit('client:initialized', this.idPacket());       
-        socket.on('server:sendEvent', this.messageReceive.bind(this));
+        // socket:
+        this.socketHandler.setup(COMMENTS_SOCKET, {postId: this.props.dropId}, this.commentReceive.bind(this));
     }
 
-    sendMessage(e) {
-        e.preventDefault();
-        console.log("sended");
-        var message = {
-            // user : this.props.user,
-            text : this.myTextInput.value
-        }
+    updateState(text) {
+        const message = {text: text};
+
         var messages = this.state.messages;
         messages.push(message);
-        socket.emit('client:sendEvent', this.socketPacket(message.text));
         this.setState({messages: messages});
     }
 
-  render() {
+    // when received a comment => update
+    commentReceive(data) {
+        this.updateState(data.text);
+    }
+
+    // when send a comment => update
+    sendMessage(e) {
+        e.preventDefault();
+
+        // socket:
+        this.socketHandler.comment(1, this.props.dropId, this.myTextInput.value);
+        this.updateState(this.myTextInput.value);
+    }
+
+    render() {
     return (
         // Why refresh after input submit
         <div>
