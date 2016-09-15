@@ -87,20 +87,18 @@ var comments = [
 
 //not sure how to get this data from the other page, passing data around with react-router?
 var drop = {
-	"id": "001",
-	"username":"Larry",
-	"userId":"004",
-	"userAvatar":"as21dfa004",
+  "dropId": "001",
+  "username":"Larry",
+  "userId":"004",
+  "userAvatarId":"as21dfa004",
   "emojiUni": "1f600", //utf-8 encoded sleepy face
   "title": "I cannot find any food today!!!",
   "videoUrl": "https://www.youtube.com/watch?v=tntOCGkgt98",
-  // Live Video is supported !
-  // "videoUrl": "https://www.youtube.com/watch?v=yo3a-bLPHSc",
   "imageId": "drop/krgnkzb3ie4uiwgdlpxb",
-  "soundCloudUrl": "https://soundcloud.com/johnnyjewel/glass-candy-shell-game",
+  "soundCloudUrl": "https://soundcloud.com/obviouslyfake/nyan-cat-2",
   "votes": 4,
-  "distance": 1560,
-  "time": "2016-08-23T18:25:43.511Z",
+  "location": [103.7732086, 1.3067225],
+  "date": "2016-08-23T18:25:43.511Z",
   "replies": 7
 }
 
@@ -119,7 +117,7 @@ class DropComponent extends Component {
 			<button type="button" onClick={()=>this.props.hideBottomBar(false)}>show bottom bar</button>
 			<button type="button" onClick={()=>this.props.hideBottomBar(true)}>show bottom bar</button>
 			<button type="button" onClick={()=>console.log(this.props)}>see state</button>
-			
+
 			<CommentsInput />
 			<CommentsList comments={comments} />
 			</div>
