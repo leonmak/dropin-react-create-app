@@ -23,6 +23,7 @@
     "flexboxgrid": "^6.3.1",
     "foreman": "^2.0.0",
     "fs": "0.0.1-security",
+    "geolib": "^2.0.21",
     "knex": "^0.11.10",
     "moment": "^2.14.1",
     "mysql": "^2.11.1",

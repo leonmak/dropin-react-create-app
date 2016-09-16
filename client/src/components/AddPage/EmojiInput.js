@@ -7,7 +7,7 @@ import EmojiDisplayAnnotation from './EmojiDisplayAnnotation';
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
   position: 'absolute',
-  left: 0, top: '16.13rem',
+  left: 0, top: '20rem',
   backgroundColor: '#f2f2f2',
   width: '100%',
   borderBottom: '1px solid #00bcd4',
@@ -102,6 +102,7 @@ class EmojiInput extends Component {
         <TextField name="emoji" id="emoji"
           floatingLabelText={this.props.hintText}
           value={value}
+          fullWidth={true}
           type={this.state.showEmojiPicker ? "search" : "text"}
           onChange={this.updateState(onChange)}
           onKeyDown={this.grabKeyPress}

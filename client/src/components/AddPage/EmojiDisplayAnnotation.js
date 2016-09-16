@@ -9,8 +9,8 @@ const EmojiDisplayAnnotation = React.createClass({
 
   render() {
     return (
-      <p>
-        <span>{ this.emojify(this.props.emoji, {attributes: {width:'30px', height:'30px'} }) }</span>
+      <p style={{minHeight: "94px", margin: 0}}>
+        <span>{ this.emojify(this.props.emoji, {attributes: {width:'90px', height:'90px'} }) }</span>
       </p>
     );
   }

@@ -22,20 +22,46 @@ FeedsController.getFeed = function(req, res) {
 	})
 }
 
+// FeedsController.post = function(req, res) {
+// 	UsersController.findUserId(req.user.id).then(function(user_id) {
+// 		const postHash = {
+// 			user_id: user_id,
+// 			title: req.body.title,
+// 			longitude: req.body.longitude,
+// 			latitude: req.body.latitude,
+// 		}
+// 		new Posts().save(postHash).then(function(post) {
+// 			res.json(post);
+// 		}).catch(function(err) {
+// 			res.json({error: err});
+// 		});
+// 	}).catch(function(err) {
+// 		res.json({error: err});
+// 	});
+// }
+
+FeedsController.directPost = function(userId, title, longitude, latitude, res = null) {
+	const postHash = {
+		user_id: userId,
+		title: title,
+		longitude: longitude,
+		latitude: latitude,
+	}
+	new Posts().save(postHash).then(function(post) {
+		if (res !== null) {
+			res.json(post);
+		}
+	}).catch(function(err) {
+		if (res !== null) {
+			res.json(comment);
+		}
+	});
+}
+
 // {user_id:, title: , longitude: , latitude: }
 FeedsController.post = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(user_id) {
-		const postHash = {
-			user_id: user_id,
-			title: req.body.title,
-			longitude: req.body.longitude,
-			latitude: req.body.latitude,
-		}
-		new Posts().save(postHash).then(function(post) {
-			res.json(post);
-		}).catch(function(err) {
-			res.json({error: err});
-		});
+		FeedsController.directPost(user_id, req.body.title, req.body.longitude, req.body.latitude)
 	}).catch(function(err) {
 		res.json({error: err});
 	});

@@ -11,43 +11,23 @@ import {Link, browserHistory} from 'react-router';
 import { CloudinaryImage } from 'react-cloudinary';
 import ReactPlayer from 'react-player';
 import SoundPlayer from '../SoundPlayer';
+import geolib from 'geolib';
+import {CommentsInput} from './CommentsInput';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
 
-const ItemVoting = (props) => (
-  <div className="row item-voting">
-    <div className="col-xs-12">
-      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_up')}</IconButton>
-    </div>
-    <div className="col-xs-12 votes-container">{props.votes}</div>
-    <div className="col-xs-12">
-      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_down')}</IconButton>
-    </div>
-  </div>
-);
+const getDistanceFromUser = (location, userLocation) => {
+  if(userLocation && location)
+    return geolib.getDistance(
+      {latitude: location[1], longitude: location[0]},
+      {latitude: userLocation[1], longitude: userLocation[0]}
+    ) / 1000
+  else
+    return 0
+}
 
-const ItemDetails = (props) => (
-  <div className="row item-details-container">
-    { !props.isProfile &&
-    <div className="col-xs-12 details">
-      {Icons.FAFixedWidth('user')}
-      <strong>&nbsp;
-        {props.userId > -1
-          ? <span> Posted by: <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link></span>
-          : <span> Posted by: {props.username}</span>
-        }
-      </strong>
-    </div>
-    }
-    <div className="col-xs-12 details">
-      {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
-    </div>
-    <div className="col-xs-12 details">
-      {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {props.distance/1000}km away - {props.time}</span>
-    </div>
-  </div>
-);
+const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
 
 const ItemTitle = (props) => (
   <div className="row center-xs">
@@ -63,12 +43,42 @@ const ItemTitle = (props) => (
   </div>
 );
 
-/*function select(url) {
-    this.setState({idx});
-    browserHistory.push(url);
-  }*/
+const ItemVoting = (props) => (
+  <div className="row item-voting">
+    <div className="col-xs-12">
+      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_up')}</IconButton>
+    </div>
+    <div className="col-xs-12 votes-container">{props.votes}</div>
+    <div className="col-xs-12">
+      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_down')}</IconButton>
+    </div>
+  </div>
+);
 
-const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
+const ItemDetails = (props) => (
+  <div className="row item-details-container">
+
+    <div className="col-xs-12 details">
+      {Icons.FAFixedWidth('user')}
+      <strong>&nbsp;
+        {props.userId > -1
+          ? <span> Posted { !props.isProfile &&
+              <span>by <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link> </span>}
+              {props.time}</span>
+          : <span> Posted by {props.username} {props.time}</span>
+        }
+      </strong>
+    </div>
+    <div className="col-xs-12 details">
+      {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
+    </div>
+    {!props.isDrop && props.userLocation &&
+      <div className="col-xs-12 details">
+        {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {getDistanceFromUser(props.location, props.userLocation)}km away</span>
+      </div>
+    }
+  </div>
+);
 
 const ListItem = props => (
   <div className="row center-xs">
@@ -79,8 +89,8 @@ const ListItem = props => (
         {!props.isDrop &&
           <div className="row center-xs item-media-icon">
           {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
-          {props.imageId && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
-          {props.imageId && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
+          {props.videoUrl && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
+          {props.soundCloudUrl && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
           </div>
         }
         <div className="row center-xs middle-xs item-description">
@@ -89,12 +99,9 @@ const ListItem = props => (
           </div>
           <div className="col-xs-9">
             <ItemDetails
-              replies={props.replies}
-              distance={props.distance}
               time={ moment(props.date).fromNow()}
-              userId={props.userId}
-              username={props.username}
-              isProfile={props.isProfile} />
+              {...props}
+            />
           </div>
         </div>
 
@@ -112,6 +119,8 @@ const ListItem = props => (
         <div className="button-div">
 
         {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+  
+        <CommentsInput dropId={props.dropId}/>
 
         </div>
 
@@ -119,7 +128,5 @@ const ListItem = props => (
     </div>
   </div>
 )
-
-/*onTouchTap={()=>()}*/
 
 export default ListItem;
