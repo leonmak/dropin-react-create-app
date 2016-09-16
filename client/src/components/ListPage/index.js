@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {List} from './List';
 
+import {getAllDrops} from '../../BackendHelper';
+
 
 //dummy data
 // location is [lng, lat]
@@ -84,6 +86,10 @@ export default class ListPage extends Component {
 
   componentDidMount() {
     this.geoId = geoListener(this.updateLocation.bind(this));
+
+    getAllDrops().then(function(response){
+      console.log(response);
+    });
   }
 
   componentWillUnmount() {
