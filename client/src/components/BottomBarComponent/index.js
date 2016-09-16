@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 import {browserHistory} from 'react-router';
@@ -8,21 +8,17 @@ import {browserHistory} from 'react-router';
 import * as Icons from '../../utils/Icons';
 import '../../styles/Nav.css'
 
-export default class BottomBar extends Component {
-	
-  state = {
-    showBottomBar: true
-	}
+class BottomBarComponent extends Component {
 
   urlToIdx(url) {
     let urlFmt = url.substring(1).toLowerCase();
     // /drops -> drops
     let urlArr = urlFmt.split('/');
     const firstLvl = urlArr[0];
-    if(urlArr.length > 1 && firstLvl === "drops") {
+    /*if(urlArr.length > 1 && firstLvl === "drops") {
       // drops/:id have second lvl
       return -1;
-    }
+    }*/
     switch (firstLvl) {
       case 'drops':
       return 0;
@@ -51,7 +47,7 @@ export default class BottomBar extends Component {
     const tabIdx = this.urlToIdx(this.props.url)
     return (
       <div>
-      { tabIdx !== -1 &&
+      { this.props.pageVisibility.bottomBarVisibility &&
       <Paper zDepth={1} className="bottom-navigation">
       <BottomNavigation selectedIndex={tabIdx}>
       <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
@@ -66,3 +62,9 @@ export default class BottomBar extends Component {
     )
   }
 }
+
+BottomBarComponent.propTypes = {
+  pageVisibility: PropTypes.object.isRequired
+};
+
+export default BottomBarComponent;

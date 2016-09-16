@@ -99,10 +99,12 @@ class DropComponent extends Component {
 	//using redux to hide bottom bar if component mounted
 	componentDidMount () {
 		this.props.toggleTopBarBackButton(true);
+		this.props.toggleBottomBar(false);
 	}
 
 	componentWillUnmount(){
 		this.props.toggleTopBarBackButton(false);
+		this.props.toggleBottomBar(true);
 	}
 
 	render() {
@@ -121,7 +123,7 @@ class DropComponent extends Component {
 
 
 DropComponent.propTypes = {
-	hideBottomBar: PropTypes.func.isRequired,
+	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired
 };
 

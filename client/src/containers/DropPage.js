@@ -14,7 +14,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-  	hideBottomBar:(visibility)=>{
+  	toggleBottomBar:(visibility)=>{
   		dispatch(toggleBottomBarVisibility(visibility));
   	},
     toggleTopBarBackButton:(visibility)=>{

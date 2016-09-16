@@ -3,8 +3,10 @@ import AppBar from 'material-ui/AppBar';
 
 import '../styles/TopBar.css'
 import IconButton from 'material-ui/IconButton';
-
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+
+import {browserHistory} from 'react-router';
+
 
 function handleTouchTap(state) {
 	alert('onTouchTap triggered on the title component');

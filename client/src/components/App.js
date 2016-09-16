@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import BottomBar from './BottomBar';
+import BottomBar from '../containers/BottomBar';
 import TopBar from '../containers/TopBar';
 import Headroom from 'react-headroom';
 // import { RouteTransition } from 'react-router-transition';
