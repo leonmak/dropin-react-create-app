@@ -105,7 +105,7 @@ const ListItem = props => (
           </div>
         </div>
 
-        {/* Media content */}
+        {/* Media content
 
         {props.isDrop && props.imageId &&
           <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
@@ -114,14 +114,13 @@ const ListItem = props => (
           <ReactPlayer url={props.videoUrl} width="100%" height="auto" />}
 
         {props.isDrop && props.soundCloudUrl &&
-          <SoundPlayer resolveUrl={props.soundCloudUrl} />}
+          <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
 
         <div className="button-div">
-
         {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
-  
+{/*
         <CommentsInput dropId={props.dropId}/>
-
+*/}
         </div>
 
       </Paper>

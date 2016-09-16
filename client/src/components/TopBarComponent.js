@@ -3,10 +3,9 @@ import AppBar from 'material-ui/AppBar';
 
 import '../styles/TopBar.css'
 import IconButton from 'material-ui/IconButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 import {browserHistory} from 'react-router';
-
+import * as Icons from '../utils/Icons';
 
 function handleTouchTap(state) {
 	alert('onTouchTap triggered on the title component');
@@ -14,7 +13,7 @@ function handleTouchTap(state) {
 }
 
 class TopBarComponent extends Component {
-	
+
 	navigateBack(){
 		browserHistory.goBack();
 	}
@@ -27,7 +26,8 @@ class TopBarComponent extends Component {
 			onTitleTouchTap={handleTouchTap}
 			iconElementLeft={<IconButton
 				onClick={this.navigateBack}>
-				<NavigationClose/></IconButton>}
+				{Icons.MUI("keyboard_arrow_left")}
+        </IconButton>}
 			showMenuIconButton={this.props.pageVisibility.topBarBackButtonVisibility}
 			/>
 			)
