@@ -57,14 +57,14 @@ class AddForm extends Component {
             <Field name="emojiUni" component={EmojiInput} hintText="Choose Emoji"/>
             <Field name="title" component={TextField} fullWidth={true}
               floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
-              errorStyle={{marginLeft: "-80%"}}
+              errorStyle={{textAlign: "left"}}
               multiLine={true} rows={2}/>
           </div>
           <div className="col-xs-12"><h3>Other Options</h3></div>
           <div className="col-xs-10">
             <Field name="imageId" component={ImageUpload} />
-            <Field name="videoUrl" component={TextField} hintText="Youtube/ Vimeo Link" fullWidth={true} />
-            <Field name="soundcloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} />
+            <Field name="videoUrl" component={TextField} hintText="Youtube/ Vimeo Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
+            <Field name="soundcloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
           </div>
 
           <div className="col-xs-12">

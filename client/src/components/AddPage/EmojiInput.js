@@ -7,7 +7,7 @@ import EmojiDisplayAnnotation from './EmojiDisplayAnnotation';
 // styles for the emoji picker wrapper
 var emojiPickerStyles = {
   position: 'absolute',
-  left: 0, top: '16.13rem',
+  left: 0, top: '20rem',
   backgroundColor: '#f2f2f2',
   width: '100%',
   borderBottom: '1px solid #00bcd4',

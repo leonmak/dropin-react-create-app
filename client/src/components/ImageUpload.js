@@ -44,7 +44,7 @@ export default class ImageUpload extends Component {
     const {uploading, uploadedUrl, uploadedFile} = this.state;
     return (
       <div>
-      <FlatButton primary={true} className="upload-img-btn" icon={Icons.MUI('camera_alt')} label="upload Image">
+      <FlatButton primary={true} className="upload-img-btn" icon={Icons.MUI('add_a_photo')} label="upload Image">
         <input onChange={this.onImageDrop} type="file" accept="image/*" style={inputStyle} />
       </FlatButton>
         { uploading && <LinearProgress mode="indeterminate" />}
