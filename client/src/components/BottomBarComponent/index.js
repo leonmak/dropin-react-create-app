@@ -10,31 +10,6 @@ import '../../styles/Nav.css'
 
 class BottomBarComponent extends Component {
 
-  urlToIdx(url) {
-    let urlFmt = url.substring(1).toLowerCase();
-    // /drops -> drops
-    let urlArr = urlFmt.split('/');
-    const firstLvl = urlArr[0];
-    /*if(urlArr.length > 1 && firstLvl === "drops") {
-      // drops/:id have second lvl
-      return -1;
-    }*/
-    switch (firstLvl) {
-      case 'drops':
-      return 0;
-      case 'map':
-      return 1;
-      case 'add':
-      return 2;
-      case 'profile':
-      return 3;
-      case 'settings':
-      return 4;
-      default:
-      return undefined;
-    }
-  }
-
   goToURL(url) {
     return ()=>browserHistory.push(url);
   }
@@ -44,7 +19,7 @@ class BottomBarComponent extends Component {
   };*/
 
   render() {
-    const tabIdx = this.urlToIdx(this.props.url)
+    const tabIdx = this.props.urlIdx;
     return (
       <div>
       { this.props.pageVisibility.bottomBarVisibility &&
@@ -64,7 +39,8 @@ class BottomBarComponent extends Component {
 }
 
 BottomBarComponent.propTypes = {
-  pageVisibility: PropTypes.object.isRequired
+  pageVisibility: PropTypes.object.isRequired,
+  url: PropTypes.string.isRequired
 };
 
 export default BottomBarComponent;
