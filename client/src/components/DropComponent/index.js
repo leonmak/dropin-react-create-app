@@ -99,7 +99,7 @@ var drop = {
 
 
 class DropComponent extends Component {
-	
+
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount () {
@@ -117,8 +117,8 @@ class DropComponent extends Component {
 		//console.log({bottomBarVisibility});
 		return (
 			<div>
-			<Drop drop={drop} />			
-			<CommentsInput />
+			<Drop drop={drop} />
+{/*      <CommentsInput />*/}
 			<CommentsList comments={comments} />
 			</div>
 			)

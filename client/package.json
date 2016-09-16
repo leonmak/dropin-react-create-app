@@ -7,6 +7,7 @@
     "react-scripts": "0.4.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "foreman": "^2.0.0",
     "leaflet": "^0.7.7",
