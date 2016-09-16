@@ -3,21 +3,6 @@ import {Drop} from './Drop';
 import {CommentsInput} from './CommentsInput';
 import {CommentsList} from '../CommentsList';
 
-/*state = {
-    showBottomBar: false
-}
-
-function mapStateToProps(state) {
-  return { todos: state.showBottomBar }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    todoActions: bindActionCreators(todoActionCreators, dispatch),
-    counterActions: bindActionCreators(counterActionCreators, dispatch)
-  }
-}*/
-
 // api call get all comments from feedId
 // /api/feed/:feedId/comments
 
@@ -109,17 +94,23 @@ var drop = {
 
 
 class DropComponent extends Component {
+	
+	//using redux to toggle the top bar button if component mounted
+	//using redux to hide bottom bar if component mounted
+	componentDidMount () {
+		this.props.toggleTopBarBackButton(true);
+	}
+
+	componentWillUnmount(){
+		this.props.toggleTopBarBackButton(false);
+	}
 
 	render() {
 
 		//console.log({bottomBarVisibility});
-			return (
+		return (
 			<div>
-			<Drop drop={drop} />
-			<button type="button" onClick={()=>this.props.hideBottomBar(false)}>show bottom bar</button>
-			<button type="button" onClick={()=>this.props.hideBottomBar(true)}>show bottom bar</button>
-			<button type="button" onClick={()=>console.log(this.props)}>see state</button>
-			
+			<Drop drop={drop} />			
 			<CommentsInput />
 			<CommentsList comments={comments} />
 			</div>
@@ -130,14 +121,18 @@ class DropComponent extends Component {
 
 
 DropComponent.propTypes = {
-  hideBottomBar: PropTypes.func.isRequired,
-  toggleTopBarBackButton: PropTypes.func.isRequired
+	hideBottomBar: PropTypes.func.isRequired,
+	toggleTopBarBackButton: PropTypes.func.isRequired
 };
 
 
 export default DropComponent;
 
 
+/*
+<button type="button" onClick={()=>this.props.toggleTopBarBackButton(false)}>show bottom bar</button>
+			<button type="button" onClick={()=>this.props.toggleTopBarBackButton(true)}>show bottom bar</button>
+			<button type="button" onClick={()=>console.log(this.props)}>see state</button>*/
 
 /*const DropComponent = (props) => (
 	<div>
@@ -147,4 +142,4 @@ export default DropComponent;
 	</div>
 	)
 
-export default DropComponent;*/
+	export default DropComponent;*/
