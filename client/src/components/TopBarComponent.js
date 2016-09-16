@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 
 import {browserHistory} from 'react-router';
 import * as Icons from '../utils/Icons';
+import classNames from 'classnames';
 
 function handleTouchTap(state) {
 	alert('onTouchTap triggered on the title component');
@@ -19,16 +20,22 @@ class TopBarComponent extends Component {
 	}
 
 	render(){
+    const appClass = classNames({
+      'back-btn': this.props.pageVisibility.topBarBackButtonVisibility,
+      'app-bar': true,
+    });
 
 		return(
 			<AppBar
-			title={<span id="title">drop</span>}
-			onTitleTouchTap={handleTouchTap}
-			iconElementLeft={<IconButton
-				onClick={this.navigateBack}>
-				{Icons.MUI("keyboard_arrow_left")}
-        </IconButton>}
-			showMenuIconButton={this.props.pageVisibility.topBarBackButtonVisibility}
+        className={appClass}
+  			title={<span id="app-title">Drop</span>}
+        style={{textAlign:"center"}}
+  			onTitleTouchTap={handleTouchTap}
+  			iconElementLeft={<IconButton
+  				onClick={this.navigateBack}>
+  				{Icons.MUI("keyboard_arrow_left")}
+          </IconButton>}
+  			showMenuIconButton={this.props.pageVisibility.topBarBackButtonVisibility}
 			/>
 			)
 	}
