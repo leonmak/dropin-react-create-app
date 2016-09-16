@@ -6,7 +6,7 @@ const ERROR_NOT_FOUND = "Not found";
 var FeedsController = {};
 
 FeedsController.getFeeds = function(req, res) {
-	Posts.fetchAll().then(function(posts) {
+	Posts.fetchAll({withRelated: "user"}).then(function(posts) {
 		res.json(posts.toJSON());
 	}).catch(function(err) {
 		res.json({error: err});
@@ -14,9 +14,9 @@ FeedsController.getFeeds = function(req, res) {
 }
 
 FeedsController.getFeed = function(req, res) {
-	const id = req.params.id;
-	Posts.where('id', id).fetch().then(function(posts) {
-		res.json(user.toJSON());
+	const id = req.params.post_id;
+	Posts.where('id', id).fetch({withRelated: "user"}).then(function(post) {
+		res.json(post.toJSON());
 	}).catch(function(err) {
 		res.json({error: ERROR_NOT_FOUND});
 	})
