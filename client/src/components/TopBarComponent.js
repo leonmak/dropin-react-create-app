@@ -14,12 +14,20 @@ function handleTouchTap(state) {
 }
 
 class TopBarComponent extends Component {
+	
+	navigateBack(){
+		browserHistory.goBack();
+	}
+
 	render(){
+
 		return(
 			<AppBar
 			title={<span id="title">drop</span>}
 			onTitleTouchTap={handleTouchTap}
-			iconElementLeft={<IconButton><NavigationClose/></IconButton>}
+			iconElementLeft={<IconButton
+				onClick={this.navigateBack}>
+				<NavigationClose/></IconButton>}
 			showMenuIconButton={this.props.pageVisibility.topBarBackButtonVisibility}
 			/>
 			)
