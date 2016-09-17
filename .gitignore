@@ -22,3 +22,7 @@ env
 .idea/modules.xml
 
 .idea/workspace.xml
+
+.idea/jsLibraryMappings.xml
+
+.idea/vcs.xml
