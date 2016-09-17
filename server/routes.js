@@ -35,7 +35,6 @@ module.exports = function(passport) {
   router.get('/api/comments/feeds/:post_id/comments/:id', CommentsController.getComment);
   router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
-
   router.get('/api/profile', loginCheck, (req, res) => {
     res.json(req.user);
   })

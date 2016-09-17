@@ -56,7 +56,7 @@ io.on('connection',function(socket){
       CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
     }
     if (packet.event == 'feed:send') {
-      FeedsController.directPost(packet.data.userId, packet.data.text);      
+      FeedsController.directPost(packet.data.userId, packet.data.text);
     }
   })
   // based on feeds/ comments or ... no need
