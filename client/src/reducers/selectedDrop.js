@@ -2,20 +2,16 @@ import {FETCH_COMMENT_FOR_DROP} from '../actions';
 
 //designing initial state
 const initialState = {
-	drop:{},
+	selectedDrop:{},
 	comments: []
 }
 
-export function pageVisibility(state=initialState, action) {
+export function selectedDrop(state=initialState, action) {
 
 	switch (action.type) {
-		case TOGGLE_BOTTOM_BAR_VISIBILITY:
+		case FETCH_COMMENT_FOR_DROP:
 		return Object.assign({}, state, {
-			bottomBarVisibility: action.visibility
-		})
-		case TOGGLE_TOP_BAR_BACK_BUTTON:
-		return Object.assign({}, state, {
-			topBarBackButtonVisibility: action.visibility
+			comments: action.comments.body
 		})
 		default:
 		return state

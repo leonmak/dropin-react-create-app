@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {List} from './List';
 
 //dummy data
@@ -82,11 +82,15 @@ class ListComponent extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchAllNearbyDrops()
+    this.props.fetchAllNearbyDrops();
     this.geoId = geoListener(this.updateLocation.bind(this));
   }
 
-  componentWillUnmount() {
+
+  //can check here for the drops, pass this into the children
+  //console.log(this.props.drops);
+
+  componentWillUnmount() {  
     console.log(this.props.drops);
     navigator.geolocation.clearWatch(this.geoId);
   }

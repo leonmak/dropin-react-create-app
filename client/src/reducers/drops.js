@@ -11,7 +11,7 @@ export function drops(state=initialState, action) {
 
 		case FETCH_ALL_NEARBY_DROPS:
 		return Object.assign({}, state, {
-			drops: action.drops
+			drops: action.drops.body
 		})
 		default:
 		return state

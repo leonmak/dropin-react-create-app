@@ -21,13 +21,6 @@ export function toggleTopBarBackButtonVisibility(visibility){
 	}	
 }
 
-export function fetchCommentsForDrop(drop){
-	return{
-		type: FETCH_COMMENT_FOR_DROP,
-		drop
-	}	
-}
-
 //function for you to call to fetch all nearby drops
 export function fetchAllNearbyDrops(){
 	return (dispatch)=>{
@@ -36,14 +29,33 @@ export function fetchAllNearbyDrops(){
 	} 
 }
 
-//function to pipe all nearby drops fetched above to reducer and modify the
-//state of the program 
+//function to pipe all nearby drops fetched above to 
+//reducer and modify the state of the program 
 function receiveAllNearbyDrops(allNearbyDrops){
 	return{
 		type: FETCH_ALL_NEARBY_DROPS,
 		drops: allNearbyDrops
 	}	
 }
+
+//function to fetch all comments for a single drop
+export function fetchCommentsForDrop(dropId){
+	return (dispatch)=>{
+		BackendHelper.getSingleDropComments(dropId)
+		.then(response=>dispatch(receiveCommentsForDrop(response)));
+	} 	
+}
+
+//function to pipe all comments received from  
+//reducer and modify the state of the program 
+function receiveCommentsForDrop(comments){
+	return{
+		type: FETCH_COMMENT_FOR_DROP,
+		comments: comments
+	}	
+}
+
+/*export function selectDrop()*/
 
 
 

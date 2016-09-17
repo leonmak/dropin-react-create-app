@@ -3,6 +3,8 @@ import {Drop} from './Drop';
 import {CommentsList} from '../CommentsList';
 import {CommentsInput} from '../ListComponent/CommentsInput'
 
+//import {getSingleDropComments, getAllUsers, getAllDrops} from '../../BackendHelper'
+
 // api call get all comments from feedId
 // /api/feed/:feedId/comments
 
@@ -100,25 +102,30 @@ var drop = {
 
 class DropComponent extends Component {
 
+	constructor(props){
+    super(props);
+	}
+
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount () {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
+		this.props.fetchCommentsForDrop(1);
 	}
 
 	componentWillUnmount(){
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
+		console.log(this.props.selectedDrop);
 	}
 
 	render() {
 
-		//console.log({bottomBarVisibility});
 		return (
 			<div>
 			<Drop drop={drop} />
-{/*      <CommentsInput />*/}
+				{/*<CommentsInput />*/}
 			<CommentsList comments={comments} />
 			</div>
 			)
@@ -129,7 +136,11 @@ class DropComponent extends Component {
 
 DropComponent.propTypes = {
 	toggleBottomBar: PropTypes.func.isRequired,
-	toggleTopBarBackButton: PropTypes.func.isRequired
+	toggleTopBarBackButton: PropTypes.func.isRequired,
+	fetchCommentsForDrop: PropTypes.func.isRequired,
+	selectedDrop: PropTypes.object.isRequired,
+	pageVisibility: PropTypes.object.isRequired
+
 };
 
 
