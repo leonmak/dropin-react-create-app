@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes} from 'react';
 import {List} from './List';
-
-import {getAllDrops} from '../../BackendHelper';
-
 
 //dummy data
 // location is [lng, lat]
@@ -69,7 +66,7 @@ const geoListener = (cb) => {
   )
 }
 
-export default class ListPage extends Component {
+class ListComponent extends Component {
 
   constructor(props){
     super(props);
@@ -85,14 +82,12 @@ export default class ListPage extends Component {
   }
 
   componentDidMount() {
+    this.props.fetchAllNearbyDrops()
     this.geoId = geoListener(this.updateLocation.bind(this));
-
-    getAllDrops().then(function(response){
-      console.log(response);
-    });
   }
 
   componentWillUnmount() {
+    console.log(this.props.drops);
     navigator.geolocation.clearWatch(this.geoId);
   }
 
@@ -102,3 +97,11 @@ export default class ListPage extends Component {
     )
   }
 }
+
+ListComponent.PropTypes = {
+  fetchAllNearbyDrops: PropTypes.func.isRequired,
+  drops: PropTypes.object.isRequired
+}
+
+
+export default ListComponent;

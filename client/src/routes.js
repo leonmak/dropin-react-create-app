@@ -7,7 +7,7 @@ import AddPage from './components/AddPage';
 import MapPage from './components/MapPage';
 import ProfilePage from './components/ProfilePage';
 import NotFoundPage from './components/NotFoundPage';
-import ListPage from './components/ListPage';
+import ListPage from './containers/ListPage';
 import DropPage from './containers/DropPage';
 import SettingsPage from './components/SettingsPage';
 

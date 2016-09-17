@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import {List} from '../ListPage/List';
+import {List} from '../ListComponent/List';
 import {CommentsList} from '../CommentsList';
 
 import * as fb from '../../utils/facebook-url';

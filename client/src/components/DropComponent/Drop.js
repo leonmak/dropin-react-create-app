@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ListItem from '../ListPage/ListItem';
+import ListItem from '../ListComponent/ListItem';
 
 export class Drop extends Component {
 

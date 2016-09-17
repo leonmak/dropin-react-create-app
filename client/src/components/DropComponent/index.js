@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
 import {CommentsList} from '../CommentsList';
-import {CommentsInput} from '../ListPage/CommentsInput'
+import {CommentsInput} from '../ListComponent/CommentsInput'
 
 // api call get all comments from feedId
 // /api/feed/:feedId/comments
