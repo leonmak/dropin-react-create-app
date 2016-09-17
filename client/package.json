@@ -32,6 +32,8 @@
     "react-tap-event-plugin": "^1.0.0",
     "react-video": "^1.5.3",
     "redux": "^3.6.0",
+    "redux-auth": "0.0.5-beta5",
+    "redux-auth-wrapper": "^0.8.0",
     "redux-form": "^6.0.2",
     "redux-form-material-ui": "^4.0.1",
     "redux-thunk": "^2.1.0",

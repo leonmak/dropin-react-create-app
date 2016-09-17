@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage';
 import ListPage from './containers/ListPage';
 import DropPage from './containers/DropPage';
 import SettingsPage from './components/SettingsPage';
+import LoginPage from './components/LoginPage';
 
 export default (
   <Route path="/" component={App}>
@@ -23,6 +24,7 @@ export default (
     <Route path="add" component={AddPage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="settings" component={SettingsPage} />
+    <Route path="login" component={LoginPage} />
     <Route path="*" component={NotFoundPage}/>
   </Route>
 );
