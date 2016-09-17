@@ -17,12 +17,5 @@ npm-debug.log
 .env
 env
 
-.idea/dropin-react-create-app.iml
-
-.idea/modules.xml
-
-.idea/workspace.xml
-
-.idea/jsLibraryMappings.xml
-
-.idea/vcs.xml
+# intelliJ
+.idea
