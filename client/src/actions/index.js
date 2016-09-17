@@ -57,7 +57,7 @@ function receiveCommentsForDrop(comments){
 }
 
 //function to add a nearby drop
-//called in ListComponent to update the list in real time
+//called in AddComponent to update the list in real time
 export function addingANearbyDrop(drop){
 	return{
 		type: ADD_A_NEARBY_DROP,

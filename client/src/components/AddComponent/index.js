@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import AddForm from './AddForm';
 
-class AddPage extends Component {
+class AddComponent extends Component {
   render() {
     return (
       <div className="row center-xs">
@@ -13,4 +13,4 @@ class AddPage extends Component {
   }
 }
 
-export default AddPage;
+export default AddComponent;
