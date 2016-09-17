@@ -1,4 +1,4 @@
-import {FETCH_ALL_NEARBY_DROPS} from '../actions';
+import {FETCH_ALL_NEARBY_DROPS, ADD_A_NEARBY_DROP} from '../actions';
 
 //designing state shape
 const initialState = {
@@ -13,6 +13,12 @@ export function drops(state=initialState, action) {
 		return Object.assign({}, state, {
 			drops: action.drops.body
 		})
+
+		//need logic to append new drops here
+		/*case ADD_A_NEARBY_DROP:
+		return Object.assign({}, state, {
+			drops: action.drop
+		})*/
 		default:
 		return state
 	}

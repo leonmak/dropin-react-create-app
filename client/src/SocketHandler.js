@@ -1,6 +1,8 @@
-var FEEDS_SOCKET = "feeds";
-var COMMENTS_SOCKET = "comments";
-var VOTES_SOCKET = "votes";
+export const FEEDS_SOCKET = "feeds";
+export const COMMENTS_SOCKET = "comments";
+export const VOTES_SOCKET = "votes";
+
+//import socket from 'react-socket';
 
 /*
 To Use:

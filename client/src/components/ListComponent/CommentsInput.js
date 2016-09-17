@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import SocketHandler from '../../SocketHandler';
 
+import {FEEDS_SOCKET,COMMENTS_SOCKET,VOTES_SOCKET} from '../../SocketHandler';
+
 var request = require('superagent');
 
-var FEEDS_SOCKET = "feeds";
-var COMMENTS_SOCKET = "comments";
-var VOTES_SOCKET = "votes";
 
 export class CommentsInput extends Component {
 

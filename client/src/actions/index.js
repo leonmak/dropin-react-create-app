@@ -4,6 +4,7 @@ export const TOGGLE_BOTTOM_BAR_VISIBILITY = 'TOGGLE_BOTTOM_BAR_VISIBILITY';
 export const TOGGLE_TOP_BAR_BACK_BUTTON = 'TOGGLE_TOP_BAR_BACK_BUTTON';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
+export const ADD_A_NEARBY_DROP = 'ADD_A_NEARBY_DROP';
 
 //default is visible (true)
 export function toggleBottomBarVisibility(visibility){
@@ -53,6 +54,16 @@ function receiveCommentsForDrop(comments){
 		type: FETCH_COMMENT_FOR_DROP,
 		comments: comments
 	}	
+}
+
+//function to add a nearby drop
+//called in ListComponent to update the list in real time
+export function addingANearbyDrop(drop){
+	return{
+		type: ADD_A_NEARBY_DROP,
+		drop: drop
+	}
+
 }
 
 /*export function selectDrop()*/
