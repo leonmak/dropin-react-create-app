@@ -134,18 +134,17 @@ export function checkedSessionStatus(result) {
     return { type: Checked_Session_Status, result };
 }
 
-export function checkSessionStatus(token) {
+export function checkSessionStatus() {
   return (dispatch) => {
     dispatch(startedSessionCheck());
 
     request
     .post('/checkSession')
-    .query({ token: token })
     .end(function(err,res){
       if(err){
         console.log(err)
       } else {
-        console.log(res)
+        console.log(res.body)
         dispatch(checkedSessionStatus(res.body))
       }
     })

@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 
-import {attemptLogin} from '../actions/AuthActions';
+import {attemptLogin, navigatedAwayFromAuthFormPage} from '../actions/AuthActions';
 
-import LoginBtn from '../components/LoginBtn';
+import LoginPageComponent from '../components/LoginPageComponent';
 
 function mapStateToProps(state) {
   return {
@@ -12,9 +12,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    attemptLogin:(token)=>{
-      dispatch(attemptLogin(token));
-    }
+    attemptLogin: token => dispatch(attemptLogin(token)),
+    navigatedAwayFromAuthFormPage: () => dispatch(navigatedAwayFromAuthFormPage())
   };
 }
 
@@ -22,7 +21,7 @@ function mapDispatchToProps(dispatch) {
 const LoginPage = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginBtn);
+)(LoginPageComponent);
 
 
 export default LoginPage;

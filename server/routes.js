@@ -21,7 +21,20 @@ module.exports = function(passport) {
   //     res.redirect('/');
   //   });
 
-  router.post('/auth/facebook/token', passport.authenticate('facebook-token'), AuthController.authUser);
+  router.post('/auth/facebook/token', (req, res, next) => {
+      passport.authenticate('facebook-token', (err, user, info) => {
+        if (err) { return next(err); }
+        if (!user) { return res.json(info); }
+        if (user) {
+          req.session.save();
+          req.login(user, (err) => {
+            if (err) { return next(err); }
+            return res.json(user);
+          });
+        }
+      })(req, res, next);
+  });
+  // TODO: Session not persistent, stored on db but not deserialized?
   router.post('/checkSession', AuthController.checkSession);
   router.post('/logout', Auth.isLoggedIn, AuthController.logout);
 

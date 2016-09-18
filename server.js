@@ -10,6 +10,7 @@ const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
 var FeedsController = require('./server/controller/FeedsController');
 // var clientSockets = [];
+var cookieParser = require('cookie-parser');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
@@ -38,15 +39,35 @@ passport.serializeUser(function(user, callback) {
 });
 
 passport.deserializeUser(function(obj, callback) {
+  console.log(obj)
   callback(null, obj);
 });
 
 app.set('port', (process.env.API_PORT || 3001));
+app.use(cookieParser('keyboard cat'));
+
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
+
+var options = {
+    host: process.env.MYSQL_HOST || 'localhost',
+    port: process.env.MYSQL_PORT || 3306,
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PASSWORD || 'password',
+    database: 'session_test',
+};
+
+var sessionStore = new MySQLStore(options);
 
 // app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false, store: sessionStore,
+  cookie : {
+    httpOnly: true,
+    maxAge: 2419200000
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
