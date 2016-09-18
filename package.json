@@ -18,7 +18,9 @@
     "bookshelf": "^0.10.0",
     "cloudinary": "^1.4.1",
     "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "express-mysql-session": "^1.2.0",
     "express-session": "^1.14.1",
     "flexboxgrid": "^6.3.1",
     "foreman": "^2.0.0",
@@ -29,6 +31,7 @@
     "mysql": "^2.11.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
+    "passport-facebook-token": "^3.3.0",
     "socket.io": "^1.4.8",
     "superagent": "^2.2.0",
     "when": "^3.7.7"

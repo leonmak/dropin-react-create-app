@@ -60,7 +60,7 @@ FeedsController.parseFeed = function(post) {
 
 // Get all the feeds across the database
 FeedsController.getFeeds = function(req, res) {
-	Posts.fetchAll().then(function(posts) {
+	Posts.fetchAll({withRelated: "user"}).then(function(posts) {
     posts.map(FeedsController.parseFeed);
 		res.json(posts.toJSON());
 	}).catch(function(err) {

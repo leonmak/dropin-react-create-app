@@ -6,20 +6,38 @@ var LoginCheck = require('connect-ensure-login');
 var UsersController = require('./controller/UsersController');
 var CommentsController = require('./controller/CommentsController');
 var FeedsController = require('./controller/FeedsController');
+var AuthController = require('./controller/AuthController');
+var Auth = require('./middleware/Auth')
 
 const loginCheck = LoginCheck.ensureLoggedIn('/login');
 
 module.exports = function(passport) {
 
-  // Facebook Login and Authentication
-  router.get('/facebook/login',
-    passport.authenticate('facebook'));
+  // router.get('/facebook/login',
+  //   passport.authenticate('facebook'));
 
-  router.get('/facebook/auth',
-    passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
-    (req, res) => {
-      res.redirect('/');
-    });
+  // router.get('/facebook/auth',
+  //   passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
+  //   (req, res) => {
+  //     res.redirect('/');
+  //   });
+
+  router.post('/auth/facebook/token', (req, res, next) => {
+      passport.authenticate('facebook-token', (err, user, info) => {
+        if (err) { return next(err); }
+        if (!user) { return res.json(info); }
+        if (user) {
+          req.session.save();
+          req.login(user, (err) => {
+            if (err) { return next(err); }
+            return res.json(user);
+          });
+        }
+      })(req, res, next);
+  });
+  // TODO: Session not persistent, stored on db but not deserialized?
+  router.post('/checkSession', AuthController.checkSession);
+  router.post('/logout', Auth.isLoggedIn, AuthController.logout);
 
   // Profiles API
   router.get('/api/users', UsersController.getUsers);
@@ -41,7 +59,11 @@ module.exports = function(passport) {
   router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
   // TODO: Votes API
+  //...
 
+  router.get('/api/profile', loginCheck, (req, res) => {
+    res.json(req.user);
+  })
 
   return router;
 }
