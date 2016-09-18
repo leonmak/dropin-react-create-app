@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-
-import {getAllDrops} from '../../BackendHelper';
-
+import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
 
 //dummy data
 // location is [lng, lat]
@@ -69,7 +67,25 @@ const geoListener = (cb) => {
   )
 }
 
-export default class ListPage extends Component {
+/*
+socket:
+To Use:
+setup(type, data, handler): put in componentDidMount
+  type: from the constant above
+  data: every thing to defined the component (comment needs postId, Feed needs nothing, Vote needs commentId)
+  handler: callback(data). data has the form
+    for COMMENTS_SOCKET: {userId: data.userId, text: data.text}
+    for FEEDS_SOCKET: {userId: data.userId, postId: data.postId, text: data.text}
+    for VOTES_SOCKET: {userId: data.userId, postId: data.postId, voteType: data.voteType}
+
+comment(userId, postId, text): for comment
+post(userId, text): for post feed
+vote(userId, postId, voteType): for vote 
+*/
+
+class ListComponent extends Component {
+
+  socketHandler = new SocketHandler();
 
   constructor(props){
     super(props);
@@ -85,14 +101,27 @@ export default class ListPage extends Component {
   }
 
   componentDidMount() {
+    //listening to the socket so that you 
+    //can update in real time when a new drop is posted
+    this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
+    
+    //method to fetch all nearby drops and set the state
+    this.props.fetchAllNearbyDrops();
+    
     this.geoId = geoListener(this.updateLocation.bind(this));
-
-    getAllDrops().then(function(response){
-      console.log(response);
-    });
   }
 
-  componentWillUnmount() {
+  //when receive the callback that a new drop has been added nearby, update the state
+  //state is updated by sending an action to redux
+  newDropAdded(data){
+    var userId = data.userId;
+    var postId = data.postId;
+    var text = data.text;
+    //makeDropObject(data);
+  }
+
+  componentWillUnmount() {  
+    console.log(this.props.drops);
     navigator.geolocation.clearWatch(this.geoId);
   }
 
@@ -102,3 +131,11 @@ export default class ListPage extends Component {
     )
   }
 }
+
+ListComponent.PropTypes = {
+  fetchAllNearbyDrops: PropTypes.func.isRequired,
+  drops: PropTypes.object.isRequired
+}
+
+
+export default ListComponent;

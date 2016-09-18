@@ -40,7 +40,7 @@ class BottomBarComponent extends Component {
 
 BottomBarComponent.propTypes = {
   pageVisibility: PropTypes.object.isRequired,
-  url: PropTypes.string.isRequired
+  urlIdx: PropTypes.number.isRequired
 };
 
 export default BottomBarComponent;

@@ -1,19 +1,14 @@
 import {connect} from 'react-redux';
 
-import {toggleBottomBarVisibility} from '../actions';
-import {toggleTopBarBackButtonVisibility} from '../actions';
-import {fetchCommentsForDrop} from '../actions';
 
-import DropComponent from '../components/DropComponent';
+import AddComponent from '../components/AddComponent';
 
 
 //the reducers are the start of the state
-function mapStateToProps(state) {
+/*function mapStateToProps(state) {
   return {
-    pageVisibility: state.pageVisibility,
-    selectedDrop: state.selectedDrop
   };
-}
+}*/
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -30,10 +25,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-const DropPage = connect(
-  mapStateToProps,
+const AddPage = connect(
+  null,
   mapDispatchToProps
-)(DropComponent);
+)(AddComponent);
 
 
-export default DropPage;
+export default AddPage;

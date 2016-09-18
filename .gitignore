@@ -16,3 +16,6 @@ npm-debug.log
 # environment variables
 .env
 env
+
+# intelliJ
+.idea

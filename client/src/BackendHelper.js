@@ -10,6 +10,9 @@ function defaultPromise(req){
         request.get(req).end( 
             function(err,res){
                 if(err==null){
+                	if(res.body.error){
+                		console.log(res.body + "error on server");
+                	}
                     resolve(res);
                 }else{
                     console.log(err);
@@ -49,7 +52,9 @@ export function getAllDrops(){
     return defaultPromise(req);
 }
 
+//api/feeds/1/comments
+
 export function getSingleDropComments(dropId){
-	var req = 'api/feeds/comments/'+dropId;
+	var req = 'api/feeds/'+dropId+'/comments';
 	return defaultPromise(req);
 }

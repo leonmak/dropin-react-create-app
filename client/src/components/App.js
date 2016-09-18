@@ -46,8 +46,10 @@ const App = (props) => {
       return 3;
       case 'settings':
       return 4;
+      case '':
+      return 0;
       default:
-      return undefined;
+      return -1;
     }
   }
 
