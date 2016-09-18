@@ -48,7 +48,7 @@ export function attemptSignUp(email, password, displayName) {
     dispatch(clickedSignUp());
 
     request
-    .get('/facebook/login')
+    .post('/facebook/login')
     .end(function(err, res){
       if(err){
         console.log(err)
@@ -90,12 +90,13 @@ export function loginFail(error) {
 }
 
 
-export function attemptLogin(email, password) {
+export function attemptLogin(token) {
   return (dispatch) => {
     dispatch(clickedLogin());
 
     request
-    .get('/facebook/login')
+    .post('http://localhost:3001/auth/facebook/token')
+    .send({ access_token: token })
     .end(function(err,res){
       if(err){
         console.log(err)
@@ -133,12 +134,13 @@ export function checkedSessionStatus(result) {
     return { type: Checked_Session_Status, result };
 }
 
-export function checkSessionStatus(email, password) {
+export function checkSessionStatus(token) {
   return (dispatch) => {
     dispatch(startedSessionCheck());
 
     request
-    .get('/checkSession')
+    .post('/checkSession')
+    .query({ token: token })
     .end(function(err,res){
       if(err){
         console.log(err)
@@ -176,7 +178,7 @@ export function attemptLogout(){
     dispatch(clickedLogout());
 
     request
-    .get('/logout')
+    .post('/logout')
     .end(function(err,res){
       if(err)
         console.log(err)

@@ -4,7 +4,8 @@ const http = require('http').Server(app);
 const io = require("socket.io")(http);
 const routesConfig = require('./server/routes');
 const passport = require('passport');
-const strategy = require('passport-facebook').Strategy;
+// const strategy = require('passport-facebook').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
 var FeedsController = require('./server/controller/FeedsController');
@@ -12,15 +13,25 @@ var FeedsController = require('./server/controller/FeedsController');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
-passport.use(new strategy({
-    clientID: process.env.FB_CLIENT_ID,
+passport.use(new FacebookTokenStrategy({
+    clientID: process.env.REACT_APP_FB_CLIENT_ID,
     clientSecret: process.env.FB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/facebook/auth',
-    scope: ['user_friends', 'email', 'public_profile', 'publish_actions'],
-    profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+    options: {
+      profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+    }
   },
   FacebookController.loginCallback
 ));
+
+// passport.use(new strategy({
+//     clientID: process.env.FB_CLIENT_ID,
+//     clientSecret: process.env.FB_CLIENT_SECRET,
+//     callbackURL: 'http://localhost:3001/facebook/auth',
+//     scope: ['user_friends', 'email', 'public_profile', 'publish_actions'],
+//     profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+//   },
+//   FacebookController.loginCallback
+// ));
 
 passport.serializeUser(function(user, callback) {
   callback(null, user);
@@ -39,13 +50,16 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', routesConfig(passport));
 
-/*app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
   next();
-});*/
+});
+
+app.use('/', routesConfig(passport));
 
 io.on('connection',function(socket){
   console.log("client connected");

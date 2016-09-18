@@ -5,19 +5,25 @@ import { Users, Posts, Comments } from './database';
 var UsersController = require('./controller/UsersController');
 var CommentsController = require('./controller/CommentsController');
 var FeedsController = require('./controller/FeedsController');
+var AuthController = require('./controller/AuthController');
+var Auth = require('./middleware/Auth')
 
 const loginCheck = LoginCheck.ensureLoggedIn('/login');
 
 module.exports = function(passport) {
 
-  router.get('/facebook/login',
-    passport.authenticate('facebook'));
+  // router.get('/facebook/login',
+  //   passport.authenticate('facebook'));
 
-  router.get('/facebook/auth',
-    passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
-    (req, res) => {
-      res.redirect('/');
-    });
+  // router.get('/facebook/auth',
+  //   passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
+  //   (req, res) => {
+  //     res.redirect('/');
+  //   });
+
+  router.post('/auth/facebook/token', passport.authenticate('facebook-token'), AuthController.authUser);
+  router.post('/checkSession', AuthController.checkSession);
+  router.post('/logout', Auth.isLoggedIn, AuthController.logout);
 
   // Users / Profiles API
   router.get('/api/users', UsersController.getUsers);

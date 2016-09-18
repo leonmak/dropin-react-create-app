@@ -29,6 +29,7 @@
     "mysql": "^2.11.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
+    "passport-facebook-token": "^3.3.0",
     "socket.io": "^1.4.8",
     "superagent": "^2.2.0",
     "when": "^3.7.7"

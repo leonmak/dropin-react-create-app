@@ -1,14 +1,17 @@
-import {  Clicked_SignUp, SignUp_Success, SignUp_Fail,
-          Clicked_Login, Login_Success, Login_Fail,
-          Started_Session_Check, Checked_Session_Status,
-          Clicked_Logout, Logout_Success,
-          Navigate_Away_From_Auth_Form } from '../actions/AuthActions';
+import {
+  Clicked_SignUp, SignUp_Success, SignUp_Fail,
+  Clicked_Login, Login_Success, Login_Fail,
+  Started_Session_Check, Checked_Session_Status,
+  Clicked_Logout, Logout_Success,
+  Navigate_Away_From_Auth_Form
+} from '../actions/AuthActions';
 
-const defaultStartState = { isLoggedIn: false,
-                            fetchingAuthUpdate: false,
-                            userObject: null,
-                            error: null
-                          }
+const defaultStartState = {
+  isLoggedIn: false,
+  fetchingAuthUpdate: false,
+  userObject: null,
+  error: null
+}
 
 export function updateUserInfo(userAuthState = defaultStartState , action) {
   switch (action.type){

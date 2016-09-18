@@ -10,7 +10,7 @@ import NotFoundPage from './components/NotFoundPage';
 import ListPage from './containers/ListPage';
 import DropPage from './containers/DropPage';
 import SettingsPage from './components/SettingsPage';
-import LoginPage from './components/LoginPage';
+import LoginPage from './containers/LoginPage';
 
 export default (
   <Route path="/" component={App}>
