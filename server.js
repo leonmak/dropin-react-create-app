@@ -5,6 +5,7 @@ const io = require("socket.io")(http);
 const routesConfig = require('./server/routes');
 const passport = require('passport');
 // const strategy = require('passport-facebook').Strategy;
+
 const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
@@ -35,11 +36,12 @@ passport.use(new FacebookTokenStrategy({
 // ));
 
 passport.serializeUser(function(user, callback) {
+  console.log(user)
   callback(null, user);
 });
 
 passport.deserializeUser(function(obj, callback) {
-  console.log(obj)
+  console.log('deserial', obj)
   callback(null, obj);
 });
 
@@ -54,12 +56,12 @@ var options = {
     port: process.env.MYSQL_PORT || 3306,
     user: process.env.MYSQL_USER || 'root',
     password: process.env.MYSQL_PASSWORD || 'password',
-    database: 'session_test',
+    database: 'dropin',
 };
 
 var sessionStore = new MySQLStore(options);
 
-// app.use(require('cookie-parser')());
+app.use(require('cookie-parser')('keyboard cat'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false, store: sessionStore,
