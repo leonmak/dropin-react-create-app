@@ -1,0 +1,1 @@
+var MESSAGES = require('./Messages');

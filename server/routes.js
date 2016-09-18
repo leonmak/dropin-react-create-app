@@ -1,7 +1,8 @@
+import { Users, Posts, Comments } from './database';
+
 var express = require('express');
 var router = express.Router();
 var LoginCheck = require('connect-ensure-login');
-import { Users, Posts, Comments } from './database';
 var UsersController = require('./controller/UsersController');
 var CommentsController = require('./controller/CommentsController');
 var FeedsController = require('./controller/FeedsController');
@@ -10,6 +11,7 @@ const loginCheck = LoginCheck.ensureLoggedIn('/login');
 
 module.exports = function(passport) {
 
+  // Facebook Login and Authentication
   router.get('/facebook/login',
     passport.authenticate('facebook'));
 
@@ -19,9 +21,12 @@ module.exports = function(passport) {
       res.redirect('/');
     });
 
-  // Users / Profiles API
+  // Profiles API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
+  router.get('/api/profile', loginCheck, (req, res) => {
+    res.json(req.user);
+  })
 
   // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds);
@@ -35,17 +40,16 @@ module.exports = function(passport) {
   router.get('/api/comments/feeds/:post_id/comments/:id', CommentsController.getComment);
   router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
+  // TODO: Votes API
 
-  router.get('/api/profile', loginCheck, (req, res) => {
-    res.json(req.user);
-  })
-
-  router.get('/api/chat', (req, res) => {
-
-    const mockChats = [{title:"HI", replies:"HO"}, {title:"Hey", replies:"Ha"}, {title:"He", replies:"Ha"} ];
-
-    res.json(mockChats);
-  });
 
   return router;
 }
+
+
+// OLD STUFF
+
+// router.get('/api/chat', (req, res) => {
+//   const mockChats = [{title:"HI", replies:"HO"}, {title:"Hey", replies:"Ha"}, {title:"He", replies:"Ha"} ];
+//   res.json(mockChats);
+// });

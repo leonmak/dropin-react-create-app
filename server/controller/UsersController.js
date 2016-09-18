@@ -1,36 +1,45 @@
 import { Users } from '../database';
-const ERROR_NOT_FOUND = "Not found";
+var MESSAGES = require('./Messages');
 
 var UsersController = {};
 
+/*** Back-end Queries ***/
+
+
+/*** Front-end Queries ***/
+
+// Obtain user's User ID (Requires Login)
 UsersController.findUserId = function(facebook_id) {
 	var promise = new Promise(function(resolve, reject) {
 		Users.where('facebook_id', facebook_id).fetch().then(function(user) {
 			resolve(user.id);
 		}).catch(function(err) {
-			reject(ERROR_NOT_FOUND);
+			reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
 		});
 	})
 	return promise;
 }
 
+// Get all the users across the database
 UsersController.getUsers = function(req, res) {
 	Users.fetchAll().then(function(users) {
 		res.json(users.toJSON());
 	}).catch(function(err) {
-		res.json({error: err});
+		res.json({error: MESSAGES.ERROR_USER_NOT_FOUND});
 	});
 }
 
+// Get a specific user
 UsersController.getUser = function(req, res) {
 	const id = req.params.id;
 	Users.where('id', id).fetch().then(function(user) {
 		res.json(user.toJSON());
 	}).catch(function(err) {
-		res.json({error: ERROR_NOT_FOUND});
+		res.json({error: MESSAGES.ERROR_USER_NOT_FOUND});
 	})
 }
 
+// Get a user object reference for back-end parsing and JSON object construction
 UsersController.getUserObject = function(id) {
   Users.where('id', id).fetch().then(function(user) {
     return user;
@@ -39,7 +48,8 @@ UsersController.getUserObject = function(id) {
   })
 }
 
-UsersController.createUser = function(accessToken, profile) {
+// Creating a new user
+UsersController.createUser = function(req, res, accessToken, profile) {
 	Users.where('facebook_id', profile.id).fetch().then(function(user) {
 		if (user) {
 			// update access token
@@ -58,10 +68,12 @@ UsersController.createUser = function(accessToken, profile) {
 			new Users().save(userHash).then(function(user) {
 
 			}).catch(function(err) {
-				res.json({error: err});
+				res.json({error: MESSAGES.ERROR_CREATING_USER});
 			});
 		}
 	});
 }
+
+// TODO: Delete an existing user
 
 module.exports = UsersController;
