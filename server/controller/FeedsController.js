@@ -17,7 +17,7 @@ FeedsController.getFeeds = function(req, res) {
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
 	const id = req.params.id;
-	Posts.where('user_id', id).fetch().then(function(posts) {
+	Posts.where('user_id', id).fetchAll().then(function(posts) {
 		res.json(posts.toJSON());
 	}).catch(function(err) {
 		res.json({error: err});

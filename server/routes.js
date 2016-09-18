@@ -19,7 +19,7 @@ module.exports = function(passport) {
       res.redirect('/');
     });
 
-  // Users API
+  // Users / Profiles API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
 
