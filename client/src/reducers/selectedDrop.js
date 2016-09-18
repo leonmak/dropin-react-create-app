@@ -1,4 +1,4 @@
-import {FETCH_COMMENT_FOR_DROP} from '../actions';
+import {FETCH_COMMENT_FOR_DROP, PASSING_FROM_OTHERS_TO_DROP} from '../actions';
 
 //designing initial state
 const initialState = {
@@ -13,7 +13,11 @@ export function selectedDrop(state=initialState, action) {
 		return Object.assign({}, state, {
 			comments: action.comments.body
 		})
-		default:
+		case PASSING_FROM_OTHERS_TO_DROP:
+		return Object.assign({}, state, {
+			selectedDrop: action.drop
+		})
+		default: 
 		return state
 	}
 }

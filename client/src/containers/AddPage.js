@@ -10,24 +10,15 @@ import AddComponent from '../components/AddComponent';
   };
 }*/
 
-function mapDispatchToProps(dispatch) {
+/*function mapDispatchToProps(dispatch) {
   return {
-  	toggleBottomBar:(visibility)=>{
-  		dispatch(toggleBottomBarVisibility(visibility));
-  	},
-    toggleTopBarBackButton:(visibility)=>{
-      dispatch(toggleTopBarBackButtonVisibility(visibility));
-    },
-    fetchCommentsForDrop:(dropId)=>{
-      dispatch(fetchCommentsForDrop(dropId));
-    }
   };
-}
+}*/
 
 
 const AddPage = connect(
   null,
-  mapDispatchToProps
+  null
 )(AddComponent);
 
 

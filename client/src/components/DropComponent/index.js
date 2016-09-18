@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
 import {CommentsList} from '../CommentsList';
-import {CommentsInput} from '../ListComponent/CommentsInput'
+//import {CommentsInput} from '../ListComponent/CommentsInput'
+
+//import request from 'superagent';
 
 //import {getSingleDropComments, getAllUsers, getAllDrops} from '../../BackendHelper'
 
@@ -102,29 +104,28 @@ var drop = {
 
 class DropComponent extends Component {
 
-	constructor(props){
-    super(props);
-	}
-
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount () {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
 		this.props.fetchCommentsForDrop(1);
+		/*request.get('http://localhost:3000/api/feeds').end(function(err,res){
+      console.log(',',res);
+    });*/
 	}
 
 	componentWillUnmount(){
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
-		console.log(this.props.selectedDrop);
+		console.log(this.props.selectedDrop.selectedDrop);
 	}
 
 	render() {
 
 		return (
 			<div>
-			<Drop drop={drop} />
+			<Drop drop={this.props.selectedDrop.selectedDrop} />
 				{/*<CommentsInput />*/}
 			<CommentsList comments={comments} />
 			</div>
@@ -140,7 +141,6 @@ DropComponent.propTypes = {
 	fetchCommentsForDrop: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired
-
 };
 
 

@@ -4,7 +4,8 @@ export const TOGGLE_BOTTOM_BAR_VISIBILITY = 'TOGGLE_BOTTOM_BAR_VISIBILITY';
 export const TOGGLE_TOP_BAR_BACK_BUTTON = 'TOGGLE_TOP_BAR_BACK_BUTTON';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
-export const ADD_A_NEARBY_DROP = 'ADD_A_NEARBY_DROP';
+export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
+export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 
 //default is visible (true)
 export function toggleBottomBarVisibility(visibility){
@@ -58,12 +59,21 @@ function receiveCommentsForDrop(comments){
 
 //function to add a nearby drop
 //called in AddComponent to update the list in real time
-export function addingANearbyDrop(drop){
+//not necessary, socket handles real time updating
+export function updateANearbyDrop(drop){
 	return{
-		type: ADD_A_NEARBY_DROP,
+		type: UPDATE_A_NEARBY_DROP,
 		drop: drop
 	}
+}
 
+//action to pass drop object from list to drop
+export function passingFromOthersToDrop(drop){
+	console.log(drop);
+	return{
+		type: PASSING_FROM_OTHERS_TO_DROP,
+		drop: drop
+	}
 }
 
 /*export function selectDrop()*/
