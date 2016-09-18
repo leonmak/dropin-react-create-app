@@ -69,6 +69,7 @@ export function updateANearbyDrop(drop){
 
 //action to pass drop object from list to drop
 export function passingFromOthersToDrop(drop){
+	console.log(drop);
 	return{
 		type: PASSING_FROM_OTHERS_TO_DROP,
 		drop: drop

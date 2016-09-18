@@ -159,7 +159,8 @@ class ListComponent extends Component {
                 })}
         </ul>
       
-      <List feed={data} userLocation={this.state.userLocation} />
+      <List feed={data} userLocation={this.state.userLocation} 
+      passingFromOthersToDrop={this.props.passingFromOthersToDrop} />
       </div>
       )
   }
@@ -168,6 +169,7 @@ class ListComponent extends Component {
 ListComponent.PropTypes = {
   fetchAllNearbyDrops: PropTypes.func.isRequired,
   updateANearbyDrop: PropTypes.func.isRequired,
+  passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired
 }
 

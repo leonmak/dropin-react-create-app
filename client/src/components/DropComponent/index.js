@@ -118,14 +118,14 @@ class DropComponent extends Component {
 	componentWillUnmount(){
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
-		console.log(this.props.selectedDrop);
+		console.log(this.props.selectedDrop.selectedDrop);
 	}
 
 	render() {
 
 		return (
 			<div>
-			<Drop drop={drop} />
+			<Drop drop={this.props.selectedDrop.selectedDrop} />
 				{/*<CommentsInput />*/}
 			<CommentsList comments={comments} />
 			</div>
@@ -141,7 +141,6 @@ DropComponent.propTypes = {
 	fetchCommentsForDrop: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired
-
 };
 
 

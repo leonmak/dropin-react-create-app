@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import * as Icons from '../../utils/Icons';
 
@@ -8,6 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
+
 //import { CloudinaryImage } from 'react-cloudinary';
 //import ReactPlayer from 'react-player';
 //import SoundPlayer from '../SoundPlayer';
@@ -27,7 +28,39 @@ const getDistanceFromUser = (location, userLocation) => {
     return 0
 }
 
-const goToURL = url => setTimeout(()=>{browserHistory.push(url)}, 300);
+
+const goToURL = (url,props) => setTimeout(()=>{
+  browserHistory.push(url);
+  props.passingFromOthersToDrop({
+    dropId:props.dropId,
+    username:props.username, 
+    userId:props.userId,
+    userAvatarId:props.userAvatarId,
+    emojiUni:props.emojiUni,
+    title:props.title, 
+    videoUrl:props.videoUrl,
+    imageId:props.imageId,
+    soundCloudUrl:props.soundCloudUrl,
+    votes:props.votes, 
+    location:props.location,
+    date:props.date,
+    replies:props.replies     
+    });
+}, 300);
+
+/*
+    title:props.title, 
+    replies:props.replies, 
+    votes:props.votes, 
+    time:props.time, 
+    emojiUni:props.emojiUni, 
+    dropId:props.dropId, 
+    location:props.location, 
+    userId:props.userId, 
+    username:props.username, 
+    imageId:props.imageId, 
+    videoUrl:props.videoUrl, 
+    soundCloudUrl:props.soundCloudUrl}*/
 
 const ItemTitle = (props) => (
   <div className="row center-xs">
@@ -117,7 +150,7 @@ const ListItem = props => (
           <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
 
         <div className="button-div">
-        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`,props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
 {/*
         <CommentsInput dropId={props.dropId}/>
 */}
@@ -128,4 +161,10 @@ const ListItem = props => (
   </div>
 )
 
+ListItem.PropTypes = {
+  passingFromOthersToDrop: PropTypes.func.isRequired
+}
+
 export default ListItem;
+
+//{title, replies, votes, time, emojiUni, dropId, location, userId, username, imageId, videoUrl, soundCloudUrl}
