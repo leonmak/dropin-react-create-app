@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {fetchAllNearbyDrops} from '../actions';
+import {fetchAllNearbyDrops, updateANearbyDrop} from '../actions';
 
 import ListComponent from '../components/ListComponent';
 
@@ -14,7 +14,10 @@ function mapDispatchToProps(dispatch) {
   return {
   	fetchAllNearbyDrops:()=>{
   	  dispatch(fetchAllNearbyDrops());
-  	}
+  	},
+    updateANearbyDrop:(drop)=>{
+      dispatch(updateANearbyDrop(drop));
+    }
   };
 }
 

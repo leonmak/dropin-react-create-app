@@ -64,7 +64,7 @@ const geoListener = (cb) => {
     ({ coords, timestamp }) => cb(coords),
     (err) => console.log('Unable to find position - ' + err.message),
     { enableHighAccuracy: true, timeout: 15000 }
-  )
+    )
 }
 
 /*
@@ -109,31 +109,65 @@ class ListComponent extends Component {
     this.props.fetchAllNearbyDrops();
     
     this.geoId = geoListener(this.updateLocation.bind(this));
+    /*request.get('api/feeds/1/comments').end(function(err,res){
+      console.log(res);
+    });*/
   }
 
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    var userId = data.userId;
-    var postId = data.postId;
-    var text = data.text;
-    //makeDropObject(data);
+    var drop = {
+      "id": "003",
+      "username":"Leon",
+      "userId":"002",
+      "userAvatarId":"drop/002idasdf",
+      "imageId": "drop/gmzf4d8vbyxc50wefkap",
+      "emojiUni": "1f602",
+      "title": "To the cute guy studying outside the LT, WOWOW",
+      "votes": 6,
+      "location": [103.7730933, 1.3056169],
+      "date": "2016-09-08T11:06:43.511Z",
+      "replies": 12
+    };
+    //console.log('new drop added callback activated');
+    console.log('received drop',drop);
+    this.props.updateANearbyDrop(drop);
+
   }
 
   componentWillUnmount() {  
-    console.log(this.props.drops);
+    console.log(this.props.drops.drops);
     navigator.geolocation.clearWatch(this.geoId);
   }
 
+  /*<ul className="messages" ref='messages'>
+        {this.props.drops.map((id,title) => {
+                    //<span className='msgSender'>{msg.from}:</span> 
+                    return <li key={id}>{title + id}</li>
+                })}
+        </ul>*/
+
   render() {
     return (
+      <div>
+      {()=> (console.log('he'))}
+      <ul>
+        {this.props.drops.drops.map((drop) => {
+                    //<span className='msgSender'>{msg.from}:</span> 
+                    return <li key={drop.id}>{drop.title + drop.id}</li>
+                })}
+        </ul>
+      
       <List feed={data} userLocation={this.state.userLocation} />
-    )
+      </div>
+      )
   }
 }
 
 ListComponent.PropTypes = {
   fetchAllNearbyDrops: PropTypes.func.isRequired,
+  updateANearbyDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired
 }
 

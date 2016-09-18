@@ -5,14 +5,22 @@ var request = require('superagent');
 //      console.log(response);
 //    });
 
+//request.get('http://localhost:3000/api/feeds').end(function(err,res){
+//      console.log(',',res);
+//    });
+
+const HOST = 'http://localhost:3000/';
+
 function defaultPromise(req){
     return new Promise(function(resolve, reject) {
-        request.get(req).end( 
+        var final = HOST+req;
+        request.get(final).end( 
             function(err,res){
                 if(err==null){
                 	if(res.body.error){
                 		console.log(res.body + "error on server");
                 	}
+                    //console.log(res);
                     resolve(res);
                 }else{
                     console.log(err);

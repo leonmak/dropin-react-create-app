@@ -8,11 +8,11 @@ import IconButton from 'material-ui/IconButton';
 import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
-import { CloudinaryImage } from 'react-cloudinary';
-import ReactPlayer from 'react-player';
-import SoundPlayer from '../SoundPlayer';
+//import { CloudinaryImage } from 'react-cloudinary';
+//import ReactPlayer from 'react-player';
+//import SoundPlayer from '../SoundPlayer';
 import geolib from 'geolib';
-import {CommentsInput} from './CommentsInput';
+//import {CommentsInput} from './CommentsInput';
 
 import '../../styles/ListItem.css';
 import '../../styles/flexboxgrid.css';
