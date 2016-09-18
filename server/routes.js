@@ -19,16 +19,24 @@ module.exports = function(passport) {
       res.redirect('/');
     });
 
+  // Users API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
 
+  // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds);
-  router.post('/api/feeds', FeedsController.post);
+  router.get('/api/feeds/users/:id', FeedsController.getUserFeeds);
+  router.get('/api/feeds/:id', FeedsController.getFeed);
+  router.post('/api/feeds', FeedsController.postFeed);
 
-  router.get('/api/feeds/:post_id/comments', CommentsController.getComments);
-  router.post('/api/feeds/:post_id/comments', CommentsController.comment);
+  // Comments API
+  router.get('/api/comments/feeds/:id', CommentsController.getFeedComments);
+  router.get('/api/comments/users/:id', CommentsController.getUserComments);
+  router.get('/api/comments/feeds/:post_id/comments/:id', CommentsController.getComment);
+  router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
-  router.get('/api/profile', loginCheck, (req, res) => { 
+
+  router.get('/api/profile', loginCheck, (req, res) => {
     res.json(req.user);
   })
 

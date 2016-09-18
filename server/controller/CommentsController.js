@@ -5,7 +5,8 @@ const ERROR_NOT_FOUND = "Not found";
 
 var CommentsController = {};
 
-CommentsController.getComments = function(req, res) {
+// Get comments from a specific feed
+CommentsController.getFeedComments = function(req, res) {
 	const post_id = req.params.post_id;
 	console.log(post_id);
 	const post = Posts.where({'id': post_id});
@@ -17,9 +18,21 @@ CommentsController.getComments = function(req, res) {
 	});
 }
 
+// Get comments from a specific user
+CommentsController.getUserComments = function(req, res) {
+  const user_id = req.params.user_id;
+  const posts = Posts.where({'user_id': user_id});
+  Posts.where({user_id: user_id}).fetch().then(function(comments) {
+    res.json(comments.toJSON());
+  }).catch(function(err) {
+    res.json({error: ERROR_NOT_FOUND});
+  })
+}
+
+// Get a specific comment from a specific feed
 CommentsController.getComment = function(req, res) {
+	const post_id = req.params.post_id;
 	const id = req.params.id;
-	const post_id =req.params.post_id;
 	Posts.where({post_id: post_id, id: id}).fetch().then(function(comment) {
 		res.json(comment.toJSON());
 	}).catch(function(err) {
@@ -28,11 +41,28 @@ CommentsController.getComment = function(req, res) {
 }
 
 CommentsController.directComment = function(userId, postId, text, res = null) {
+  var user = UsersController.getUserObject(userId);
+
+  // TODO: Link to default anonymous
+  var name = "";
+  var avatar = "";
+
+  if (user.anonymous == false) {
+    name = user.name;
+    avatar = user.facebook_profile_img;
+  }
+
 	const commentHash = {
-		post_id: postId,
-		user_id: userId,
-		text: text
+    // id: {type: 'increments', nullable: false, primary: true},
+    username: name,
+    post_id: postId,
+    user_id: userId,
+    user_avatar_url: avatar,
+    text: text,
+    created_at: moment.now(),
+    updated_at: null
 	}
+
 	const comment = new Comments;
 	new Comments().save(commentHash).then(function(comment) {
 		if (res !== null) {
@@ -45,7 +75,7 @@ CommentsController.directComment = function(userId, postId, text, res = null) {
 	});
 }
 
-CommentsController.comment = function(req, res) {
+CommentsController.postComment = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(userId) {
 		this.directComment(userId, req.params.post_id, req.body.text, res);
 	}).catch(function(err) {
