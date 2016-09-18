@@ -5,31 +5,56 @@ import { Users, Posts, Comments } from './database';
 var UsersController = require('./controller/UsersController');
 var CommentsController = require('./controller/CommentsController');
 var FeedsController = require('./controller/FeedsController');
+var AuthController = require('./controller/AuthController');
+var Auth = require('./middleware/Auth')
 
 const loginCheck = LoginCheck.ensureLoggedIn('/login');
 
 module.exports = function(passport) {
 
-  router.get('/facebook/login',
-    passport.authenticate('facebook'));
+  // router.get('/facebook/login',
+  //   passport.authenticate('facebook'));
 
-  router.get('/facebook/auth',
-    passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
-    (req, res) => {
-      res.redirect('/');
-    });
+  // router.get('/facebook/auth',
+  //   passport.authenticate('facebook', { failureRedirect: '/facebook/login' }),
+  //   (req, res) => {
+  //     res.redirect('/');
+  //   });
 
+  router.post('/auth/facebook/token', (req, res, next) => {
+      passport.authenticate('facebook-token', (err, user, info) => {
+        if (err) { return next(err); }
+        if (!user) { return res.json(info); }
+        if (user) {
+          req.session.save();
+          req.login(user, (err) => {
+            if (err) { return next(err); }
+            return res.json(user);
+          });
+        }
+      })(req, res, next);
+  });
+  // TODO: Session not persistent, stored on db but not deserialized?
+  router.post('/checkSession', AuthController.checkSession);
+  router.post('/logout', Auth.isLoggedIn, AuthController.logout);
+
+  // Users / Profiles API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
 
+  // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds);
-  router.get('/api/feeds/:post_id', FeedsController.getFeed);
-  router.post('/api/feeds', FeedsController.post);
+  router.get('/api/feeds/users/:id', FeedsController.getUserFeeds);
+  router.get('/api/feeds/:id', FeedsController.getFeed);
+  router.post('/api/feeds', FeedsController.postFeed);
 
-  router.get('/api/feeds/:post_id/comments', CommentsController.getComments);
-  router.post('/api/feeds/:post_id/comments', CommentsController.comment);
+  // Comments API
+  router.get('/api/comments/feeds/:id', CommentsController.getFeedComments);
+  router.get('/api/comments/users/:id', CommentsController.getUserComments);
+  router.get('/api/comments/feeds/:post_id/comments/:id', CommentsController.getComment);
+  router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
-  router.get('/api/profile', loginCheck, (req, res) => { 
+  router.get('/api/profile', loginCheck, (req, res) => {
     res.json(req.user);
   })
 

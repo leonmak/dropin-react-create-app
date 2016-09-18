@@ -1,10 +1,11 @@
 import { Posts } from '../database';
 var UsersController = require('./UsersController');
 
-const ERROR_NOT_FOUND = "Not found";
+const ERROR_NOT_FOUND = "Not Found";
 
 var FeedsController = {};
 
+// Get all the feeds across the database
 FeedsController.getFeeds = function(req, res) {
 	Posts.fetchAll({withRelated: "user"}).then(function(posts) {
 		res.json(posts.toJSON());
@@ -13,13 +14,24 @@ FeedsController.getFeeds = function(req, res) {
 	});
 }
 
-FeedsController.getFeed = function(req, res) {
-	const id = req.params.post_id;
-	Posts.where('id', id).fetch({withRelated: "user"}).then(function(post) {
-		res.json(post.toJSON());
+// Get all the feeds that belongs to a specific user
+FeedsController.getUserFeeds = function(req, res) {
+	const id = req.params.id;
+	Posts.where('user_id', id).fetchAll().then(function(posts) {
+		res.json(posts.toJSON());
 	}).catch(function(err) {
-		res.json({error: ERROR_NOT_FOUND});
+		res.json({error: err});
 	})
+}
+
+// Get a specific feed
+FeedsController.getFeed = function(req, res) {
+  const id = req.params.id;
+  Posts.where('id', id).fetch().then(function(post) {
+    res.json(post.toJSON());
+  }).catch(function(err) {
+    res.json({error: ERROR_NOT_FOUND});
+  })
 }
 
 // FeedsController.post = function(req, res) {
@@ -40,13 +52,36 @@ FeedsController.getFeed = function(req, res) {
 // 	});
 // }
 
-FeedsController.directPost = function(userId, title, longitude, latitude, res = null) {
+FeedsController.directPost = function(userId, title, longitude, latitude, emoji, res = null) {
+  var user = UsersController.getUserObject(userId);
+
+  // TODO: Link to default anonymous
+  var name = "";
+  var avatar = "";
+
+  if (user.anonymous == false) {
+    name = user.name;
+    avatar = user.facebook_profile_img;
+  }
+
 	const postHash = {
-		user_id: userId,
-		title: title,
-		longitude: longitude,
-		latitude: latitude,
-	}
+    // id: {type: 'increments', nullable: false, primary: true},
+    emoji: emoji,
+    title: title,
+    votes: 0,
+    user_name: name,
+    user_id: userId,
+    user_avatar_url: avatar,
+    longitude: longitude,
+    latitude: latitude,
+    replies: 0,
+    video_url: "",
+    image_url: "",
+    sound_cloud_url: "",
+    created_at: moment.now(),
+    updated_at: null
+	};
+
 	new Posts().save(postHash).then(function(post) {
 		if (res !== null) {
 			res.json(post);
@@ -59,9 +94,9 @@ FeedsController.directPost = function(userId, title, longitude, latitude, res = 
 }
 
 // {user_id:, title: , longitude: , latitude: }
-FeedsController.post = function(req, res) {
+FeedsController.postFeed = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(user_id) {
-		FeedsController.directPost(user_id, req.body.title, req.body.longitude, req.body.latitude)
+		FeedsController.directPost(user_id, req.body.title, req.body.longitude, req.body.latitude, req.body.emoji)
 	}).catch(function(err) {
 		res.json({error: err});
 	});

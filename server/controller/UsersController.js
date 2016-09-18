@@ -31,6 +31,14 @@ UsersController.getUser = function(req, res) {
 	})
 }
 
+UsersController.getUserObject = function(id) {
+  Users.where('id', id).fetch().then(function(user) {
+    return user;
+  }).catch(function(err) {
+    return null;
+  })
+}
+
 UsersController.createUser = function(accessToken, profile) {
 	Users.where('facebook_id', profile.id).fetch().then(function(user) {
 		if (user) {

@@ -8,23 +8,32 @@ var Schema = {
 		facebook_profile_img: {type: 'string', nullable: true}
 	},
 
+  // Feed
 	posts: {
 		id: {type: 'increments', nullable: false, primary: true},
-		user_id: {type: 'integer', nullable: false, unsigned: true},
-		emoji: {type: 'string', nullable: true, maxlength: 10},
-		title: {type: 'string', nullable: false},
-		votes: {type: 'integer', nullable: false, defaultTo: 0, unsigned: true},
-		longitude: {type: 'float', nullable: false},
+    emoji: {type: 'string', nullable: true, maxlength: 10},
+    title: {type: 'string', nullable: false},
+    votes: {type: 'integer', nullable: false, defaultTo: 0, unsigned: true},
+    user_name: {type: 'string', nullable: false},
+    user_id: {type: 'integer', nullable: false, unsigned: true},
+    user_avatar_url: {type: 'string', nullable: false},
+    longitude: {type: 'float', nullable: false},
 		latitude: {type: 'float', nullable: false},
+    replies: {type: 'integer', nullable: false, unsigned: true},
+    video_url: {type: 'string', nullable: false},
+    image_url: {type: 'string', nullable: false},
+    sound_cloud_url: {type: 'string', nullable: false},
     created_at: {type: 'dateTime', nullable: false},
     updated_at: {type: 'dateTime', nullable: true}
 	},
 
 	comments: {
 		id: {type: 'increments', nullable: false, primary: true},
-		user_id: {type: 'integer', nullable: false, unsigned: true},
-		post_id: {type: 'integer', nullable: false, unsigned: true},
-		text: {type: 'string', nullable: false},
+    username: {type: 'string', nullable: false},
+    post_id: {type: 'integer', nullable: false, unsigned: true},
+    user_id: {type: 'integer', nullable: false, unsigned: true},
+    user_avatar_url: {type: 'string', nullable: false},
+    text: {type: 'string', nullable: false},
     created_at: {type: 'dateTime', nullable: false},
     updated_at: {type: 'dateTime', nullable: true}
 	},

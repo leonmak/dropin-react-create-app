@@ -6,6 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { cloudinaryConfig } from 'react-cloudinary';
+import { checkSessionStatus } from './actions/AuthActions';
 
 import routes from './routes';
 import configureStore from './store/configureStore';
@@ -28,6 +29,8 @@ const store = configureStore();
 
 // React-Redux-Router for props.location
 const history = syncHistoryWithStore(browserHistory, store);
+
+store.dispatch(checkSessionStatus());
 
 /*
 

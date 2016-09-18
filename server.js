@@ -4,48 +4,83 @@ const http = require('http').Server(app);
 const io = require("socket.io")(http);
 const routesConfig = require('./server/routes');
 const passport = require('passport');
-const strategy = require('passport-facebook').Strategy;
+// const strategy = require('passport-facebook').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
 var FeedsController = require('./server/controller/FeedsController');
 // var clientSockets = [];
+var cookieParser = require('cookie-parser');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
-passport.use(new strategy({
-    clientID: process.env.FB_CLIENT_ID,
+passport.use(new FacebookTokenStrategy({
+    clientID: process.env.REACT_APP_FB_CLIENT_ID,
     clientSecret: process.env.FB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3001/facebook/auth',
-    scope: ['user_friends', 'email', 'public_profile', 'publish_actions'],
-    profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+    options: {
+      profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+    }
   },
   FacebookController.loginCallback
 ));
+
+// passport.use(new strategy({
+//     clientID: process.env.FB_CLIENT_ID,
+//     clientSecret: process.env.FB_CLIENT_SECRET,
+//     callbackURL: 'http://localhost:3001/facebook/auth',
+//     scope: ['user_friends', 'email', 'public_profile', 'publish_actions'],
+//     profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+//   },
+//   FacebookController.loginCallback
+// ));
 
 passport.serializeUser(function(user, callback) {
   callback(null, user);
 });
 
 passport.deserializeUser(function(obj, callback) {
+  console.log(obj)
   callback(null, obj);
 });
 
 app.set('port', (process.env.API_PORT || 3001));
+app.use(cookieParser('keyboard cat'));
+
+var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
+
+var options = {
+    host: process.env.MYSQL_HOST || 'localhost',
+    port: process.env.MYSQL_PORT || 3306,
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PASSWORD || 'password',
+    database: 'session_test',
+};
+
+var sessionStore = new MySQLStore(options);
 
 // app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false, store: sessionStore,
+  cookie : {
+    httpOnly: true,
+    maxAge: 2419200000
+  }
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', routesConfig(passport));
 
-/*app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
   next();
-});*/
+});
+
+app.use('/', routesConfig(passport));
 
 io.on('connection',function(socket){
   console.log("client connected");
@@ -56,7 +91,7 @@ io.on('connection',function(socket){
       CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
     }
     if (packet.event == 'feed:send') {
-      FeedsController.directPost(packet.data.userId, packet.data.text);      
+      FeedsController.directPost(packet.data.userId, packet.data.text);
     }
   })
   // based on feeds/ comments or ... no need
