@@ -5,6 +5,7 @@ export const TOGGLE_TOP_BAR_BACK_BUTTON = 'TOGGLE_TOP_BAR_BACK_BUTTON';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
+export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 
 //default is visible (true)
 export function toggleBottomBarVisibility(visibility){
@@ -62,6 +63,14 @@ function receiveCommentsForDrop(comments){
 export function updateANearbyDrop(drop){
 	return{
 		type: UPDATE_A_NEARBY_DROP,
+		drop: drop
+	}
+}
+
+//action to pass drop object from list to drop
+export function passingFromOthersToDrop(drop){
+	return{
+		type: PASSING_FROM_OTHERS_TO_DROP,
 		drop: drop
 	}
 }
