@@ -49,7 +49,7 @@ UsersController.getUserObject = function(id) {
 }
 
 // Creating a new user
-UsersController.createUser = function(req, res, accessToken, profile) {
+UsersController.createUser = function(accessToken, profile) {
 	Users.where('facebook_id', profile.id).fetch().then(function(user) {
 		if (user) {
 			// update access token
