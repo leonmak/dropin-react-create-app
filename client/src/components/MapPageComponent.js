@@ -18,20 +18,14 @@ function geoListener(callback) {
 export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      center: [103.8198, 1.3224],
-      zoom: 18
-    }
+    this.state = { zoom: 18 }
+
     this.geoId = null;
     this.updateLocation = this.updateLocation.bind(this);
   }
 
   updateLocation(coords) {
-    console.log(coords);
-    this.setState({
-      center: [coords.longitude, coords.latitude]
-    });
-
+    this.props.setLocation([coords.longitude, coords.latitude])
   }
 
   componentDidMount() {
@@ -68,7 +62,7 @@ export default class MapPageComponent extends Component {
     map.getContainer().appendChild(marker);
     map.on('move', function() {
       // Update the x/y coordinates based on the new center of the map.
-      position = map.project(self.state.center);
+      position = map.project(self.props.location);
       marker.style.top = position.y - height / 2 + 'px';
       marker.style.left = position.x - width / 2 + 'px';
     });
@@ -101,41 +95,41 @@ export default class MapPageComponent extends Component {
   }
 
   render() {
-    const {center, zoom} = this.state
-        , {user} = this.props;
+    const {zoom} = this.state
+        , {location, user} = this.props;
 
     return (
       <div>
         <ReactMapboxGl
-          onStyleLoad={this.setupMap(user, center)}
+          onStyleLoad={this.setupMap(user, location)}
           containerStyle={{height: window.innerHeight - 56 - 64}}
           style={process.env.REACT_APP_MAPBOX_STYLE || "mapbox://styles/mapbox/streets-v8" }
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[zoom]}
           pitch={60}
-          center={center}>
+          center={location}>
 
           <Layer
             type="fill"
             paint={{ "fill-color": "#00bcd4", "fill-opacity": 0.2 }}>
-            <Feature coordinates={this.createGeoJSONCircle(center, 0.1)}/>
+            <Feature coordinates={this.createGeoJSONCircle(location, 0.1)}/>
           </Layer>
           <Layer
             type="fill"
             paint={{ "fill-color": "#00bcd4", "fill-opacity": 0.1 }}>
-            <Feature coordinates={this.createGeoJSONCircle(center, 0.09)}/>
+            <Feature coordinates={this.createGeoJSONCircle(location, 0.09)}/>
           </Layer>
           <Layer
             type="symbol"
             layout={{ "icon-image": "Map_marker", "icon-size": 0.3 }}>
-            <Feature coordinates={center}/>
+            <Feature coordinates={location}/>
           </Layer>
         {/* Example using custom uploaded svgs */}
           <Layer
             type="symbol"
             layout={{ "icon-image": "1f0cf", "icon-size": 1 }}>
             <Feature
-              coordinates={[center[0]+0.0005,center[1]]}
+              coordinates={[location[0]+0.0005,location[1]]}
               onClick={()=>browserHistory.push('/drops/001')}
             />
           </Layer>

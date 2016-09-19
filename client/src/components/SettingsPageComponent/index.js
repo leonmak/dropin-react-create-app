@@ -5,7 +5,7 @@ import * as fb from '../../utils/facebook-url';
 import ImageUpload from '../ImageUpload';
 import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 
 import '../../styles/Settings.css';
 
