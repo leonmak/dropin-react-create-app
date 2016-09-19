@@ -48,11 +48,18 @@ store.dispatch(toggleBottomBarVisibility(true));
 store.dispatch(toggleBottomBarVisibility(false));
 
 unsubscribe()*/
+var ReactGA = require('react-ga');
+ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID);
+
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+}
 
 ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <Router history={history} routes={routes} />
+      <Router history={history} routes={routes} onUpdate={logPageView}/>
     </MuiThemeProvider>
   </Provider>, document.getElementById('root')
 );
