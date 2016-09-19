@@ -61,7 +61,7 @@ export default class MapPageComponent extends Component {
 
     // Display a popup when hovering over the marker
     marker.addEventListener('click', function(e) {
-      browserHistory.push('profile');
+      browserHistory.push('/profile');
     });
 
     // Append the marker to the map.
@@ -134,7 +134,10 @@ export default class MapPageComponent extends Component {
           <Layer
             type="symbol"
             layout={{ "icon-image": "1f0cf", "icon-size": 1 }}>
-            <Feature coordinates={[center[0]+0.0005,center[1]]}/>
+            <Feature
+              coordinates={[center[0]+0.0005,center[1]]}
+              onClick={()=>browserHistory.push('/drops/001')}
+            />
           </Layer>
 
         </ReactMapboxGl>

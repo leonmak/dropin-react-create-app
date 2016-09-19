@@ -1,3 +1,5 @@
+const passport = require('passport');
+
 var AuthController = {};
 
 AuthController.login = function(req, res, next) {
