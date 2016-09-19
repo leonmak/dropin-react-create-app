@@ -41,11 +41,13 @@ UsersController.getUser = function(req, res) {
 
 // Get a user object reference for back-end parsing and JSON object construction
 UsersController.getUserObject = function(id) {
+
+
   Users.where('id', id).fetch().then(function(user) {
-    return user;
+    console.log(user.toJSON());
   }).catch(function(err) {
-    return null;
-  })
+      //...
+    })
 }
 
 // Creating a new user

@@ -2,6 +2,8 @@ var knex = require('./knexconfig');
 var Schema = require('./schema');
 var sequence = require('when/sequence');
 var _ = require('lodash');
+
+
 function createTable(tableName) {
   console.log(process.env);
   return knex.schema.createTable(tableName, function (table) {
@@ -41,6 +43,7 @@ function createTable(tableName) {
     });
   });
 }
+
 function createTables () {
   var tables = [];
   var tableNames = _.keys(Schema);
@@ -51,11 +54,12 @@ function createTables () {
   });
   return sequence(tables);
 }
+
 createTables()
-.then(function() {
-  console.log('Tables created!!');
-  process.exit(0);
-})
-.catch(function (error) {
-  throw error;
-});
+  .then(function() {
+    console.log('Tables created!!');
+    process.exit(0);
+  })
+  .catch(function (error) {
+    throw error;
+  });

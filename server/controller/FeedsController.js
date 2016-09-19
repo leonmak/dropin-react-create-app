@@ -1,79 +1,128 @@
 import { Posts } from '../database';
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
+var VotesController = require('./VotesController');
 var MESSAGES = require('./Messages');
 
 var FeedsController = {};
 
-// Mapping function to parse feeds from database schema to expected format for API endpoint
-FeedsController.parseFeed = function(post) {
+/*** Parsers ***/
+FeedsController.apiParse = function(fetchedPost) {
 
   // Get user details
-  // TODO: Generate unique anonymous name
+  var user = fetchedPost.user;
+
   var username = "";
   var userID = -1;
-  // TODO: Link to default anonymous profile avatar
   var avatar = "";
-  var user = UsersController.getUserObject(post.user_id);
-  if (user.anonymous == false) {
-    username = user.name;
-    avatar = user.facebook_profile_img;
-    userID = post.user_id;
+  if (fetchedPost.anonymous == 0) {
+    username = fetchedPost.user_name;
+    avatar = fetchedPost.facebook_profile_img;
+    userID = fetchedPost.user_id;
   }
 
-  // Get vote details
-  var voteCounts = VotesController.getFeedVoteCount();
+
+  // Get the votes count
+  var votes = fetchedPost.votes;
+  var voteCount = 0;
+  for (var j = 0; j < votes.length; ++j) {
+    var vote = votes[j];
+    if(vote.vote_type) {
+      voteCount++;
+    } else {
+      voteCount--;
+    }
+  }
 
   // Get last updated date
-  var date = post.created_at;
-  if (post.updated_at != null) {
-    date = post.updated_at;
+  var date = fetchedPost.created_at;
+  if (fetchedPost.updated_at != null) {
+    date = fetchedPost.updated_at;
   }
 
+
   // Get replies count
-  var replyCounts = CommentsController.getFeedCommentCount(post.id);
+  var comments = fetchedPost.comments;
+  var commentCount = comments.length;
+
 
   // Parse and build JSON for API endpoint
   var parsedPost = {
-    "dropId": post.id,
-    "username": username,
-    "userId": userID,
-    "userAvatarId": avatar,
-    "emojiUni": post.emoji,
-    "title": post.title,
-    "videoUrl": post.video,
-    "imageId": post.image,
-    "soundCloudUrl": post.sound,
-    "votes": voteCounts,
-    "location": [post.longitude, post.latitude],
-    "date": date,
-    "replies": replyCounts
+    dropId:fetchedPost.id,
+    username:username,
+    userId:userID,
+    userAvatarId:avatar,
+    emojiUni:fetchedPost.emoji,
+    title:fetchedPost.title,
+    videoUrl:fetchedPost.video,
+    imageId:fetchedPost.image,
+    soundCloudUrl:fetchedPost.sound,
+    votes: voteCount,
+    location:[fetchedPost.longitude, fetchedPost.latitude],
+    date: date,
+    replies: commentCount
   }
 
   return parsedPost;
 }
 
 /*** Back-end Queries ***/
-
+//...
 
 /*** Front-end Queries ***/
 
 // Get all the feeds across the database
 FeedsController.getFeeds = function(req, res) {
-	Posts.fetchAll({withRelated: "user"}).then(function(posts) {
-    posts.map(FeedsController.parseFeed);
-		res.json(posts.toJSON());
-	}).catch(function(err) {
-		res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
-	});
+
+  Posts.fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
+    // Get all posts objects
+    var fetchedPosts = posts.toJSON();
+    var parsedPosts = [];
+
+    for (var i = 0; i < fetchedPosts.length; ++i) {
+
+      // Get post object
+      var fetchedPost = fetchedPosts[i];
+
+      // Parse post
+      var parsedPost = FeedsController.apiParse(fetchedPost);
+
+      // Collate post
+      parsedPosts.push(parsedPost);
+      // console.log(parsedPost);
+    }
+
+    // console.log(fetchedPosts);
+    res.json(parsedPosts);
+
+  }).catch(function(err) {
+    res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
+  });
+
 }
 
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
 	const id = req.params.id;
-	Posts.where('user_id', id).fetchAll().then(function(posts) {
-    posts.map(FeedsController.parseFeed);
-		res.json(posts.toJSON());
+	Posts.where('user_id', id).fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
+    // Get all posts objects
+    var fetchedPosts = posts.toJSON();
+    var parsedPosts = [];
+
+    for (var i = 0; i < fetchedPosts.length; ++i) {
+
+      // Get post object
+      var fetchedPost = fetchedPosts[i];
+
+      // Parse post
+      var parsedPost = FeedsController.apiParse(fetchedPost);
+
+      // Collate post
+      parsedPosts.push(parsedPost);
+      // console.log(parsedPost);
+    }
+
+		res.json(parsedPosts);
 	}).catch(function(err) {
 		res.json({error: MESSAGES.ERROR_USER_POST_NOT_FOUND});
 	})
@@ -82,9 +131,9 @@ FeedsController.getUserFeeds = function(req, res) {
 // Get a specific feed
 FeedsController.getFeed = function(req, res) {
   const id = req.params.id;
-  Posts.where('id', id).fetch().then(function(post) {
-    var parsedPost = FeedsController.parseFeed(post);
-    res.json(parsedPost.toJSON());
+  Posts.where('id', id).fetch({withRelated: ['votes', 'comments', 'user']}).then(function(post) {
+    var parsedPost = FeedsController.apiParse(post);
+    res.json(parsedPost);
   }).catch(function(err) {
     res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
   })
