@@ -48,16 +48,17 @@ export function attemptSignUp(email, password, displayName) {
     dispatch(clickedSignUp());
 
     request
-    .post('/facebook/login')
-    .end(function(err, res){
+    .post('http://localhost:3001/auth/facebook/token')
+    .send({ access_token: token })
+    .end(function(err,res){
       if(err){
         console.log(err)
         dispatch(signUpFail(err))
       } else {
-        console.log(res)
         dispatch(signUpSuccess(res.body))
       }
-    });
+    })
+
 
     // $.ajax({
     //   type: 'POST',
@@ -102,7 +103,6 @@ export function attemptLogin(token) {
         console.log(err)
         dispatch(signUpFail(err))
       } else {
-        console.log(res)
         dispatch(signUpSuccess(res.body))
       }
     })
@@ -139,12 +139,11 @@ export function checkSessionStatus() {
     dispatch(startedSessionCheck());
 
     request
-    .post('/checkSession')
+    .post('http://localhost:3001/checkSession')
     .end(function(err,res){
       if(err){
         console.log(err)
       } else {
-        console.log(res.body)
         dispatch(checkedSessionStatus(res.body))
       }
     })
@@ -181,7 +180,6 @@ export function attemptLogout(){
     .end(function(err,res){
       if(err)
         console.log(err)
-      console.log(res.body)
       dispatch(logoutSuccess());
     })
 

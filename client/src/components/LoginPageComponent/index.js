@@ -3,7 +3,6 @@ import FacebookLogin from 'react-facebook-login';
 import {browserHistory} from 'react-router';
 
 const responseFacebook = attemptLogin => (response) => {
-  console.log(response);
   attemptLogin(response.accessToken);
 }
 

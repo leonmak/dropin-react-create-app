@@ -6,6 +6,14 @@
 
 .bottom-navigation > div > button {
   min-width: 60px !important;
+  pointer-events: all;
+}
+
+.bottom-navigation > div > button > div > span {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .add-drop-btn {
