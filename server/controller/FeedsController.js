@@ -74,6 +74,7 @@ FeedsController.apiParse = function(fetchedPost) {
 // Get all the feeds across the database
 FeedsController.getFeeds = function(req, res) {
 
+  // Get joint table objects
   Posts.fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
@@ -104,6 +105,8 @@ FeedsController.getFeeds = function(req, res) {
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
 	const id = req.params.id;
+
+  // Get joint table objects
 	Posts.where('user_id', id).fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
@@ -132,7 +135,7 @@ FeedsController.getUserFeeds = function(req, res) {
 FeedsController.getFeed = function(req, res) {
   const id = req.params.id;
   Posts.where('id', id).fetch({withRelated: ['votes', 'comments', 'user']}).then(function(post) {
-    var parsedPost = FeedsController.apiParse(post);
+    var parsedPost = FeedsController.apiParse(post.toJSON());
     res.json(parsedPost);
   }).catch(function(err) {
     res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
@@ -150,7 +153,7 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
   //   id = posts.count() + 1;
   // }
 
-  const postHash = {
+  var postHash = {
     // id: id,
     user_id: userID,
     emoji: emoji,
@@ -179,7 +182,7 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
-	UsersController.findUserId(req.user.id).then(function(user_id) {
+	UsersController.findUserId(1).then(function(user_id) {
       FeedsController.directPost(user_id,
         req.body.emojiUni,
         req.body.title,
