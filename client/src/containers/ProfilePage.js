@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ProfilePageComponent from '../components/ProfilePageComponent';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
 
-import {fetchAllMyDrops} from '../actions';
+import {fetchAllMyDrops, passingFromOthersToDrop} from '../actions';
 
 ///import {}
 
@@ -22,7 +22,8 @@ function mapDispatchToProps(dispatch) {
     },
     fetchAllMyDrops:(userId)=>{
   	  dispatch(fetchAllMyDrops(userId));
-  	}
+  	},
+    passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop))
   };
 }
 

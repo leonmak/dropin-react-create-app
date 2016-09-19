@@ -100,7 +100,10 @@ export default class ProfilePageComponent extends Component{
         <div className="col-xs-12 ">
         <Tabs>
           <Tab label="Top Drops" >
-            <List feed={this.props.profile.drops} isProfile={true}/>
+            <List 
+            feed={this.props.profile.drops} 
+            isProfile={true}
+            passingFromOthersToDrop={this.props.passingFromOthersToDrop}/>
           </Tab>
           <Tab label="Recent Comments" >
             <CommentsList comments={comments} isProfile={true}/>
@@ -119,6 +122,7 @@ export default class ProfilePageComponent extends Component{
 ProfilePageComponent.PropTypes = {
   fetchAllMyDrops: PropTypes.func.isRequired,
   passSnackbarMessage: PropTypes.func.isRequired,
+  passingFromOthersToDrop: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 }
