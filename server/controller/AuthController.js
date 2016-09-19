@@ -9,8 +9,6 @@ AuthController.authUser = function (req, res) {
 }
 
 AuthController.checkSession =  function(req, res) {
-  console.log(req.session)
-  console.log(req.isAuthenticated())
   var isLoggedIn = req.isAuthenticated();
   if (isLoggedIn)
     return res.json({ isLoggedIn: isLoggedIn, user: req.user });
