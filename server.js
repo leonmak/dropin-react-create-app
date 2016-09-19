@@ -43,36 +43,31 @@ passport.deserializeUser(function(obj, callback) {
 });
 
 app.set('port', (process.env.API_PORT || 3001));
-app.use(cookieParser('keyboard cat'));
 
 var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
+// var MySQLStore = require('express-mysql-session')(session);
 
-var options = {
-    host: process.env.MYSQL_HOST || 'localhost',
-    port: process.env.MYSQL_PORT || 3306,
-    user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PASSWORD || 'password',
-    database: 'session_test',
-};
+// var options = {
+//     host: process.env.MYSQL_HOST || 'localhost',
+//     port: process.env.MYSQL_PORT || 3306,
+//     user: process.env.MYSQL_USER || 'root',
+//     password: process.env.MYSQL_PASSWORD || 'password',
+//     database: 'dropin',
+// };
 
-var sessionStore = new MySQLStore(options);
+// var sessionStore = new MySQLStore(options);
 
 // app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false, store: sessionStore,
-  cookie : {
-    httpOnly: true,
-    maxAge: 2419200000
-  }
-}));
+app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });

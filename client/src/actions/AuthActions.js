@@ -96,7 +96,8 @@ export function attemptLogin(token) {
     dispatch(clickedLogin());
 
     request
-    .post('http://localhost:3001/auth/facebook/token')
+    .post('/auth/facebook/token')
+    .withCredentials()
     .send({ access_token: token })
     .end(function(err,res){
       if(err){
@@ -139,7 +140,8 @@ export function checkSessionStatus() {
     dispatch(startedSessionCheck());
 
     request
-    .post('http://localhost:3001/checkSession')
+    .post('/checkSession')
+    .withCredentials()
     .end(function(err,res){
       if(err){
         console.log(err)

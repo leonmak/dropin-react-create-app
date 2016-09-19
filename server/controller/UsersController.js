@@ -66,9 +66,10 @@ UsersController.createUser = function(accessToken, profile) {
 				facebook_token: accessToken
 			}
 			new Users().save(userHash).then(function(user) {
-
+        console.log(user)
 			}).catch(function(err) {
-				res.json({error: MESSAGES.ERROR_CREATING_USER});
+        console.log(err)
+				// res.json({error: MESSAGES.ERROR_CREATING_USER});
 			});
 		}
 	});
