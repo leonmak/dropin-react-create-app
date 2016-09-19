@@ -119,6 +119,7 @@ class ListComponent extends Component {
   }
 
   componentWillUnmount() {  
+    this.socketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 

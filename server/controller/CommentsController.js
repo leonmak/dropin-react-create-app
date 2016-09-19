@@ -59,7 +59,7 @@ CommentsController.getComment = function(req, res) {
 }
 
 // Socket link to write new comment to database
-CommentsController.directComment = function(userId, postId, text, res = null) {
+CommentsController.directComment = function({userId, postId, text}, res = null) {
   var user = UsersController.getUserObject(userId);
 
   // TODO: Link to default anonymous

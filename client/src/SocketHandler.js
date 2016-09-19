@@ -40,6 +40,11 @@ export default class SocketHandler {
     socket.on('server:sendEvent', this._eventHandler.bind(this));
 	}
 
+	uninstall() {
+		console.log('unlistening ',this.channelId);
+		socket.removeAllListeners('server:sendEvent');
+	}
+
 	_eventHandler(packet) {
 		console.log("received event");
 		if (packet.channelId === this.channelId) {

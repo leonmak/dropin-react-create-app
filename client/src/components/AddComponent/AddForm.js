@@ -65,6 +65,10 @@ const handler = (reset, socketHandler) => values =>
     });*/
     }
 
+    componentWillUnmount() {
+      socketHandler.uninstall();
+    }
+
     postReceive(){
     }
 
