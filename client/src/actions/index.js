@@ -75,14 +75,15 @@ ACTION IS CALLED ON PROFILE PAGE
 ***********************************************************************/
 
 //action to get drops for one user
-export function fetchAllMyDrops(){
+export function fetchAllMyDrops(userId){
 	return (dispatch)=>{
-		BackendHelper.getAllDrops()
+		BackendHelper.getMyDrops(userId)
 		.then(response=>dispatch(receiveAllMyDrops(response)));
 	}
 }
 
 export function receiveAllMyDrops(allMyDrops){
+	console.log(allMyDrops);
 	return{
 		type: FETCH_ALL_MY_DROPS,
 		drops: allMyDrops

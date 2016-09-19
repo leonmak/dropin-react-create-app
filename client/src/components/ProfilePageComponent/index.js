@@ -67,9 +67,10 @@ export default class ProfilePageComponent extends Component{
     if(!this.props.user) {
       this.props.passSnackbarMessage('Log in to view profile')
       browserHistory.push('/login');
+    }else{
+      console.log('now only fetch thanhs drops');
+      this.props.fetchAllMyDrops(4);
     }
-/*        BackendHelper.getAllDrops()
-    .then(response=>dispatch(receiveAllNearbyDrops(response)));*/
   }
 
 	render() {
@@ -90,7 +91,7 @@ export default class ProfilePageComponent extends Component{
         </div>
         <div className="col-xs-12 ">
           <div className="row center-xs">
-            <div className="col-xs-3 profile-stat"><p>{drops.length || 0 }</p><small>{text.pluralizer('drop', drops.length)}</small></div>
+            <div className="col-xs-3 profile-stat"><p>{this.props.profile.drops.length || 0 }</p><small>{text.pluralizer('drop', this.props.profile.drops.length)}</small></div>
             <div className="col-xs-3 profile-stat"><p>{comments.length || 0 }</p><small>{text.pluralizer('comment', comments.length)}</small></div>
           </div>
         </div>
@@ -99,7 +100,7 @@ export default class ProfilePageComponent extends Component{
         <div className="col-xs-12 ">
         <Tabs>
           <Tab label="Top Drops" >
-            <List feed={drops} isProfile={true}/>
+            <List feed={this.props.profile.drops} isProfile={true}/>
           </Tab>
           <Tab label="Recent Comments" >
             <CommentsList comments={comments} isProfile={true}/>
@@ -118,6 +119,6 @@ export default class ProfilePageComponent extends Component{
 ProfilePageComponent.PropTypes = {
   fetchAllMyDrops: PropTypes.func.isRequired,
   passSnackbarMessage: PropTypes.func.isRequired,
-  drops: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 }

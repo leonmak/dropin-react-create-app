@@ -60,8 +60,12 @@ export function getAllDrops(){
     return defaultPromise(req);
 }
 
-//api/feeds/1/comments
+export function getMyDrops(userId){
+    var req = 'api/feeds/users/'+userId;
+    return defaultPromise(req);
+}
 
+//api/feeds/1/comments
 export function getSingleDropComments(dropId){
 	var req = 'api/feeds/'+dropId+'/comments';
 	return defaultPromise(req);

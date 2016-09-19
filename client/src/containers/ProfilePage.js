@@ -9,7 +9,8 @@ import {fetchAllMyDrops} from '../actions';
 
 function mapStateToProps(state) {
   return {
-    user: state.userAuthSession.userObject
+    user: state.userAuthSession.userObject,
+    profile: state.profile
     //drops: state.
   };
 }
@@ -19,8 +20,8 @@ function mapDispatchToProps(dispatch) {
     passSnackbarMessage: (msg)=> {
     	dispatch(passSnackbarMessage(msg));
     },
-    fetchAllMyDrops:()=>{
-  	  dispatch(fetchAllMyDrops());
+    fetchAllMyDrops:(userId)=>{
+  	  dispatch(fetchAllMyDrops(userId));
   	}
   };
 }
