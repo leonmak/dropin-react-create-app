@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import {attemptLogin, navigatedAwayFromAuthFormPage} from '../actions/AuthActions';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
-import {toggleBottomBarVisibility} from '../actions';
+import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
 
 import LoginPageComponent from '../components/LoginPageComponent';
 

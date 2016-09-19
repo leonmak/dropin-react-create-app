@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -9,6 +9,8 @@ import * as fb from '../../utils/facebook-url';
 import * as text from '../../utils/text';
 
 import '../../styles/ProfilePage.css';
+
+//import '../'
 
 // TODO: fetch user's comments ordered by date
 var comments = [
@@ -66,6 +68,8 @@ export default class ProfilePageComponent extends Component{
       this.props.passSnackbarMessage('Log in to view profile')
       browserHistory.push('/login');
     }
+/*        BackendHelper.getAllDrops()
+    .then(response=>dispatch(receiveAllNearbyDrops(response)));*/
   }
 
 	render() {
@@ -109,4 +113,11 @@ export default class ProfilePageComponent extends Component{
       </div>
 		)
 	}
+}
+
+ProfilePageComponent.PropTypes = {
+  fetchAllMyDrops: PropTypes.func.isRequired,
+  passSnackbarMessage: PropTypes.func.isRequired,
+  drops: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 }
