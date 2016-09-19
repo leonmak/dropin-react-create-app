@@ -155,12 +155,12 @@ class ListComponent extends Component {
                 })}
         </ul>*/
 
+        /*<List feed={data} userLocation={this.state.userLocation} */
+
   render() {
     return (
       <div>
-      
-      
-      <List feed={data} userLocation={this.state.userLocation} 
+      <List feed={this.props.drops.drops} userLocation={this.state.userLocation} 
       passingFromOthersToDrop={this.props.passingFromOthersToDrop} />
       </div>
       )

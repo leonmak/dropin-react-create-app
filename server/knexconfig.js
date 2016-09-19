@@ -12,3 +12,16 @@ module.exports = require('knex')({
   pool: { min: 0, max: 7 }
 
 });
+
+
+/*module.exports = require('knex')({
+  client: 'mysql',
+  connection: {
+    host: 'localhost',
+    user: 'root',
+    password: 'dropindropin',
+    port: 3306,
+    database: 'dropin'
+  },
+  pool: {min: 0, max: 7}
+});*/
