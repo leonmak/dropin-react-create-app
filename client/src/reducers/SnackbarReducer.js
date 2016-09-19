@@ -8,14 +8,16 @@ const initialState = {
 export function snackbar(state=initialState, action) {
   switch (action.type) {
     case TOGGLE_SNACKBAR:
-      return Object.assign({}, state, {
-        snackbarVisibility: action.visibility
-      })
+      if(action.visibility === true || action.visibility === false)
+        return Object.assign({}, state, {
+          snackbarVisibility: action.visibility
+        })
     case PASS_SNACKBAR_MESSAGE:
-      return Object.assign({}, {
-        snackbarVisibility: true,
-        snackbarMessage: action.message
-      })
+      if(action.message)
+        return Object.assign({}, {
+          snackbarVisibility: true,
+          snackbarMessage: action.message
+        })
     default:
       return state
   }

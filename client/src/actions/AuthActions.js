@@ -43,12 +43,13 @@ export function signUpFail(error) {
     return { type: SignUp_Fail, error };
 }
 
-export function attemptSignUp(email, password, displayName) {
+export function attemptSignUp(token) {
   return (dispatch) => {
     dispatch(clickedSignUp());
 
     request
-    .post('http://localhost:3001/auth/facebook/token')
+    .post('/auth/facebook/token')
+    .withCredentials()
     .send({ access_token: token })
     .end(function(err,res){
       if(err){
@@ -58,23 +59,6 @@ export function attemptSignUp(email, password, displayName) {
         dispatch(signUpSuccess(res.body))
       }
     })
-
-
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/signup',
-    //   data: {email, password, displayName} })
-    //   .done(function(data) {
-    //       if (data.error){
-    //           dispatch(signUpFail(data.error));
-    //       } else {
-    //           dispatch(signUpSuccess(data));
-    //       }
-    //   })
-    //   .fail(function(a,b,c,d) {
-    //     // console.log('failed to signup',a,b,c,d);
-    //     dispatch(signUpFail("TODO find the error..."));
-    //   });
   }
 }
 
@@ -107,22 +91,6 @@ export function attemptLogin(token) {
         dispatch(signUpSuccess(res.body))
       }
     })
-
-    // $.ajax({
-    //         type: 'POST',
-    //         url: '/login',
-    //         data: {email, password} })
-    //         .done(function(data) {
-    //             if (data.error){
-    //                 dispatch(loginFail(data.error));
-    //             } else {
-    //                 dispatch(loginSuccess(data));
-    //             }
-    //         })
-    //         .fail(function(a,b,c,d) {
-    //           // console.log('failed to login',a,b,c,d);
-    //           dispatch(loginFail("TODO find the error..."));
-    //         });
   }
 }
 
@@ -146,22 +114,9 @@ export function checkSessionStatus() {
       if(err){
         console.log(err)
       } else {
-        console.log(res.body.user)
         dispatch(checkedSessionStatus(res.body.user))
       }
     })
-
-    // $.ajax({
-    //         type: 'POST',
-    //         url: '/checkSession',
-    //         data: {} })
-    //         .done(function(result) {
-    //             dispatch(checkedSessionStatus(result));
-    //         })
-    //         .fail(function(a,b,c,d) {
-    //           // console.log('failed to check',a,b,c,d);
-    //           dispatch(checkedSessionStatus("TODO find the error..."));
-    //         });
   }
 }
 
@@ -185,17 +140,6 @@ export function attemptLogout(){
         console.log(err)
       dispatch(logoutSuccess());
     })
-
-    // $.ajax({
-    //       type: 'POST',
-    //       url: '/logout'})
-    //           .done(function() {
-    //                 dispatch(logoutSuccess());
-    //           })
-    //           .fail(function() {
-    //             // Not the redux way, but I think it's fair enough.
-    //             alert("Can't log you out at the moment. Try again in a bit");
-    //           });
   }
 }
 

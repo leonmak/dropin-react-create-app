@@ -42,7 +42,7 @@ export function updateUserInfo(userAuthState = defaultStartState , action) {
       });
 
     case Checked_Session_Status:
-      if (action.result.isLoggedIn){
+      if (action.result && action.result.isLoggedIn){
         return Object.assign({}, userAuthState, {
           isLoggedIn: true,
           fetchingAuthUpdate: false,
