@@ -15,6 +15,11 @@ function geoListener(callback) {
   )
 }
 
+const goToURL = (url,props,drop) => setTimeout(()=>{
+  browserHistory.push(url);
+  props.passingFromOthersToDrop(drop);
+}, 300);
+
 export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
@@ -91,6 +96,10 @@ export default class MapPageComponent extends Component {
     return map => {
       if(user)
         this.createFaceMarker(center, fb.profileImg(user.id, 48), map)
+      console.log(map)
+
+      map.boxZoom.disable();
+      map.keyboard.disable();
     }
   }
 
@@ -107,6 +116,7 @@ export default class MapPageComponent extends Component {
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[zoom]}
           pitch={60}
+          hash={true}
           center={location}>
 
           <Layer
@@ -125,14 +135,19 @@ export default class MapPageComponent extends Component {
             <Feature coordinates={location}/>
           </Layer>
         {/* Example using custom uploaded svgs */}
-          <Layer
-            type="symbol"
-            layout={{ "icon-image": "1f0cf", "icon-size": 1 }}>
-            <Feature
-              coordinates={[location[0]+0.0005,location[1]]}
-              onClick={()=>browserHistory.push('/drops/001')}
-            />
-          </Layer>
+          {this.props.drops.map((drop, idx) => {
+            return (
+              <Layer type="symbol" key={idx}
+              layout={
+              { "icon-image": drop.emojiUni,
+                "icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
+                <Feature
+                  coordinates={drop.location}
+                  onClick={()=> goToURL(`/drops/${drop.dropId}`,this.props, drop)}
+                />
+              </Layer>
+            )
+          })}
 
         </ReactMapboxGl>
 
