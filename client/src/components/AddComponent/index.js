@@ -9,7 +9,6 @@ class AddComponent extends Component {
       this.props.passSnackbarMessage('Log in to add new message')
       browserHistory.push('/login');
     }
-
   }
   render() {
     return (

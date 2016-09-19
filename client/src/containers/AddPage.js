@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
 
 
 const AddPage = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AddComponent);
 
