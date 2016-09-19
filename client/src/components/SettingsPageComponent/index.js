@@ -11,15 +11,30 @@ import '../../styles/Settings.css';
 
 export default class SettingsPageComponent extends Component {
 
+  constructor(props){
+    super(props)
+
+    this.logout = this.logout.bind(this);
+    this.goToLoginIfLoggedOut = this.goToLoginIfLoggedOut.bind(this);
+  }
+
   componentWillMount() {
+    this.goToLoginIfLoggedOut();
+  }
+
+  componentDidUpdate() {
+    this.goToLoginIfLoggedOut();
+  }
+
+  goToLoginIfLoggedOut() {
     if(!this.props.user) {
-      this.props.passSnackbarMessage('Log in to view settings')
       browserHistory.push('/login');
     }
   }
 
   logout() {
     this.props.attemptLogout();
+    this.props.passSnackbarMessage('Logged out')
   }
 
   render() {

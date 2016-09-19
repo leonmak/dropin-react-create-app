@@ -11,10 +11,16 @@ const responseFacebook = attemptLogin => (response) => attemptLogin(response.acc
 
 export default class LoginPageComponent extends Component {
 
+  constructor(props){
+    super(props)
+    this.goToProfileIfLoggedIn = this.goToProfileIfLoggedIn.bind(this);
+  }
+
+
   goToProfileIfLoggedIn(){
     if (this.props.userAuthSession.isLoggedIn){
       browserHistory.push('/profile');
-      this.props.passSnackbarMessage('Already logged in!');
+      this.props.passSnackbarMessage('Logged in');
     }
   }
   componentWillMount() {

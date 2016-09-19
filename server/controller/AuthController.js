@@ -1,11 +1,17 @@
 var AuthController = {};
 
-AuthController.authUser = function (req, res) {
-  // do something with req.user
-  res.send(req.user? 200 : 401);
-
-  // if(req.user)
-  //   res.send(200, {user:req.user});
+AuthController.login = function(req, res, next) {
+  passport.authenticate('facebook-token', (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) { return res.json(info); }
+    if (user) {
+      req.session.save();
+      req.login(user, (err) => {
+        if (err) { return next(err); }
+        return res.json(user);
+      });
+    }
+  })(req, res, next);
 }
 
 AuthController.checkSession =  function(req, res) {
