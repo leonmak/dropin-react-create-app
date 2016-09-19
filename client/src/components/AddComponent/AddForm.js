@@ -17,7 +17,7 @@ const handler = (reset, socketHandler) => values =>
     values.emojiUni = 'default-marker';
   }
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-  socketHandler.post(1,values, 100, 100);
+  socketHandler.post({userId: 1, title: "hihi", longitude: 3, latitude: 4});
   reset();
 }
 /*new Promise(resolve => {
@@ -58,7 +58,8 @@ const handler = (reset, socketHandler) => values =>
   class AddForm extends Component {
 
     componentDidMount() {
-      socketHandler.setup(FEEDS_SOCKET,{}, this.postReceive.bind(this));
+      // TODO: duplicate with list view!
+      socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
       /*request.get('api/feeds/1/comments').end(function(err,res){
       console.log(res);
     });*/
@@ -70,7 +71,7 @@ const handler = (reset, socketHandler) => values =>
 
     sendMessage(msg) {
       return ()=>{
-        socketHandler.post(1,msg, 100, 100);
+        socketHandler.post({userId: 1, title: "hihi", longitude: 3, latitude: 4});
         console.log("Add form has posted to socket!");  
       }
     }

@@ -61,17 +61,17 @@ export default class SocketHandler {
 		}
 	}
 
-	comment(userId, postId, text) {
+	comment({userId, postId, text}) { //accept a hash {userId: , postId: , text: }
 		console.log("sended comment");
     socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
 	}
 
-	post(userId, title, longitude, latitude) {
+	post({userId, title, longitude, latitude}) { //accept a hash {userId: , title: , longitude: , latitude: }
 		console.log("sended post");
 		socket.emit('client:sendEvent', this._packSocket({userId, title, longitude, latitude}));
 	}
 
-	vote(userId, postId, voteType) {
+	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }
 		console.log("sended vote");
 		socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
 	}

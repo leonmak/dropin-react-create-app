@@ -114,7 +114,7 @@ class ListComponent extends Component {
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    console.log('received drop',data);
+    console.log('received drop', data);
     this.props.updateANearbyDrop(data);
   }
 

@@ -105,10 +105,10 @@ FeedsController.getFeeds = function(req, res) {
 
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
-	const id = req.params.id;
+  const id = req.params.id;
 
   // Get joint table objects
-	Posts.where('user_id', id).fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
+  Posts.where('user_id', id).fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
     var parsedPosts = [];
@@ -126,10 +126,10 @@ FeedsController.getUserFeeds = function(req, res) {
       // console.log(parsedPost);
     }
 
-		res.json(parsedPosts);
-	}).catch(function(err) {
-		res.json({error: MESSAGES.ERROR_USER_POST_NOT_FOUND});
-	})
+    res.json(parsedPosts);
+  }).catch(function(err) {
+    res.json({error: MESSAGES.ERROR_USER_POST_NOT_FOUND});
+  })
 }
 
 // Get a specific feed
@@ -144,14 +144,7 @@ FeedsController.getFeed = function(req, res) {
 }
 
 // Socket link to write new feed to database
-FeedsController.directPost = function(userID, emoji, title, video, image, sound, location, date, res = null) {
-
-  console.log(location);
-
-  var longitude = location[0];
-  var latitude = location[1];
-
-  console.log(longitude);
+FeedsController.directPost = function({userID, emoji, title, video, image, sound, longitude, latitude, date}, res = null) {
 
   // var id = -1;
 
@@ -171,21 +164,25 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
     latitude: latitude,
     created_at: date,
     updated_at: null
-	};
+  };
 
-	new Posts().save(postHash).then(function(post) {
+  new Posts().save(postHash).then(function(post) {
+    // Then means success
+    // THANH: save means posted to DB
 
-	  //TODO: HOW TO POST TO DATABASE
-
-		if (res !== null) {
-			res.json(post);
-		}
-	}).catch(function(err) {
-	  // TODO: What does this do?
-		// if (res !== null) {
-		// 	res.json(comment);
-		// }
-    res.json({error: MESSAGES.ERROR_CREATING_DROP});
+    if (res !== null) {
+      res.json(post);
+    } else { // Thanh added as Kai Yi mention below
+      return post
+    }
+  }).catch(function(err) {
+    // Catch means failure
+    // Return error
+    if (res !== null) {
+      res.json({error: MESSAGES.ERROR_CREATING_DROP});
+    } else {
+      return {error: MESSAGES.ERROR_CREATING_DROP};
+    }
   });
 
   //TODO: @LARRY i need you to return the object that 
@@ -208,7 +205,7 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
   // UsersController.findUserId(1).then(function(user_id) {
-	// UsersController.findUserId(req.user.id).then(function(user_id) {
+  // UsersController.findUserId(req.user.id).then(function(user_id) {
     console.log(req.body.emojiUni);
       FeedsController.directPost(1,
         req.body.emojiUni,
@@ -218,7 +215,7 @@ FeedsController.postFeed = function(req, res) {
         req.body.soundCloudUrl,
         req.body.location,
         req.body.date);
-	};
+  };
 
 // TODO: Delete an existing feed
 
@@ -230,19 +227,19 @@ module.exports = FeedsController;
 // OLD STUFF
 
 // FeedsController.post = function(req, res) {
-// 	UsersController.findUserId(req.user.id).then(function(user_id) {
-// 		const postHash = {
-// 			user_id: user_id,
-// 			title: req.body.title,
-// 			longitude: req.body.longitude,
-// 			latitude: req.body.latitude,
-// 		}
-// 		new Posts().save(postHash).then(function(post) {
-// 			res.json(post);
-// 		}).catch(function(err) {
-// 			res.json({error: err});
-// 		});
-// 	}).catch(function(err) {
-// 		res.json({error: err});
-// 	});
+//  UsersController.findUserId(req.user.id).then(function(user_id) {
+//    const postHash = {
+//      user_id: user_id,
+//      title: req.body.title,
+//      longitude: req.body.longitude,
+//      latitude: req.body.latitude,
+//    }
+//    new Posts().save(postHash).then(function(post) {
+//      res.json(post);
+//    }).catch(function(err) {
+//      res.json({error: err});
+//    });
+//  }).catch(function(err) {
+//    res.json({error: err});
+//  });
 // }
