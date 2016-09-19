@@ -4,7 +4,6 @@ import {browserHistory} from 'react-router';
 
 import '../../styles/SplashPage.css'
 import logo from '../../res/icon128.png';
-import pattern from '../../res/seigaiha.png';
 
 
 const responseFacebook = attemptLogin => (response) => attemptLogin(response.accessToken);
