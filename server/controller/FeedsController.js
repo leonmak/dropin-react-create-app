@@ -12,10 +12,10 @@ FeedsController.apiParse = function(fetchedPost) {
   // Get user details
   var user = fetchedPost.user;
 
-  var username = "";
+  var username = "someone";
   var userID = -1;
   var avatar = "";
-  
+
   if (user.anonymous == 0) {
     username = user.user_name;
     avatar = user.facebook_profile_img;
@@ -146,9 +146,14 @@ FeedsController.getFeed = function(req, res) {
 // Socket link to write new feed to database
 FeedsController.directPost = function(userID, emoji, title, video, image, sound, location, date, res = null) {
 
+  console.log(location);
+
   var longitude = location[0];
   var latitude = location[1];
-  var id = -1;
+
+  console.log(longitude);
+
+  // var id = -1;
 
   // Posts.fetchAll().then(function(posts) {
   //   id = posts.count() + 1;
@@ -169,6 +174,9 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 	};
 
 	new Posts().save(postHash).then(function(post) {
+
+	  //TODO: HOW TO POST TO DATABASE
+
 		if (res !== null) {
 			res.json(post);
 		}
@@ -183,8 +191,10 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
-	UsersController.findUserId(1).then(function(user_id) {
-      FeedsController.directPost(user_id,
+  // UsersController.findUserId(1).then(function(user_id) {
+	// UsersController.findUserId(req.user.id).then(function(user_id) {
+    console.log(req.body.emojiUni);
+      FeedsController.directPost(1,
         req.body.emojiUni,
         req.body.title,
         req.body.videoUrl,
@@ -192,10 +202,7 @@ FeedsController.postFeed = function(req, res) {
         req.body.soundCloudUrl,
         req.body.location,
         req.body.date);
-	}).catch(function(err) {
-		res.json({error: MESSAGES.ERROR_POSTING_MESSAGE});
-	});
-}
+	};
 
 // TODO: Delete an existing feed
 
