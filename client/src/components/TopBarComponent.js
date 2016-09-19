@@ -9,8 +9,7 @@ import * as Icons from '../utils/Icons';
 import classNames from 'classnames';
 
 function handleTouchTap(state) {
-	alert('onTouchTap triggered on the title component');
-	console.log(state);
+	browserHistory.push('/');
 }
 
 class TopBarComponent extends Component {
@@ -33,7 +32,7 @@ class TopBarComponent extends Component {
   			onTitleTouchTap={handleTouchTap}
   			iconElementLeft={<IconButton
   				onClick={this.navigateBack}>
-  				{Icons.MUI("keyboard_arrow_left")}
+  				{Icons.MUI("arrow_back")}
           </IconButton>}
   			showMenuIconButton={this.props.pageVisibility.topBarBackButtonVisibility}
 			/>
