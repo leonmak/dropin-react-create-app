@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {browserHistory} from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import * as fb from '../../utils/facebook-url';
 import ImageUpload from '../ImageUpload';
@@ -10,6 +11,11 @@ import '../../styles/Settings.css';
 
 export default class SettingsPageComponent extends Component {
 
+  componentWillMount() {
+    if(!this.props.user) {
+      browserHistory.push('/login');
+    }
+  }
   render() {
     return (
     <div>

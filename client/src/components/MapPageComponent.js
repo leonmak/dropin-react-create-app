@@ -15,7 +15,7 @@ function geoListener(callback) {
   )
 }
 
-class MapPage extends Component {
+export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -95,7 +95,8 @@ class MapPage extends Component {
 
   setupMap(user, center) {
     return map => {
-      this.createFaceMarker(center, fb.profileImg(user.facebookId, 48), map)
+      if(user)
+        this.createFaceMarker(center, fb.profileImg(user.id, 48), map)
     }
   }
 
@@ -143,5 +144,3 @@ class MapPage extends Component {
     );
   }
 }
-
-export default MapPage;

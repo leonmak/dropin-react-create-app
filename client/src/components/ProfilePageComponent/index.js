@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {browserHistory} from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {List} from '../ListComponent/List';
@@ -59,9 +60,15 @@ var drops = [
   }
 ]
 export default class ProfilePageComponent extends Component{
+
+  componentWillMount() {
+    if(!this.props.user) {
+      browserHistory.push('/login');
+    }
+  }
+
 	render() {
-  console.log(this.props)
-  const {user} = this.props
+    const {user} = this.props
 		return (
       <div>
       {user && <div>
