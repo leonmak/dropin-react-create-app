@@ -1,24 +1,24 @@
 import {connect} from 'react-redux';
-
+import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import AddComponent from '../components/AddComponent';
 
-
-//the reducers are the start of the state
-/*function mapStateToProps(state) {
+function mapStateToProps(state) {
   return {
+    user: state.userAuthSession.userObject
   };
-}*/
+}
 
-/*function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg))
   };
-}*/
+}
 
 
 const AddPage = connect(
   null,
-  null
+  mapDispatchToProps
 )(AddComponent);
 
 

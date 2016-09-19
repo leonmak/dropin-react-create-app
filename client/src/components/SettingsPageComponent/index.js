@@ -13,6 +13,7 @@ export default class SettingsPageComponent extends Component {
 
   componentWillMount() {
     if(!this.props.user) {
+      this.props.passSnackbarMessage('Log in to view settings')
       browserHistory.push('/login');
     }
   }

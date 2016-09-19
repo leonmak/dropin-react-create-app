@@ -20,7 +20,7 @@ export function toggleTopBarBackButtonVisibility(visibility){
 	return{
 		type: TOGGLE_TOP_BAR_BACK_BUTTON,
 		visibility
-	}	
+	}
 }
 
 //function for you to call to fetch all nearby drops
@@ -28,16 +28,16 @@ export function fetchAllNearbyDrops(){
 	return (dispatch)=>{
 		BackendHelper.getAllDrops()
 		.then(response=>dispatch(receiveAllNearbyDrops(response)));
-	} 
+	}
 }
 
-//function to pipe all nearby drops fetched above to 
-//reducer and modify the state of the program 
+//function to pipe all nearby drops fetched above to
+//reducer and modify the state of the program
 function receiveAllNearbyDrops(allNearbyDrops){
 	return{
 		type: FETCH_ALL_NEARBY_DROPS,
 		drops: allNearbyDrops
-	}	
+	}
 }
 
 //function to fetch all comments for a single drop
@@ -45,16 +45,16 @@ export function fetchCommentsForDrop(dropId){
 	return (dispatch)=>{
 		BackendHelper.getSingleDropComments(dropId)
 		.then(response=>dispatch(receiveCommentsForDrop(response)));
-	} 	
+	}
 }
 
-//function to pipe all comments received from  
-//reducer and modify the state of the program 
+//function to pipe all comments received from
+//reducer and modify the state of the program
 function receiveCommentsForDrop(comments){
 	return{
 		type: FETCH_COMMENT_FOR_DROP,
 		comments: comments
-	}	
+	}
 }
 
 //function to add a nearby drop

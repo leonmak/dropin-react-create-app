@@ -63,6 +63,7 @@ export default class ProfilePageComponent extends Component{
 
   componentWillMount() {
     if(!this.props.user) {
+      this.props.passSnackbarMessage('Log in to view profile')
       browserHistory.push('/login');
     }
   }

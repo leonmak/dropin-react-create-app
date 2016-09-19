@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import {toggleBottomBarVisibility} from '../actions';
 import {toggleTopBarBackButtonVisibility} from '../actions';
@@ -11,21 +12,17 @@ import DropComponent from '../components/DropComponent';
 function mapStateToProps(state) {
   return {
     pageVisibility: state.pageVisibility,
-    selectedDrop: state.selectedDrop
+    selectedDrop: state.selectedDrop,
+    user: state.userAuthSession.userObject,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-  	toggleBottomBar:(visibility)=>{
-  		dispatch(toggleBottomBarVisibility(visibility));
-  	},
-    toggleTopBarBackButton:(visibility)=>{
-      dispatch(toggleTopBarBackButtonVisibility(visibility));
-    },
-    fetchCommentsForDrop:(dropId)=>{
-      dispatch(fetchCommentsForDrop(dropId));
-    }
+  	toggleBottomBar:(visibility)=>dispatch(toggleBottomBarVisibility(visibility)),
+    toggleTopBarBackButton:(visibility)=>dispatch(toggleTopBarBackButtonVisibility(visibility)),
+    fetchCommentsForDrop:(dropId)=>dispatch(fetchCommentsForDrop(dropId)),
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg))
   };
 }
 

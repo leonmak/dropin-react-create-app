@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 
 import {attemptLogout} from '../actions/AuthActions';
+import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import SettingsPageComponent from '../components/SettingsPageComponent';
 
@@ -12,6 +13,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg)),
     attemptLogout: token => dispatch(attemptLogout())
   };
 }

@@ -3,7 +3,7 @@ import {TOGGLE_BOTTOM_BAR_VISIBILITY, TOGGLE_TOP_BAR_BACK_BUTTON} from '../actio
 //designing state shape
 const initialState = {
 	bottomBarVisibility: true,
-	topBarBackButtonVisibility:false
+	topBarBackButtonVisibility: false
 }
 
 export function pageVisibility(state=initialState, action) {
@@ -14,14 +14,13 @@ export function pageVisibility(state=initialState, action) {
 			bottomBarVisibility: action.visibility
 		})
 		case TOGGLE_TOP_BAR_BACK_BUTTON:
-		return Object.assign({}, state, {
-			topBarBackButtonVisibility: action.visibility
-		})
+    return Object.assign({}, state, {
+      topBarBackButtonVisibility: action.visibility
+    })
 		default:
 		return state
 	}
 }
-
 
 /*export function bottomBarVisible(state = {bottomBarVisibility:true}, action) {
 	switch (action.type) {

@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
 import {CommentsList} from '../CommentsList';
+import {browserHistory} from 'react-router';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -103,10 +104,16 @@ var drop = {
 
 
 class DropComponent extends Component {
+  componentWillMount() {
+    if(!this.props.user) {
+      this.props.passSnackbarMessage('Log in to view message')
+      browserHistory.push('/login');
+    }
+  }
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
-	componentDidMount () {
+	componentDidMount() {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
 		this.props.fetchCommentsForDrop(1);
@@ -115,7 +122,7 @@ class DropComponent extends Component {
     });*/
 	}
 
-	componentWillUnmount(){
+	componentWillUnmount() {
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
 		console.log(this.props.selectedDrop.selectedDrop);

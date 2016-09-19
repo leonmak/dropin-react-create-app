@@ -5,6 +5,7 @@ import {pageVisibility} from './pageVisibility.js';
 import {drops} from './drops.js';
 import {selectedDrop} from './selectedDrop.js';
 import { updateUserInfo } from './AuthReducer';
+import { snackbar } from './SnackbarReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -13,7 +14,7 @@ const rootReducer = combineReducers({
   drops: drops,
   selectedDrop:selectedDrop,
   userAuthSession: updateUserInfo,
-
+  snackbar: snackbar
 });
 
 export default rootReducer;

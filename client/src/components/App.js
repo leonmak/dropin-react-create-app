@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import BottomBar from '../containers/BottomBar';
 import TopBar from '../containers/TopBar';
+import Snackbar from '../containers/SnackBar';
 import Headroom from 'react-headroom';
 //import {browserHistory} from 'react-router';
 //import { RouteTransition } from 'react-router-transition';
@@ -14,10 +15,9 @@ const App = (props) => {
     <Headroom><TopBar/></Headroom>
 
     <div id="body">
-    {props.children}
-
+      {props.children}
     </div>
-
+    <Snackbar />
     <BottomBar urlIdx={urlToIdx(props.location.pathname)} />
 
     </div>

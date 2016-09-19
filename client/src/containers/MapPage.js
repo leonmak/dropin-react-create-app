@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import MapPageComponent from '../components/MapPageComponent';
 
@@ -10,6 +11,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg))
   };
 }
 
