@@ -46,7 +46,7 @@ export function updateUserInfo(userAuthState = defaultStartState , action) {
         return Object.assign({}, userAuthState, {
           isLoggedIn: true,
           fetchingAuthUpdate: false,
-          userObject: action.result.userObject,
+          userObject: action.result,
           error: null
         });
       }

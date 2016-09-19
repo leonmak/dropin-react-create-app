@@ -146,7 +146,8 @@ export function checkSessionStatus() {
       if(err){
         console.log(err)
       } else {
-        dispatch(checkedSessionStatus(res.body))
+        console.log(res.body.user)
+        dispatch(checkedSessionStatus(res.body.user))
       }
     })
 

@@ -9,7 +9,7 @@ import ProfilePage from './components/ProfilePage';
 import NotFoundPage from './components/NotFoundPage';
 import ListPage from './containers/ListPage';
 import DropPage from './containers/DropPage';
-import SettingsPage from './components/SettingsPage';
+import SettingsPage from './containers/SettingsPage';
 import LoginPage from './containers/LoginPage';
 
 export default (
@@ -20,7 +20,10 @@ export default (
       <Route path=":dropId" component={DropPage}/>
     </Route>
     <Route path="map" component={MapPage}/>
-    <Route path="profile" component={ProfilePage}/>
+    <Route path="profile">
+      <IndexRoute component={ProfilePage}/>
+      <Route path=":profileId" component={ProfilePage}/>
+    </Route>
     <Route path="add" component={AddPage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="settings" component={SettingsPage} />

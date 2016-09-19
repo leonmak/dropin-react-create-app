@@ -9,7 +9,7 @@ import * as text from '../../utils/text';
 
 const ProfileStats = ({user, comments, drops}) => (
   <div>
-  <div className="row center-xs profile-container bg-cyan-300">
+  <div className="row center-xs profile-container">
     <div className="col-xs-12 profile-pic">
       <Avatar
         src={fb.profileImg(user.facebookId, 90)}
