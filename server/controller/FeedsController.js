@@ -15,10 +15,11 @@ FeedsController.apiParse = function(fetchedPost) {
   var username = "";
   var userID = -1;
   var avatar = "";
-  if (fetchedPost.anonymous == 0) {
-    username = fetchedPost.user_name;
-    avatar = fetchedPost.facebook_profile_img;
-    userID = fetchedPost.user_id;
+  
+  if (user.anonymous == 0) {
+    username = user.user_name;
+    avatar = user.facebook_profile_img;
+    userID = user.user_id;
   }
 
 
