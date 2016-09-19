@@ -36,7 +36,7 @@ export default class SocketHandler {
 			default:
 				break;
 		}
-		console.log(this.channelId);
+		console.log('listening to: ',this.channelId);
     socket.on('server:sendEvent', this._eventHandler.bind(this));
 	}
 
@@ -44,6 +44,7 @@ export default class SocketHandler {
 		console.log("received event");
 		if (packet.channelId === this.channelId) {
 			this.handler(packet.data);
+			console.log(packet);
 		}
 	}
 
@@ -74,4 +75,19 @@ export default class SocketHandler {
 		console.log("sended vote");
 		socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
 	}
+
+
+	/*var drop = {
+      "id": "003",
+      "username":"Leon",
+      "userId":"002",
+      "userAvatarId":"drop/002idasdf",
+      "imageId": "drop/gmzf4d8vbyxc50wefkap",
+      "emojiUni": "1f602",
+      "title": "To the cute guy studying outside the LT, WOWOW",
+      "votes": 6,
+      "location": [103.7730933, 1.3056169],
+      "date": "2016-09-08T11:06:43.511Z",
+      "replies": 12
+    };*/
 }

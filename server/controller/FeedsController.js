@@ -187,6 +187,22 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 		// }
     res.json({error: MESSAGES.ERROR_CREATING_DROP});
   });
+
+  //TODO: @LARRY i need you to return the object that 
+  //was posted to the server here in this format haha
+  return {
+      "id": "003",
+      "username":"Leon",
+      "userId":"002",
+      "userAvatarId":"drop/002idasdf",
+      "imageId": "drop/gmzf4d8vbyxc50wefkap",
+      "emojiUni": "1f602",
+      "title": "To the cute guy studying outside the LT, WOWOW",
+      "votes": 6,
+      "location": [103.7730933, 1.3056169],
+      "date": "2016-09-08T11:06:43.511Z",
+      "replies": 12
+  };
 }
 
 // Post a new feed

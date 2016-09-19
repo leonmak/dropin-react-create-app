@@ -78,12 +78,17 @@ io.on('connection',function(socket){
   console.log("client connected");
 
   socket.on('client:sendEvent', function(packet) {
-    socket.broadcast.emit('server:sendEvent', packet);
+
+    console.log(packet);
+    
     if (packet.event == 'comment:send') {
       CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
+      socket.broadcast.emit('server:sendEvent', packet);
     }
     if (packet.event == 'feed:send') {
-      FeedsController.directPost(packet.data.userId, packet.data.text);
+      //feedscontroller needs to return an id for me to work with
+      var feedObject = FeedsController.directPost(packet.data.userId, packet.data.text);
+      socket.broadcast.emit('server:sendEvent', {'data':feedObject});
     }
   })
   // based on feeds/ comments or ... no need

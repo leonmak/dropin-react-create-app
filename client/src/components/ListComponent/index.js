@@ -114,27 +114,11 @@ class ListComponent extends Component {
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    var drop = {
-      "id": "003",
-      "username":"Leon",
-      "userId":"002",
-      "userAvatarId":"drop/002idasdf",
-      "imageId": "drop/gmzf4d8vbyxc50wefkap",
-      "emojiUni": "1f602",
-      "title": "To the cute guy studying outside the LT, WOWOW",
-      "votes": 6,
-      "location": [103.7730933, 1.3056169],
-      "date": "2016-09-08T11:06:43.511Z",
-      "replies": 12
-    };
-    //console.log('new drop added callback activated');
-    console.log('received drop',drop);
-    this.props.updateANearbyDrop(drop);
-
+    console.log('received drop',data);
+    this.props.updateANearbyDrop(data);
   }
 
-  componentWillUnmount() {
-    console.log(this.props.drops.drops);
+  componentWillUnmount() {  
     navigator.geolocation.clearWatch(this.geoId);
   }
 
