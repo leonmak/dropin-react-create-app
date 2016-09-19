@@ -14,7 +14,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg)),
-    attemptLogout: token => dispatch(attemptLogout())
+    attemptLogout: () => dispatch(attemptLogout())
   };
 }
 

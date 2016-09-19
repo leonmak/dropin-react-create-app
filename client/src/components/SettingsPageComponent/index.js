@@ -17,6 +17,11 @@ export default class SettingsPageComponent extends Component {
       browserHistory.push('/login');
     }
   }
+
+  logout() {
+    this.props.attemptLogout();
+  }
+
   render() {
     return (
     <div>
@@ -48,7 +53,7 @@ export default class SettingsPageComponent extends Component {
           </div>
 
           <div className="col-xs-10 col-sm-12 ">
-            <RaisedButton className="settings-btn" label="Log Out" fullWidth={true}  />
+            <RaisedButton className="settings-btn" label="Log Out" fullWidth={true} onTouchTap={this.logout} />
           </div>
         </div>
       </div>
