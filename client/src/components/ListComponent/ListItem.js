@@ -33,33 +33,33 @@ const goToURL = (url,props) => setTimeout(()=>{
   browserHistory.push(url);
   props.passingFromOthersToDrop({
     dropId:props.dropId,
-    username:props.username, 
+    username:props.username,
     userId:props.userId,
     userAvatarId:props.userAvatarId,
     emojiUni:props.emojiUni,
-    title:props.title, 
+    title:props.title,
     videoUrl:props.videoUrl,
     imageId:props.imageId,
     soundCloudUrl:props.soundCloudUrl,
-    votes:props.votes, 
+    votes:props.votes,
     location:props.location,
     date:props.date,
-    replies:props.replies     
+    replies:props.replies
     });
 }, 300);
 
 /*
-    title:props.title, 
-    replies:props.replies, 
-    votes:props.votes, 
-    time:props.time, 
-    emojiUni:props.emojiUni, 
-    dropId:props.dropId, 
-    location:props.location, 
-    userId:props.userId, 
-    username:props.username, 
-    imageId:props.imageId, 
-    videoUrl:props.videoUrl, 
+    title:props.title,
+    replies:props.replies,
+    votes:props.votes,
+    time:props.time,
+    emojiUni:props.emojiUni,
+    dropId:props.dropId,
+    location:props.location,
+    userId:props.userId,
+    username:props.username,
+    imageId:props.imageId,
+    videoUrl:props.videoUrl,
     soundCloudUrl:props.soundCloudUrl}*/
 
 const ItemTitle = (props) => (
@@ -107,7 +107,7 @@ const ItemDetails = (props) => (
     </div>
     {!props.isDrop && props.userLocation &&
       <div className="col-xs-12 details">
-        {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  {getDistanceFromUser(props.location, props.userLocation)}km away</span>
+        {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  <Link to={`/map#18/${props.location[1]}/${props.location[0]}/10`}>{getDistanceFromUser(props.location, props.userLocation)}km away</Link></span>
       </div>
     }
   </div>

@@ -96,7 +96,6 @@ export default class MapPageComponent extends Component {
     return map => {
       if(user)
         this.createFaceMarker(center, fb.profileImg(user.id, 48), map)
-      console.log(map)
 
       map.boxZoom.disable();
       map.keyboard.disable();
