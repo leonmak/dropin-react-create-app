@@ -1,4 +1,4 @@
-import {TOGGLE_BOTTOM_BAR_VISIBILITY, TOGGLE_TOP_BAR_BACK_BUTTON} from '../actions';
+import {TOGGLE_BOTTOM_BAR_VISIBILITY, TOGGLE_TOP_BAR_BACK_BUTTON} from '../actions/PageVisibilityActions';
 
 //designing state shape
 const initialState = {

@@ -36,14 +36,20 @@ export default class SocketHandler {
 			default:
 				break;
 		}
-		console.log(this.channelId);
+		console.log('listening to: ',this.channelId);
     socket.on('server:sendEvent', this._eventHandler.bind(this));
+	}
+
+	uninstall() {
+		console.log('unlistening ',this.channelId);
+		socket.removeAllListeners('server:sendEvent');
 	}
 
 	_eventHandler(packet) {
 		console.log("received event");
 		if (packet.channelId === this.channelId) {
 			this.handler(packet.data);
+			console.log(packet);
 		}
 	}
 
@@ -60,18 +66,33 @@ export default class SocketHandler {
 		}
 	}
 
-	comment(userId, postId, text) {
+	comment({userId, postId, text}) { //accept a hash {userId: , postId: , text: }
 		console.log("sended comment");
     socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
 	}
 
-	post(userId, title, longitude, latitude) {
+	post({userId, title, longitude, latitude}) { //accept a hash {userId: , title: , longitude: , latitude: }
 		console.log("sended post");
 		socket.emit('client:sendEvent', this._packSocket({userId, title, longitude, latitude}));
 	}
 
-	vote(userId, postId, voteType) {
+	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }
 		console.log("sended vote");
 		socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
 	}
+
+
+	/*var drop = {
+      "id": "003",
+      "username":"Leon",
+      "userId":"002",
+      "userAvatarId":"drop/002idasdf",
+      "imageId": "drop/gmzf4d8vbyxc50wefkap",
+      "emojiUni": "1f602",
+      "title": "To the cute guy studying outside the LT, WOWOW",
+      "votes": 6,
+      "location": [103.7730933, 1.3056169],
+      "date": "2016-09-08T11:06:43.511Z",
+      "replies": 12
+    };*/
 }

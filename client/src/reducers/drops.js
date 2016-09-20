@@ -28,8 +28,7 @@ export function drops(state=initialState, action) {
 
 		//need logic to append new drops here
 		case UPDATE_A_NEARBY_DROP:
-		state.drops.push(action.drop);
-		console.log('newstate', state);
+		state.drops.unshift(action.drop);
 		return Object.assign({}, state, {
 			drops: state.drops
 		})

@@ -64,7 +64,7 @@ const geoListener = (cb) => {
     ({ coords, timestamp }) => cb(coords),
     (err) => console.log('Unable to find position - ' + err.message),
     { enableHighAccuracy: true, timeout: 15000 }
-    )
+  )
 }
 
 /*
@@ -80,7 +80,7 @@ setup(type, data, handler): put in componentDidMount
 
 comment(userId, postId, text): for comment
 post(userId, text): for post feed
-vote(userId, postId, voteType): for vote 
+vote(userId, postId, voteType): for vote
 */
 
 class ListComponent extends Component {
@@ -89,25 +89,22 @@ class ListComponent extends Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      userLocation: null
-    }
+
     this.geoId = null;
   }
 
   updateLocation(coords) {
-    console.log(coords);
-    this.setState({userLocation: [coords.longitude, coords.latitude]});
+    this.props.setLocation([coords.longitude, coords.latitude]);
   }
 
   componentDidMount() {
-    //listening to the socket so that you 
+    //listening to the socket so that you
     //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
-    
+
     //method to fetch all nearby drops and set the state
     this.props.fetchAllNearbyDrops();
-    
+
     this.geoId = geoListener(this.updateLocation.bind(this));
     /*request.get('api/feeds/1/comments').end(function(err,res){
       console.log(res);
@@ -117,40 +114,25 @@ class ListComponent extends Component {
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    var drop = {
-      "id": "003",
-      "username":"Leon",
-      "userId":"002",
-      "userAvatarId":"drop/002idasdf",
-      "imageId": "drop/gmzf4d8vbyxc50wefkap",
-      "emojiUni": "1f602",
-      "title": "To the cute guy studying outside the LT, WOWOW",
-      "votes": 6,
-      "location": [103.7730933, 1.3056169],
-      "date": "2016-09-08T11:06:43.511Z",
-      "replies": 12
-    };
-    //console.log('new drop added callback activated');
-    console.log('received drop',drop);
-    this.props.updateANearbyDrop(drop);
-
+    console.log('received drop', data);
+    this.props.updateANearbyDrop(data);
   }
 
   componentWillUnmount() {  
-    console.log(this.props.drops.drops);
+    this.socketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 
   /*<ul className="messages" ref='messages'>
         {this.props.drops.map((id,title) => {
-                    //<span className='msgSender'>{msg.from}:</span> 
+                    //<span className='msgSender'>{msg.from}:</span>
                     return <li key={id}>{title + id}</li>
                 })}
         </ul>*/
 
         /*<ul>
         {this.props.drops.map((drop) => {
-                    //<span className='msgSender'>{msg.from}:</span> 
+                    //<span className='msgSender'>{msg.from}:</span>
                     return <li key={drop.id}>{drop.title + drop.id}</li>
                 })}
         </ul>*/
@@ -159,11 +141,12 @@ class ListComponent extends Component {
 
   render() {
     return (
-      <div>
-      <List feed={this.props.drops.drops} userLocation={this.state.userLocation} 
-      passingFromOthersToDrop={this.props.passingFromOthersToDrop} />
-      </div>
-      )
+      <List
+        feed={this.props.drops.drops}
+        userLocation={this.props.location}
+        passingFromOthersToDrop={this.props.passingFromOthersToDrop}
+      />
+    )
   }
 }
 

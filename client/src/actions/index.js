@@ -1,27 +1,14 @@
 import * as BackendHelper from '../BackendHelper';
 
-export const TOGGLE_BOTTOM_BAR_VISIBILITY = 'TOGGLE_BOTTOM_BAR_VISIBILITY';
-export const TOGGLE_TOP_BAR_BACK_BUTTON = 'TOGGLE_TOP_BAR_BACK_BUTTON';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
 export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
+export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
 
-//default is visible (true)
-export function toggleBottomBarVisibility(visibility){
-	return{
-		type: TOGGLE_BOTTOM_BAR_VISIBILITY,
-		visibility
-	}
-}
-
-//default is invisible (false)
-export function toggleTopBarBackButtonVisibility(visibility){
-	return{
-		type: TOGGLE_TOP_BAR_BACK_BUTTON,
-		visibility
-	}
-}
+/***********************************************************************
+ACTION IS CALLED ON THE LIST PAGE
+***********************************************************************/
 
 //function for you to call to fetch all nearby drops
 export function fetchAllNearbyDrops(){
@@ -40,6 +27,19 @@ function receiveAllNearbyDrops(allNearbyDrops){
 	}
 }
 
+//function to add a nearby drop when it is detected
+//called on list page to update current drops
+export function updateANearbyDrop(drop){
+	return{
+		type: UPDATE_A_NEARBY_DROP,
+		drop: drop
+	}
+}
+
+/***********************************************************************
+ACTION IS CALLED ON THE DROP PAGE
+***********************************************************************/
+
 //function to fetch all comments for a single drop
 export function fetchCommentsForDrop(dropId){
 	return (dispatch)=>{
@@ -57,15 +57,9 @@ function receiveCommentsForDrop(comments){
 	}
 }
 
-//function to add a nearby drop
-//called in AddComponent to update the list in real time
-//not necessary, socket handles real time updating
-export function updateANearbyDrop(drop){
-	return{
-		type: UPDATE_A_NEARBY_DROP,
-		drop: drop
-	}
-}
+/***********************************************************************
+ACTION IS CALLED ON LIST->DROP OR PROFILE->DROP
+***********************************************************************/
 
 //action to pass drop object from list to drop
 export function passingFromOthersToDrop(drop){
@@ -76,17 +70,25 @@ export function passingFromOthersToDrop(drop){
 	}
 }
 
+/***********************************************************************
+ACTION IS CALLED ON PROFILE PAGE
+***********************************************************************/
+
+//action to get drops for one user
+export function fetchAllMyDrops(userId){
+	return (dispatch)=>{
+		BackendHelper.getMyDrops(userId)
+		.then(response=>dispatch(receiveAllMyDrops(response)));
+	}
+}
+
+export function receiveAllMyDrops(allMyDrops){
+	console.log(allMyDrops);
+	return{
+		type: FETCH_ALL_MY_DROPS,
+		drops: allMyDrops
+	}
+}
+
 /*export function selectDrop()*/
 
-
-
-/*
-subreddit example
-function fetchPosts(subreddit) {
-  return dispatch => {
-    dispatch(requestPosts(subreddit))
-    return fetch(`http://www.reddit.com/r/${subreddit}.json`)
-      .then(response => response.json())
-      .then(json => dispatch(receivePosts(subreddit, json)))
-  }
-}*/

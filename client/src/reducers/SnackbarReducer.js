@@ -12,12 +12,14 @@ export function snackbar(state=initialState, action) {
         return Object.assign({}, state, {
           snackbarVisibility: action.visibility
         })
+      break;
     case PASS_SNACKBAR_MESSAGE:
       if(action.message)
         return Object.assign({}, {
           snackbarVisibility: true,
           snackbarMessage: action.message
         })
+      break;
     default:
       return state
   }

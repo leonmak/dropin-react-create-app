@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {browserHistory} from 'react-router';
 import Avatar from 'material-ui/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -9,6 +9,8 @@ import * as fb from '../../utils/facebook-url';
 import * as text from '../../utils/text';
 
 import '../../styles/ProfilePage.css';
+
+//import '../'
 
 // TODO: fetch user's comments ordered by date
 var comments = [
@@ -65,6 +67,9 @@ export default class ProfilePageComponent extends Component{
     if(!this.props.user) {
       this.props.passSnackbarMessage('Log in to view profile')
       browserHistory.push('/login');
+    }else{
+      console.log('now only fetch thanhs drops');
+      this.props.fetchAllMyDrops(4);
     }
   }
 
@@ -86,7 +91,7 @@ export default class ProfilePageComponent extends Component{
         </div>
         <div className="col-xs-12 ">
           <div className="row center-xs">
-            <div className="col-xs-3 profile-stat"><p>{drops.length || 0 }</p><small>{text.pluralizer('drop', drops.length)}</small></div>
+            <div className="col-xs-3 profile-stat"><p>{this.props.profile.drops.length || 0 }</p><small>{text.pluralizer('drop', this.props.profile.drops.length)}</small></div>
             <div className="col-xs-3 profile-stat"><p>{comments.length || 0 }</p><small>{text.pluralizer('comment', comments.length)}</small></div>
           </div>
         </div>
@@ -95,7 +100,10 @@ export default class ProfilePageComponent extends Component{
         <div className="col-xs-12 ">
         <Tabs>
           <Tab label="Top Drops" >
-            <List feed={drops} isProfile={true}/>
+            <List 
+            feed={this.props.profile.drops} 
+            isProfile={true}
+            passingFromOthersToDrop={this.props.passingFromOthersToDrop}/>
           </Tab>
           <Tab label="Recent Comments" >
             <CommentsList comments={comments} isProfile={true}/>
@@ -109,4 +117,12 @@ export default class ProfilePageComponent extends Component{
       </div>
 		)
 	}
+}
+
+ProfilePageComponent.PropTypes = {
+  fetchAllMyDrops: PropTypes.func.isRequired,
+  passSnackbarMessage: PropTypes.func.isRequired,
+  passingFromOthersToDrop: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 }

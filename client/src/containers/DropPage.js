@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
 
-import {toggleBottomBarVisibility} from '../actions';
-import {toggleTopBarBackButtonVisibility} from '../actions';
+import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
+import {toggleTopBarBackButtonVisibility} from '../actions/PageVisibilityActions';
 import {fetchCommentsForDrop} from '../actions';
 
 import DropComponent from '../components/DropComponent';

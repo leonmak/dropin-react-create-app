@@ -1,4 +1,6 @@
-import { Posts } from '../database';
+import {
+  Posts
+} from '../database';
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
 var VotesController = require('./VotesController');
@@ -28,7 +30,7 @@ FeedsController.apiParse = function(fetchedPost) {
   var voteCount = 0;
   for (var j = 0; j < votes.length; ++j) {
     var vote = votes[j];
-    if(vote.vote_type) {
+    if (vote.vote_type) {
       voteCount++;
     } else {
       voteCount--;
@@ -49,17 +51,17 @@ FeedsController.apiParse = function(fetchedPost) {
 
   // Parse and build JSON for API endpoint
   var parsedPost = {
-    dropId:fetchedPost.id,
-    username:username,
-    userId:userID,
-    userAvatarId:avatar,
-    emojiUni:fetchedPost.emoji,
-    title:fetchedPost.title,
-    videoUrl:fetchedPost.video,
-    imageId:fetchedPost.image,
-    soundCloudUrl:fetchedPost.sound,
+    dropId: fetchedPost.id,
+    username: username,
+    userId: userID,
+    userAvatarId: avatar,
+    emojiUni: fetchedPost.emoji,
+    title: fetchedPost.title,
+    videoUrl: fetchedPost.video,
+    imageId: fetchedPost.image,
+    soundCloudUrl: fetchedPost.sound,
     votes: voteCount,
-    location:[fetchedPost.longitude, fetchedPost.latitude],
+    location: [fetchedPost.longitude, fetchedPost.latitude],
     date: date,
     replies: commentCount
   }
@@ -76,7 +78,9 @@ FeedsController.apiParse = function(fetchedPost) {
 FeedsController.getFeeds = function(req, res) {
 
   // Get joint table objects
-  Posts.fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
+  Posts.fetchAll({
+    withRelated: ['votes', 'comments', 'user']
+  }).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
     var parsedPosts = [];
@@ -98,17 +102,21 @@ FeedsController.getFeeds = function(req, res) {
     res.json(parsedPosts);
 
   }).catch(function(err) {
-    res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
+    res.json({
+      error: MESSAGES.ERROR_POST_NOT_FOUND
+    });
   });
 
 }
 
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
-	const id = req.params.id;
+  const id = req.params.id;
 
   // Get joint table objects
-	Posts.where('user_id', id).fetchAll({withRelated: ['votes', 'comments', 'user']}).then(function(posts) {
+  Posts.where('user_id', id).fetchAll({
+    withRelated: ['votes', 'comments', 'user']
+  }).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
     var parsedPosts = [];
@@ -126,29 +134,47 @@ FeedsController.getUserFeeds = function(req, res) {
       // console.log(parsedPost);
     }
 
-		res.json(parsedPosts);
-	}).catch(function(err) {
-		res.json({error: MESSAGES.ERROR_USER_POST_NOT_FOUND});
-	})
+    res.json(parsedPosts);
+  }).catch(function(err) {
+    res.json({
+      error: MESSAGES.ERROR_USER_POST_NOT_FOUND
+    });
+  })
 }
 
 // Get a specific feed
 FeedsController.getFeed = function(req, res) {
   const id = req.params.id;
-  Posts.where('id', id).fetch({withRelated: ['votes', 'comments', 'user']}).then(function(post) {
+  Posts.where('id', id).fetch({
+    withRelated: ['votes', 'comments', 'user']
+  }).then(function(post) {
     var parsedPost = FeedsController.apiParse(post.toJSON());
     res.json(parsedPost);
   }).catch(function(err) {
-    res.json({error: MESSAGES.ERROR_POST_NOT_FOUND});
+    res.json({
+      error: MESSAGES.ERROR_POST_NOT_FOUND
+    });
   })
 }
 
 // Socket link to write new feed to database
-FeedsController.directPost = function(userID, emoji, title, video, image, sound, location, date, res = null) {
+FeedsController.directPost = function({
+  userID,
+  emoji,
+  title,
+  video,
+  image,
+  sound,
+  longitude,
+  latitude,
+  date
+}, res = null) {
 
-  var longitude = location[0];
-  var latitude = location[1];
+  // var id = -1;
 
+  // Posts.fetchAll().then(function(posts) {
+  //   id = posts.count() + 1;
+  // }
 
   // Create new data entry
   var postHash = {
@@ -162,42 +188,66 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
     latitude: latitude,
     created_at: date,
     updated_at: null
-	};
+  };
 
-	new Posts().save(postHash).then(function(post) {
+  new Posts().save(postHash).then(function(post) {
+    // Then means success
+    // THANH: save means posted to DB
 
-	  //TODO: HOW TO POST TO DATABASE
-
-		if (res !== null) {
-			res.json(post);
-		}
-	}).catch(function(err) {
-	  // TODO: What does this do?
-		// if (res !== null) {
-		// 	res.json(comment);
-		// }
-    res.json({error: MESSAGES.ERROR_CREATING_DROP});
+    if (res !== null) {
+      res.json(post);
+    } else { // Thanh added as Kai Yi mention below
+      return post
+    }
+  }).catch(function(err) {
+    // Catch means failure
+    // Return error
+    if (res !== null) {
+      res.json({
+        error: MESSAGES.ERROR_CREATING_DROP
+      });
+    } else {
+      return {
+        error: MESSAGES.ERROR_CREATING_DROP
+      };
+    }
   });
+
+  //TODO: @LARRY i need you to return the object that
+  //was posted to the server here in this format haha
+  return {
+    "id": "003",
+    "username": "Leon",
+    "userId": "002",
+    "userAvatarId": "drop/002idasdf",
+    "imageId": "drop/gmzf4d8vbyxc50wefkap",
+    "emojiUni": "1f602",
+    "title": "To the cute guy studying outside the LT, WOWOW",
+    "votes": 6,
+    "location": [103.7730933, 1.3056169],
+    "date": "2016-09-08T11:06:43.511Z",
+    "replies": 12
+  };
 }
 
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
   // UsersController.findUserId(1).then(function(user_id) {
-	// UsersController.findUserId(req.user.id).then(function(user_id) {
+  // UsersController.findUserId(req.user.id).then(function(user_id) {
   console.log(req.body.emojiUni);
-    FeedsController.directPost(1,
-      req.body.emojiUni,
-      req.body.title,
-      req.body.videoUrl,
-      req.body.imageId,
-      req.body.soundCloudUrl,
-      req.body.location,
-      req.body.date);
+  FeedsController.directPost(1,
+    req.body.emojiUni,
+    req.body.title,
+    req.body.videoUrl,
+    req.body.imageId,
+    req.body.soundCloudUrl,
+    req.body.location,
+    req.body.date);
 
-    // Response
-    res.end("Drop successfully created.");
+  // Response
+  res.end("Drop successfully created.");
 
-	};
+};
 
 // TODO: Delete an existing feed
 
@@ -209,19 +259,19 @@ module.exports = FeedsController;
 // OLD STUFF
 
 // FeedsController.post = function(req, res) {
-// 	UsersController.findUserId(req.user.id).then(function(user_id) {
-// 		const postHash = {
-// 			user_id: user_id,
-// 			title: req.body.title,
-// 			longitude: req.body.longitude,
-// 			latitude: req.body.latitude,
-// 		}
-// 		new Posts().save(postHash).then(function(post) {
-// 			res.json(post);
-// 		}).catch(function(err) {
-// 			res.json({error: err});
-// 		});
-// 	}).catch(function(err) {
-// 		res.json({error: err});
-// 	});
+//  UsersController.findUserId(req.user.id).then(function(user_id) {
+//    const postHash = {
+//      user_id: user_id,
+//      title: req.body.title,
+//      longitude: req.body.longitude,
+//      latitude: req.body.latitude,
+//    }
+//    new Posts().save(postHash).then(function(post) {
+//      res.json(post);
+//    }).catch(function(err) {
+//      res.json({error: err});
+//    });
+//  }).catch(function(err) {
+//    res.json({error: err});
+//  });
 // }

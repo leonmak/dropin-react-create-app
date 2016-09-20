@@ -9,7 +9,10 @@ module.exports = require('knex')({
     port: process.env.MYSQL_PORT,
     database: 'dropin'
   },
-  pool: { min: 0, max: 7 }
+  pool: {
+    min: 0,
+    max: 7
+  }
 
 });
 

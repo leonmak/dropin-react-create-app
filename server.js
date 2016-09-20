@@ -58,9 +58,16 @@ var session = require('express-session');
 // var sessionStore = new MySQLStore(options);
 
 // app.use(require('cookie-parser')());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
-app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: true, saveUninitialized: false }));
+app.use(session({
+  key: 'session_id',
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -74,43 +81,50 @@ app.use(function(req, res, next) {
 
 app.use('/', routesConfig(passport));
 
-io.on('connection',function(socket){
+io.on('connection', function(socket) {
   console.log("client connected");
 
   socket.on('client:sendEvent', function(packet) {
-    socket.broadcast.emit('server:sendEvent', packet);
-    if (packet.event == 'comment:send') {
-      CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
-    }
-    if (packet.event == 'feed:send') {
-      FeedsController.directPost(packet.data.userId, packet.data.text);
-    }
-  })
-  // based on feeds/ comments or ... no need
-  // socket.on('client:initialized', function(packet) {
-  //   clientSockets.push({channelId: packet.channelId, socket: socket});
-  // });
-  // for (var eventidx in EVENT_TYPE) {
-  //   const event = EVENT_TYPE[eventidx];
-  //   socket.on(event, function(packet) {
-  //     console.log("received from socket");
-  //     for (var clientidx in clientSockets) {
-  //       const client = clientSockets[clientidx];
-  //       console.log(client.channelId);
-  //       console.log(packet.channelId);
-  //       if ((packet.channelId == client.channelId) && (client.socket !== socket)) {
-  //         client.socket.emit(event, packet);
-  //       }
-  //     }
-  //     if (event == 'comment:send') {
-  //       CommentsController.comment(packet.data.userId, packet.data.postId, packet.data.text);
-  //       // update comment database
-  //     }
-  //     if (event == 'feed:send') {
-  //       // update feed database
-  //     }
-  //   });
-  // }
+
+      console.log(packet);
+
+      if (packet.event == 'comment:send') {
+        CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
+        io.emit('server:sendEvent', packet);
+      }
+      if (packet.event == 'feed:send') {
+        //feedscontroller needs to return an id for me to work with
+        var feedObject = FeedsController.directPost(packet.data);
+        var newPacket = packet;
+        newPacket.data = feedObject;
+        io.emit('server:sendEvent', newPacket);
+      }
+    })
+    // based on feeds/ comments or ... no need
+    // socket.on('client:initialized', function(packet) {
+    //   clientSockets.push({channelId: packet.channelId, socket: socket});
+    // });
+    // for (var eventidx in EVENT_TYPE) {
+    //   const event = EVENT_TYPE[eventidx];
+    //   socket.on(event, function(packet) {
+    //     console.log("received from socket");
+    //     for (var clientidx in clientSockets) {
+    //       const client = clientSockets[clientidx];
+    //       console.log(client.channelId);
+    //       console.log(packet.channelId);
+    //       if ((packet.channelId == client.channelId) && (client.socket !== socket)) {
+    //         client.socket.emit(event, packet);
+    //       }
+    //     }
+    //     if (event == 'comment:send') {
+    //       CommentsController.comment(packet.data.userId, packet.data.postId, packet.data.text);
+    //       // update comment database
+    //     }
+    //     if (event == 'feed:send') {
+    //       // update feed database
+    //     }
+    //   });
+    // }
 });
 
 http.listen(app.get('port'), () => {

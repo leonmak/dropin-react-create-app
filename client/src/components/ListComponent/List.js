@@ -4,11 +4,6 @@ import ListItem from './ListItem';
 
 export class List extends Component {
 
-  state = {
-    location: [103.8198, 1.3224]
-  }
-
-
   render() {
     return (
       <div style={{marginBottom: "27px"}}>

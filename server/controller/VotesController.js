@@ -1,4 +1,6 @@
-import { Posts } from '../database';
+import {
+  Posts
+} from '../database';
 var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
 var MESSAGES = require('./Messages');

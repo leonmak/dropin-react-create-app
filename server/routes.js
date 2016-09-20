@@ -1,4 +1,8 @@
-import { Users, Posts, Comments } from './database';
+import {
+  Users,
+  Posts,
+  Comments
+} from './database';
 
 var express = require('express');
 var router = express.Router();
