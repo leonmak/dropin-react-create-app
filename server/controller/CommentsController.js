@@ -9,7 +9,7 @@ var MESSAGES = require('./Messages');
 var CommentsController = {};
 
 /*** Parsers ***/
-CommentsController.apiParse = function(fetchedComment) {
+CommentsController.apiParse = function (fetchedComment) {
 
   // Get user details
   var user = fetchedComment.user;
@@ -45,12 +45,12 @@ CommentsController.apiParse = function(fetchedComment) {
 /*** Front-end Queries ***/
 
 // Get comments from a specific feed
-CommentsController.getFeedComments = function(req, res) {
+CommentsController.getFeedComments = function (req, res) {
   const post_id = req.params.id;
 
   Comments.where('post_id', post_id).fetchAll({
     withRelated: ['user']
-  }).then(function(comments) {
+  }).then(function (comments) {
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
@@ -69,7 +69,7 @@ CommentsController.getFeedComments = function(req, res) {
     }
 
     res.json(parsedComments);
-  }).catch(function(err) {
+  }).catch(function (err) {
     res.json({
       error: MESSAGES.ERROR_COMMENT_NOT_FOUND
     });
@@ -77,12 +77,12 @@ CommentsController.getFeedComments = function(req, res) {
 }
 
 // Get comments from a specific user
-CommentsController.getUserComments = function(req, res) {
+CommentsController.getUserComments = function (req, res) {
   const user_id = req.params.id;
 
   Comments.where('user_id', user_id).fetchAll({
     withRelated: ['user']
-  }).then(function(comments) {
+  }).then(function (comments) {
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
@@ -101,7 +101,7 @@ CommentsController.getUserComments = function(req, res) {
     }
 
     res.json(parsedComments);
-  }).catch(function(err) {
+  }).catch(function (err) {
     res.json({
       error: MESSAGES.ERROR_COMMENT_NOT_FOUND
     });
@@ -109,12 +109,12 @@ CommentsController.getUserComments = function(req, res) {
 }
 
 // Get a specific comment
-CommentsController.getComment = function(req, res) {
+CommentsController.getComment = function (req, res) {
   const id = req.params.id;
 
   Comments.where('id', id).fetch({
     withRelated: ['user']
-  }).then(function(comment) {
+  }).then(function (comment) {
     // Get all comment objects
     var fetchedComment = comment.toJSON();
 
@@ -122,7 +122,7 @@ CommentsController.getComment = function(req, res) {
     var parsedComment = CommentsController.apiParse(fetchedComment);
 
     res.json(parsedComment);
-  }).catch(function(err) {
+  }).catch(function (err) {
     res.json({
       error: MESSAGES.ERROR_COMMENT_NOT_FOUND
     });
@@ -130,56 +130,68 @@ CommentsController.getComment = function(req, res) {
 }
 
 // Socket link to write new comment to database
-CommentsController.directComment = function({
-  userId,
-  postId,
-  text
+CommentsController.directComment = function ({
+  post_id,
+  userID,
+  text,
+  date
 }, res = null) {
-  var user = UsersController.getUserObject(userId);
-
-  // TODO: Link to default anonymous
-  var name = "";
-  var avatar = "";
-
-  if (user.anonymous == false) {
-    name = user.name;
-    avatar = user.facebook_profile_img;
-  }
-
-  const commentHash = {
-    // id: {type: 'increments', nullable: false, primary: true},
-    username: name,
-    post_id: postId,
-    user_id: userId,
-    user_avatar_url: avatar,
+  // Create new data entry
+  var commentHash = {
+    dropId: post_id,
+    userId: userID,
     text: text,
-    created_at: moment.now(),
-    updated_at: null
-  }
+    createdAt: date
+  };
 
-  // const comment = new Comments;
-  new Comments().save(commentHash).then(function(comment) {
-    if (res !== null) {
-      res.json(comment);
-    }
-  }).catch(function(err) {
-    if (res !== null) {
-      res.json({
-        error: MESSAGES.ERROR_POSTING_COMMENT
-      });
-    }
+  var promise = new Promise(function(resolve,reject){
+    new Comments().save(commentHash).then(function(comment) {
+      // Then means success
+      // THANH: save means posted to DB
+
+      if (res !== null) {
+        res.json(comment);
+      } else { // Thanh added as Kai Yi mention below
+        resolve(CommentsController.apiParse(comment));
+      }
+    }).catch(function(err) {
+      // Catch means failure
+      // Return error
+      if (res !== null) {
+        res.json({
+          error: MESSAGES.ERROR_CREATING_DROP
+        });
+      } else {
+      reject(MESSAGES.ERROR_CREATING_COMMENT);
+      }
+    });
   });
+
+  return promise;
 }
 
 // Post a new comment
-CommentsController.postComment = function(req, res) {
-  UsersController.findUserId(req.user.id).then(function(userId) {
-    this.directComment(userId, req.params.post_id, req.body.text, res);
-  }).catch(function(err) {
-    res.json({
-      error: MESSAGES.ERROR_POSTING_COMMENT
-    });
-  });
+CommentsController.postComment = function (req, res) {
+  // UsersController.findUserId(req.user.id).then(function(userId) {
+  //   this.directComment(userId, req.params.post_id, req.body.text, res);
+  // }).catch(function(err) {
+  //   res.json({
+  //     error: MESSAGES.ERROR_POSTING_COMMENT
+  //   });
+  // });
+
+  var packet = {
+    dropId: req.body.post_id,
+    userId: 1,
+    // userId: req.user.id,
+    text: req.body.text,
+    createdAt: req.body.date
+  };
+
+  CommentsController.directComment(packet);
+
+  // Response
+  res.end("Comment successfully created.");
 }
 
 // TODO: Delete an existing comment

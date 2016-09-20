@@ -1,5 +1,5 @@
 import {
-  Posts
+  Posts, Users
 } from '../database';
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
@@ -12,28 +12,33 @@ var FeedsController = {};
 FeedsController.apiParse = function(fetchedPost) {
 
   // Get user details
-  var user = fetchedPost.user;
 
   var username = "someone";
   var userID = -1;
   var avatar = "";
 
-  if (user.anonymous == 0) {
-    username = user.user_name;
-    avatar = user.facebook_profile_img;
-    userID = user.user_id;
+  if (typeof fetchedPost.user != 'undefined') {
+    var user = fetchedPost.user;
+    if (user.anonymous == 0) {
+      username = user.user_name;
+      avatar = user.facebook_profile_img;
+      userID = user.user_id;
+    }
   }
 
 
   // Get the votes count
-  var votes = fetchedPost.votes;
   var voteCount = 0;
-  for (var j = 0; j < votes.length; ++j) {
-    var vote = votes[j];
-    if (vote.vote_type) {
-      voteCount++;
-    } else {
-      voteCount--;
+
+  if (typeof fetchedPost.votes != 'undefined') {
+    var votes = fetchedPost.votes;
+    for (var j = 0; j < votes.length; ++j) {
+      var vote = votes[j];
+      if (vote.vote_type) {
+        voteCount++;
+      } else {
+        voteCount--;
+      }
     }
   }
 
@@ -45,8 +50,26 @@ FeedsController.apiParse = function(fetchedPost) {
 
 
   // Get replies count
-  var comments = fetchedPost.comments;
-  var commentCount = comments.length;
+  var commentCount = 0;
+  if (typeof fetchedPost.comments != 'undefined') {
+    var comments = fetchedPost.comments;
+    commentCount = comments.length;
+  }
+
+  var videoLink = null;
+  if (typeof fetchedPost.video != 'undefined') {
+    videoLink = fetchedPost.video;
+  };
+
+  var imageLink = null;
+  if (typeof fetchedPost.image != 'undefined') {
+    imageLink = fetchedPost.image;
+  };
+
+  var soundLink = null;
+  if (typeof fetchedPost.sound != 'undefined') {
+    soundLink = fetchedPost.sound;
+  };
 
 
   // Parse and build JSON for API endpoint
@@ -57,9 +80,9 @@ FeedsController.apiParse = function(fetchedPost) {
     userAvatarId: avatar,
     emojiUni: fetchedPost.emoji,
     title: fetchedPost.title,
-    videoUrl: fetchedPost.video,
-    imageId: fetchedPost.image,
-    soundCloudUrl: fetchedPost.sound,
+    videoUrl: videoLink,
+    imageId: imageLink,
+    soundCloudUrl: soundLink,
     votes: voteCount,
     location: [fetchedPost.longitude, fetchedPost.latitude],
     date: date,
@@ -173,7 +196,17 @@ FeedsController.directPost = function({
   //   id = posts.count() + 1;
   // }
 
-  // Create new data entry
+  var userPromise = new Promise(function(resolve, reject) {
+    Users.where('id', userID).fetch().then(function (user) {
+    console.log("THIS IS THE USER", user);
+      if (user) {
+        resolve(user);
+      } else {
+        reject(user);
+      }
+    });
+  });
+
   var postHash = {
     user_id: userID,
     emoji: emoji,
@@ -187,52 +220,56 @@ FeedsController.directPost = function({
     updated_at: null
   };
 
-  var promise = new Promise(function(resolve,reject){
+  var promise = new Promise(function(resolve, reject){
     new Posts().save(postHash).then(function(post) {
       // Then means success
       // THANH: save means posted to DB
+      // console.log("THIS IS THE POST OBJECT IN THE PROMISE: ", post);
+      if (post) {
+        if (res !== null) {
+          res.json(post.toJSON());
+        } else {
+          userPromise.then(function(user) {
+            var postObj = post;
+            postObj.attributes.user = user.toJSON();
+            console.log("THIS IS THE POST OBJECT!!!", postObj);
+            var jsonObject = FeedsController.apiParse(post.toJSON());
+            // console.log(jsonObject);
+            resolve(jsonObject);
+          });
 
-      if (res !== null) {
-        res.json(post);
-      } else { // Thanh added as Kai Yi mention below
-        //return new Promise().FeedsController.apiParse(post);
-        resolve(FeedsController.apiParse(post));
+        }
+      } else {
+        reject(post);
       }
-    }).catch(function(err) {
-      // Catch means failure
-      // Return error
-      // if (res !== null) {
-      //   res.json({
-      //     error: MESSAGES.ERROR_CREATING_DROP
-      //   });
-      // } else {
-        reject(MESSAGES.ERROR_CREATING_DROP);
-      // }
+
+      // Thanh added as Kai Yi mention below
+        // return new Promise().FeedsController.apiParse(post);
     });
   });
 
-  new Posts().save(postHash).then(function(post) {
-    // Then means success
-    // THANH: save means posted to DB
-
-    if (res !== null) {
-      res.json(post);
-    } else { // Thanh added as Kai Yi mention below
-      return new Promise().FeedsController.apiParse(post);
-    }
-  }).catch(function(err) {
-    // Catch means failure
-    // Return error
-    if (res !== null) {
-      res.json({
-        error: MESSAGES.ERROR_CREATING_DROP
-      });
-    } else {
-      return {
-        error: MESSAGES.ERROR_CREATING_DROP
-      };
-    }
-  });
+  // new Posts().save(postHash).then(function(post) {
+  //   // Then means success
+  //   // THANH: save means posted to DB
+  //
+  //   if (res !== null) {
+  //     res.json(post);
+  //   } else { // Thanh added as Kai Yi mention below
+  //     return FeedsController.apiParse(post);
+  //   }
+  // }).catch(function(err) {
+  //   // Catch means failure
+  //   // Return error
+  //   if (res !== null) {
+  //     res.json({
+  //       error: MESSAGES.ERROR_CREATING_DROP
+  //     });
+  //   } else {
+  //     return {
+  //       error: MESSAGES.ERROR_CREATING_DROP
+  //     };
+  //   }
+  // });
 
   return promise;
 }
