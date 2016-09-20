@@ -12,14 +12,18 @@ var CommentsController = {};
 CommentsController.apiParse = function (fetchedComment) {
 
   // Get user details
-  var user = fetchedComment.user;
   var username = "someone";
   var userID = -1;
   var avatar = "";
-  if (user.anonymous == 0) {
-    username = user.user_name;
-    avatar = user.facebook_profile_img;
-    userID = user.user_id;
+
+  if (typeof user != 'undefined') {
+    var user = fetchedComment.user;
+
+    if (user.anonymous == 0) {
+      username = user.user_name;
+      avatar = user.facebook_profile_img;
+      userID = user.user_id;
+    }
   }
 
   // Get last updated date
