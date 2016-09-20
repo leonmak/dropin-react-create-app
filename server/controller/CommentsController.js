@@ -1,6 +1,6 @@
 import {
   Comments,
-  Posts
+  Users
 } from '../database';
 var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
@@ -16,13 +16,12 @@ CommentsController.apiParse = function (fetchedComment) {
   var userID = -1;
   var avatar = "";
 
-  if (typeof user != 'undefined') {
+  if (typeof fetchedComment.user != 'undefined') {
     var user = fetchedComment.user;
-
     if (user.anonymous == 0) {
-      username = user.user_name;
+      username = user.facebook_name;
       avatar = user.facebook_profile_img;
-      userID = user.user_id;
+      userID = user.id;
     }
   }
 
@@ -40,7 +39,8 @@ CommentsController.apiParse = function (fetchedComment) {
     userId: userID,
     userAvatarId: avatar,
     text: fetchedComment.text,
-    createdAt: date
+    created_at: date,
+    updated_at: null
   }
 
   return parsedComment;
@@ -135,61 +135,65 @@ CommentsController.getComment = function (req, res) {
 
 // Socket link to write new comment to database
 CommentsController.directComment = function ({
-  post_id,
-  userID,
+  dropId,
+  userId,
   text,
   date
 }, res = null) {
-  // Create new data entry
+
+  // Prepare the formatted object to store in database
   var commentHash = {
-    dropId: post_id,
-    userId: userID,
+    post_id: dropId,
+    user_id: userId,
     text: text,
-    createdAt: date
+    created_at: date,
+    updated_at: null
   };
 
-  var promise = new Promise(function(resolve,reject){
-    new Comments().save(commentHash).then(function(comment) {
-      // Then means success
-      // THANH: save means posted to DB
-
-      if (res !== null) {
-        res.json(comment);
-      } else { // Thanh added as Kai Yi mention below
-        resolve(CommentsController.apiParse(comment));
-      }
-    }).catch(function(err) {
-      // Catch means failure
-      // Return error
-      if (res !== null) {
-        res.json({
-          error: MESSAGES.ERROR_CREATING_DROP
-        });
+  // Promise a user lookup
+  var userPromise = new Promise(function(resolve, reject) {
+    Users.where('id', userId).fetch().then(function (user) {
+      if (user) {
+        resolve(user);
       } else {
-      reject(MESSAGES.ERROR_CREATING_COMMENT);
+        reject(user);
       }
     });
   });
 
-  return promise;
+  // Promise to store in database, then return an object for socket emission
+  var storePromise = new Promise(function(resolve, reject){
+    new Comments().save(commentHash).then(function(comment) {
+      if (comment) {
+        if (res !== null) {
+          res.json(comment.toJSON());
+        } else {
+          userPromise.then(function(user) {
+            var commentObj = comment;
+            commentObj.attributes.user = user.toJSON();
+            var jsonObject = CommentsController.apiParse(commentObj.toJSON());
+            console.log("JSON Comment to emit: ",jsonObject);
+            resolve(jsonObject);
+          });
+
+        }
+      } else {
+        reject(comment);
+      }
+    });
+  });
+
+  return storePromise;
 }
 
 // Post a new comment
 CommentsController.postComment = function (req, res) {
-  // UsersController.findUserId(req.user.id).then(function(userId) {
-  //   this.directComment(userId, req.params.post_id, req.body.text, res);
-  // }).catch(function(err) {
-  //   res.json({
-  //     error: MESSAGES.ERROR_POSTING_COMMENT
-  //   });
-  // });
 
   var packet = {
-    dropId: req.body.post_id,
-    userId: 1,
-    // userId: req.user.id,
+    dropId: req.params.post_id,
+    userId: req.body.userId,
     text: req.body.text,
-    createdAt: req.body.date
+    date: req.body.date
   };
 
   CommentsController.directComment(packet);
