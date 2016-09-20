@@ -16,7 +16,8 @@ import '../../styles/form.css';
 const handler = (reset, socketHandler, user, location) => values =>
 {
   if(values.emojiUni === null){
-    values.emojiUni = 'default-marker';
+    //values.emojiUni = 'default-marker';
+    values.emojiUni='1f61b';
   } else {
     values.emojiUni = EmojiAnnotationToUni[values.emojiUni.substring(1,values.emojiUni.length - 1)];
   }
@@ -24,11 +25,11 @@ const handler = (reset, socketHandler, user, location) => values =>
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 
   console.log('user', user);
-  console.log('locObject', location);
+  console.log('location', location);
 
 
   socketHandler.post(
-    {userId: 1,
+    {userId: user.userId,
       emoji: values.emojiUni,
       title: values.title,
       video: values.videoUrl,

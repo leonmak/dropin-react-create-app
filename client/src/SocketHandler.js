@@ -45,11 +45,11 @@ export default class SocketHandler {
 		socket.removeAllListeners('server:sendEvent');
 	}
 
+	//returning the data to the server
 	_eventHandler(packet) {
-		console.log("received event");
+		console.log("received event", packet);
 		if (packet.channelId === this.channelId) {
 			this.handler(packet.data);
-			console.log(packet);
 		}
 	}
 
@@ -78,12 +78,12 @@ export default class SocketHandler {
 	}
 
 	comment({userId, postId, text}) { //accept a hash {userId: , postId: , text: }
-		console.log("sended comment");
+		console.log("sent new comment to server");
     socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
 	}
 
 	post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { //accept a hash {userId: , title: , longitude: , latitude: }
-		console.log("sended post");
+		console.log("sent new post to server");
 		socket.emit('client:sendEvent', this._packSocket({
 			userID, 
 			emoji,
@@ -97,7 +97,7 @@ export default class SocketHandler {
 	}
 
 	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }
-		console.log("sended vote");
+		console.log("sent new vote to server");
 		socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
 	}
 
