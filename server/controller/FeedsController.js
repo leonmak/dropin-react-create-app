@@ -20,12 +20,11 @@ FeedsController.apiParse = function(fetchedPost) {
   if (typeof fetchedPost.user != 'undefined') {
     var user = fetchedPost.user;
     if (user.anonymous == 0) {
-      username = user.user_name;
+      username = user.facebook_name;
       avatar = user.facebook_profile_img;
-      userID = user.user_id;
+      userID = user.id;
     }
   }
-
 
   // Get the votes count
   var voteCount = 0;
@@ -190,15 +189,9 @@ FeedsController.directPost = function({
   date
 }, res = null) {
 
-  // var id = -1;
-
-  // Posts.fetchAll().then(function(posts) {
-  //   id = posts.count() + 1;
-  // }
-
+  // Promise a user lookup
   var userPromise = new Promise(function(resolve, reject) {
     Users.where('id', userID).fetch().then(function (user) {
-    console.log("THIS IS THE USER", user);
       if (user) {
         resolve(user);
       } else {
@@ -207,6 +200,7 @@ FeedsController.directPost = function({
     });
   });
 
+  // Prepare the formatted object to store in database
   var postHash = {
     user_id: userID,
     emoji: emoji,
@@ -220,11 +214,9 @@ FeedsController.directPost = function({
     updated_at: null
   };
 
-  var promise = new Promise(function(resolve, reject){
+  // Promise to store in database, then return an object for socket emission
+  var storePromise = new Promise(function(resolve, reject){
     new Posts().save(postHash).then(function(post) {
-      // Then means success
-      // THANH: save means posted to DB
-      // console.log("THIS IS THE POST OBJECT IN THE PROMISE: ", post);
       if (post) {
         if (res !== null) {
           res.json(post.toJSON());
@@ -232,9 +224,8 @@ FeedsController.directPost = function({
           userPromise.then(function(user) {
             var postObj = post;
             postObj.attributes.user = user.toJSON();
-            console.log("THIS IS THE POST OBJECT!!!", postObj);
-            var jsonObject = FeedsController.apiParse(post.toJSON());
-            // console.log(jsonObject);
+            var jsonObject = FeedsController.apiParse(postObj.toJSON());
+            console.log("JSON Post to emit: ",jsonObject);
             resolve(jsonObject);
           });
 
@@ -242,43 +233,14 @@ FeedsController.directPost = function({
       } else {
         reject(post);
       }
-
-      // Thanh added as Kai Yi mention below
-        // return new Promise().FeedsController.apiParse(post);
     });
   });
 
-  // new Posts().save(postHash).then(function(post) {
-  //   // Then means success
-  //   // THANH: save means posted to DB
-  //
-  //   if (res !== null) {
-  //     res.json(post);
-  //   } else { // Thanh added as Kai Yi mention below
-  //     return FeedsController.apiParse(post);
-  //   }
-  // }).catch(function(err) {
-  //   // Catch means failure
-  //   // Return error
-  //   if (res !== null) {
-  //     res.json({
-  //       error: MESSAGES.ERROR_CREATING_DROP
-  //     });
-  //   } else {
-  //     return {
-  //       error: MESSAGES.ERROR_CREATING_DROP
-  //     };
-  //   }
-  // });
-
-  return promise;
+  return storePromise;
 }
 
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
-  // UsersController.findUserId(1).then(function(user_id) {
-  // UsersController.findUserId(req.user.id).then(function(user_id) {
-  // console.log(req.body.emojiUni);
   var packet = {
     userID: req.user.id,
     emoji: req.body.emojiUni,
@@ -301,25 +263,3 @@ FeedsController.postFeed = function(req, res) {
 
 
 module.exports = FeedsController;
-
-
-
-// OLD STUFF
-
-// FeedsController.post = function(req, res) {
-//  UsersController.findUserId(req.user.id).then(function(user_id) {
-//    const postHash = {
-//      user_id: user_id,
-//      title: req.body.title,
-//      longitude: req.body.longitude,
-//      latitude: req.body.latitude,
-//    }
-//    new Posts().save(postHash).then(function(post) {
-//      res.json(post);
-//    }).catch(function(err) {
-//      res.json({error: err});
-//    });
-//  }).catch(function(err) {
-//    res.json({error: err});
-//  });
-// }
