@@ -146,21 +146,12 @@ FeedsController.getFeed = function(req, res) {
 // Socket link to write new feed to database
 FeedsController.directPost = function(userID, emoji, title, video, image, sound, location, date, res = null) {
 
-  console.log(location);
-
   var longitude = location[0];
   var latitude = location[1];
 
-  console.log(longitude);
 
-  // var id = -1;
-
-  // Posts.fetchAll().then(function(posts) {
-  //   id = posts.count() + 1;
-  // }
-
+  // Create new data entry
   var postHash = {
-    // id: id,
     user_id: userID,
     emoji: emoji,
     title: title,
@@ -193,15 +184,19 @@ FeedsController.directPost = function(userID, emoji, title, video, image, sound,
 FeedsController.postFeed = function(req, res) {
   // UsersController.findUserId(1).then(function(user_id) {
 	// UsersController.findUserId(req.user.id).then(function(user_id) {
-    console.log(req.body.emojiUni);
-      FeedsController.directPost(1,
-        req.body.emojiUni,
-        req.body.title,
-        req.body.videoUrl,
-        req.body.imageId,
-        req.body.soundCloudUrl,
-        req.body.location,
-        req.body.date);
+  console.log(req.body.emojiUni);
+    FeedsController.directPost(1,
+      req.body.emojiUni,
+      req.body.title,
+      req.body.videoUrl,
+      req.body.imageId,
+      req.body.soundCloudUrl,
+      req.body.location,
+      req.body.date);
+
+    // Response
+    res.end("Drop successfully created.");
+
 	};
 
 // TODO: Delete an existing feed
