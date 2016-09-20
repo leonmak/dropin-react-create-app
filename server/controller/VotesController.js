@@ -7,18 +7,16 @@ var MESSAGES = require('./Messages');
 
 var VotesController = {};
 
-/*** Back-end Queries ***/
-
 
 /*** Front-end Queries ***/
 
-// TODO: Get all votes for a specific user
+// TODO: Get all votes for a specific feed
 
 
-// TODO: Get a specific vote for a specific feed
+// TODO: Get summary of all votes to a specific user
 
 
-// TODO: Socket link to update vote in database
+// TODO: Get a specific vote
 
 
 // TODO: Create or update a vote

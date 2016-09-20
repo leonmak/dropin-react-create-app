@@ -190,7 +190,7 @@ CommentsController.directComment = function ({
 CommentsController.postComment = function (req, res) {
 
   var packet = {
-    dropId: req.params.post_id,
+    dropId: req.params.id,
     userId: req.body.userId,
     text: req.body.text,
     date: req.body.date
