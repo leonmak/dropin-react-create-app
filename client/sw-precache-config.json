@@ -4,10 +4,10 @@
     "build/**/!(*map*)"
   ],
   "runtimeCaching": [{
-    "urlPattern": "/https:\/\/drop-dev\\.herokuapp\\.com.*/",
+    "urlPattern": "/drop-dev/",
     "handler": "fastest"
     }, {
-    "urlPattern": "/https:\/\/fonts\\.googleapis\\.com.*/",
+    "urlPattern": "/googleapis/",
     "handler": "cacheFirst"
     }
   ]
