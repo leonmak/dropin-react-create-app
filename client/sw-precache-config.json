@@ -2,13 +2,5 @@
   "staticFileGlobs": [
     "build/**.png",
     "build/**/!(*map*)"
-  ],
-  "runtimeCaching": [{
-    "urlPattern": "/drop-dev/",
-    "handler": "fastest"
-    }, {
-    "urlPattern": "/googleapis/",
-    "handler": "cacheFirst"
-    }
   ]
 }

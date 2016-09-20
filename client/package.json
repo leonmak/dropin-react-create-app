@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "proxy": "http://localhost:3001/",
   "private": true,
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
-    "react-scripts": "0.4.1",
     "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "foreman": "^2.0.0",
@@ -30,6 +28,7 @@
     "react-router": "^2.7.0",
     "react-router-redux": "^4.0.5",
     "react-router-transition": "0.0.6",
+    "react-scripts": "0.4.1",
     "react-soundplayer": "^0.3.6",
     "react-tap-event-plugin": "^1.0.0",
     "react-video": "^1.5.3",
@@ -41,13 +40,14 @@
     "redux-thunk": "^2.1.0",
     "superagent": "^2.2.0",
     "sw-precache": "^4.0.0",
+    "sw-toolbox": "^3.2.1",
     "valid-url": "^1.0.9"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-sw": "npm run build && npm run cp-setup && sw-precache --root='build/' --config=build/sw-precache-config.json",
-    "cp-setup": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\; && cp manifest.json sw-precache-config.json build/ ",
+    "cp-setup": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\; && cp manifest.json sw-precache-config.json runtime-sw.js sw-toolbox.js build/ ",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

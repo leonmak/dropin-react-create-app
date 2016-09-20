@@ -44,6 +44,15 @@
       }(document, 'script', 'facebook-jssdk'));
 
       if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('runtime-sw.js')
+        .then(function(reg){
+          console.log('registered runtime-sw');
+        })
+        .catch(function(ex) {
+          console.warn(ex);
+          console.warn('(This warning can be safely ignored outside of the production build.)');
+        });
+;
         navigator.serviceWorker.register('service-worker.js')
         .then(function(reg){
           reg.pushManager.subscribe({
@@ -56,6 +65,9 @@
           console.warn(ex);
           console.warn('(This warning can be safely ignored outside of the production build.)');
         });
+
+
+
       }
     </script>
   </body>
