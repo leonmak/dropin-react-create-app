@@ -56,6 +56,10 @@ module.exports = function(passport) {
     res.json(req.user);
   })
 
+  router.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'))
+  })
+
   return router;
 }
 
