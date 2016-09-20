@@ -29,7 +29,7 @@ const handler = (reset, socketHandler, user, location) => values =>
 
 
   socketHandler.post(
-    {userId: user.userId,
+    {userID: user.userId,
       emoji: values.emojiUni,
       title: values.title,
       video: values.videoUrl,
