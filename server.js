@@ -12,6 +12,8 @@ const CommentsController = require('./server/controller/CommentsController');
 const FeedsController = require('./server/controller/FeedsController');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
+const env = require('node-env-file');
+env(__dirname + '/.env');
 
 passport.use(new FacebookTokenStrategy({
   clientID: process.env.REACT_APP_FB_CLIENT_ID,

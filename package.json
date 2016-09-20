@@ -30,6 +30,7 @@
     "knex": "^0.11.10",
     "moment": "^2.14.1",
     "mysql": "^2.11.1",
+    "node-env-file": "^0.1.8",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
@@ -43,6 +44,6 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/babel-node server.js ",
-    "install": "cd client && npm install && npm run build && cd .."
+    "install": "cd client && npm install && npm run build-sw && cd .."
   }
 }
