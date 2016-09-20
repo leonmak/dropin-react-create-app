@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const http = require('http').Server(app);
 const io = require("socket.io")(http);
