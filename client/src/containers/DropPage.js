@@ -3,7 +3,7 @@ import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
 import {toggleTopBarBackButtonVisibility} from '../actions/PageVisibilityActions';
-import {fetchCommentsForDrop} from '../actions';
+import { clearSingleDropHistory} from '../actions';
 
 import DropComponent from '../components/DropComponent';
 
@@ -21,8 +21,8 @@ function mapDispatchToProps(dispatch) {
   return {
   	toggleBottomBar:(visibility)=>dispatch(toggleBottomBarVisibility(visibility)),
     toggleTopBarBackButton:(visibility)=>dispatch(toggleTopBarBackButtonVisibility(visibility)),
-    fetchCommentsForDrop:(dropId)=>dispatch(fetchCommentsForDrop(dropId)),
-    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg))
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg)),
+    clearSingleDropHistory: ()=>dispatch(clearSingleDropHistory())
   };
 }
 

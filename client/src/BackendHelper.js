@@ -65,8 +65,8 @@ export function getMyDrops(userId){
     return defaultPromise(req);
 }
 
-//api/feeds/1/comments
+//api/comments/feeds/1
 export function getSingleDropComments(dropId){
-	var req = 'api/feeds/'+dropId+'/comments';
+	var req = 'api/comments/feeds/'+dropId;
 	return defaultPromise(req);
 }

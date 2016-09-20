@@ -15,7 +15,7 @@ import {browserHistory} from 'react-router';
 
 
 
-var comments = [
+/*var comments = [
 {
 	"id":"001",
 	"username":"Leon",
@@ -98,7 +98,7 @@ var drop = {
   "date": "2016-08-23T18:25:43.511Z",
   "replies": 7
 }
-
+*/
 
 
 
@@ -116,16 +116,19 @@ class DropComponent extends Component {
 	componentDidMount() {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-		this.props.fetchCommentsForDrop(1);
+		//console.log(this.props.selectedDrop.selectedDrop);
+		//this.props.fetchCommentsForDrop(this.props.selectedDrop.selectedDrop.dropId);
 		/*request.get('http://localhost:3000/api/feeds').end(function(err,res){
       console.log(',',res);
     });*/
 	}
 
 	componentWillUnmount() {
+		//console.log('state befor unmount', this.props.selectedDrop);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
-		console.log(this.props.selectedDrop.selectedDrop);
+		this.props.clearSingleDropHistory();
+		//console.log('state when cleared',this.props.selectedDrop);
 	}
 
 	render() {
@@ -134,20 +137,22 @@ class DropComponent extends Component {
 			<div>
 			<Drop drop={this.props.selectedDrop.selectedDrop} />
 				{/*<CommentsInput />*/}
-			<CommentsList comments={comments} />
+			<CommentsList comments={this.props.selectedDrop.comments} />
 			</div>
 			)
 	}
 }
+
+/*<CommentsList comments={comments} />*/
 
 
 
 DropComponent.propTypes = {
 	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired,
-	fetchCommentsForDrop: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
-	pageVisibility: PropTypes.object.isRequired
+	pageVisibility: PropTypes.object.isRequired,
+	clearSingleDropHistory: PropTypes.func.isRequired
 };
 
 
