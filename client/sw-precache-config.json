@@ -1,0 +1,14 @@
+{
+  "staticFileGlobs": [
+    "build/**.png",
+    "build/**/!(*map*)"
+  ],
+  "runtimeCaching": [{
+    "urlPattern": "/googleapis.com/",
+    "handler": "fastest"
+    }, {
+    "urlPattern": "/maxcdn.com/",
+    "handler": "fastest"
+    }
+  ]
+}

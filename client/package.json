@@ -46,8 +46,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-serve": "npm run build && npm run cp-icons && cp manifest.json build/ && sw-precache --root='build/' --static-file-globs='build/**/!(*map*)' && pushstate-server build",
-    "cp-icons": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\;",
+    "build-serve": "npm run build && npm run cp-setup && sw-precache --root='build/' --config=build/sw-precache-config.json && pushstate-server build",
+    "cp-setup": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\; && cp manifest.json sw-precache-config.json build/ ",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
