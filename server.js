@@ -94,10 +94,12 @@ io.on('connection', function(socket) {
       }
       if (packet.event == 'feed:send') {
         //feedscontroller needs to return an id for me to work with
-        var feedObject = FeedsController.directPost(packet.data);
-        var newPacket = packet;
-        newPacket.data = feedObject;
-        io.emit('server:sendEvent', newPacket);
+        FeedsController.directPost(packet.data).then(function(res){
+          var newPacket = packet;
+          newPacket.data = res;
+          io.emit('server:sendEvent', newPacket);
+        });
+
       }
     })
     // based on feeds/ comments or ... no need

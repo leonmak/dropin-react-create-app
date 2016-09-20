@@ -190,6 +190,30 @@ FeedsController.directPost = function({
     updated_at: null
   };
 
+  var promise = new Promise(function(resolve,reject){
+    new Posts().save(postHash).then(function(post) {
+      // Then means success
+      // THANH: save means posted to DB
+
+      if (res !== null) {
+        res.json(post);
+      } else { // Thanh added as Kai Yi mention below
+        //return new Promise().FeedsController.apiParse(post);
+        resolve(FeedsController.apiParse(post));
+      }
+    }).catch(function(err) {
+      // Catch means failure
+      // Return error
+      // if (res !== null) {
+      //   res.json({
+      //     error: MESSAGES.ERROR_CREATING_DROP
+      //   });
+      // } else {
+        reject(MESSAGES.ERROR_CREATING_DROP);
+      // }
+    });
+  });
+
   new Posts().save(postHash).then(function(post) {
     // Then means success
     // THANH: save means posted to DB
@@ -197,7 +221,7 @@ FeedsController.directPost = function({
     if (res !== null) {
       res.json(post);
     } else { // Thanh added as Kai Yi mention below
-      return post
+      return new Promise().FeedsController.apiParse(post);
     }
   }).catch(function(err) {
     // Catch means failure
@@ -213,36 +237,26 @@ FeedsController.directPost = function({
     }
   });
 
-  //TODO: @LARRY i need you to return the object that
-  //was posted to the server here in this format haha
-  return {
-    "id": "003",
-    "username": "Leon",
-    "userId": "002",
-    "userAvatarId": "drop/002idasdf",
-    "imageId": "drop/gmzf4d8vbyxc50wefkap",
-    "emojiUni": "1f602",
-    "title": "To the cute guy studying outside the LT, WOWOW",
-    "votes": 6,
-    "location": [103.7730933, 1.3056169],
-    "date": "2016-09-08T11:06:43.511Z",
-    "replies": 12
-  };
+  return promise;
 }
 
 // Post a new feed
 FeedsController.postFeed = function(req, res) {
   // UsersController.findUserId(1).then(function(user_id) {
   // UsersController.findUserId(req.user.id).then(function(user_id) {
-  console.log(req.body.emojiUni);
-  FeedsController.directPost(1,
-    req.body.emojiUni,
-    req.body.title,
-    req.body.videoUrl,
-    req.body.imageId,
-    req.body.soundCloudUrl,
-    req.body.location,
-    req.body.date);
+  // console.log(req.body.emojiUni);
+  var packet = {
+    userID: req.user.id,
+    emoji: req.body.emojiUni,
+    title: req.body.title,
+    video: req.body.videoUrl,
+    image: req.body.imageId,
+    sound: req.body.soundCloudUrl,
+    longitude: req.body.location[0],
+    latitude: req.body.location[1],
+    date: req.body.date};
+
+  FeedsController.directPost(packet);
 
   // Response
   res.end("Drop successfully created.");

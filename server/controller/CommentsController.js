@@ -11,19 +11,19 @@ var CommentsController = {};
 /*** Back-end Queries ***/
 
 // Get comments count for a specific feed
-CommentsController.getFeedCommentCount = function(post_id) {
-  const post = Posts.where({
-    'id': post_id
-  });
-  Posts.where('id', post_id).fetch({
-    withRelated: 'comments'
-  }).then(function(post) {
-    var comments = post.related('comments');
-    return comments.count();
-  }).catch(function(err) {
-    return 0;
-  });
-}
+// CommentsController.getFeedCommentCount = function(post_id) {
+//   const post = Posts.where({
+//     'id': post_id
+//   });
+//   Posts.where('id', post_id).fetch({
+//     withRelated: 'comments'
+//   }).then(function(post) {
+//     var comments = post.related('comments');
+//     return comments.count();
+//   }).catch(function(err) {
+//     return 0;
+//   });
+// }
 
 
 /*** Front-end Queries ***/
@@ -114,7 +114,7 @@ CommentsController.directComment = function({
     updated_at: null
   }
 
-  const comment = new Comments;
+  // const comment = new Comments;
   new Comments().save(commentHash).then(function(comment) {
     if (res !== null) {
       res.json(comment);
