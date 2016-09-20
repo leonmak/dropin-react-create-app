@@ -5,6 +5,7 @@ import {
 } from './database';
 
 var express = require('express');
+var path = require('path');
 var router = express.Router();
 var LoginCheck = require('connect-ensure-login');
 var UsersController = require('./controller/UsersController');
@@ -57,7 +58,7 @@ module.exports = function(passport) {
   })
 
   router.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'))
+    res.sendFile(path.join(__dirname, '/../client/build/index.html'))
   })
 
   return router;
