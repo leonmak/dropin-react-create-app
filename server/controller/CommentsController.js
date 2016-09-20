@@ -8,77 +8,120 @@ var MESSAGES = require('./Messages');
 
 var CommentsController = {};
 
-/*** Back-end Queries ***/
+/*** Parsers ***/
+CommentsController.apiParse = function(fetchedComment) {
 
-// Get comments count for a specific feed
-// CommentsController.getFeedCommentCount = function(post_id) {
-//   const post = Posts.where({
-//     'id': post_id
-//   });
-//   Posts.where('id', post_id).fetch({
-//     withRelated: 'comments'
-//   }).then(function(post) {
-//     var comments = post.related('comments');
-//     return comments.count();
-//   }).catch(function(err) {
-//     return 0;
-//   });
-// }
+  // Get user details
+  var user = fetchedComment.user;
+  var username = "someone";
+  var userID = -1;
+  var avatar = "";
+  if (user.anonymous == 0) {
+    username = user.user_name;
+    avatar = user.facebook_profile_img;
+    userID = user.user_id;
+  }
 
+  // Get last updated date
+  var date = fetchedComment.created_at;
+  if (fetchedComment.updated_at != null) {
+    date = fetchedComment.updated_at;
+  }
+
+  // Parse and build JSON for API endpoint
+  var parsedComment = {
+    id: fetchedComment.id,
+    username: username,
+    dropId: fetchedComment.post_id,
+    userId: userID,
+    userAvatarId: avatar,
+    text: fetchedComment.text,
+    createdAt: date
+  }
+
+  return parsedComment;
+}
 
 /*** Front-end Queries ***/
 
 // Get comments from a specific feed
 CommentsController.getFeedComments = function(req, res) {
   const post_id = req.params.id;
-  console.log(post_id);
-  const post = Posts.where({
-    'id': post_id
-  });
-  console.log(post.fetch({
-    withRelated: 'comments'
-  }));
-  Posts.where('id', post_id).fetch({
-    withRelated: 'comments'
-  }).then(function(post) {
-    res.json(post.related('comments').toJSON());
+
+  Comments.where('post_id', post_id).fetchAll({
+    withRelated: ['user']
+  }).then(function(comments) {
+    // Get all comment objects
+    var fetchedComments = comments.toJSON();
+    var parsedComments = [];
+
+    for (var i = 0; i < fetchedComments.length; ++i) {
+
+      // Get comment object
+      var fetchedComment = fetchedComments[i];
+
+      // Parse comment
+      var parsedComment = CommentsController.apiParse(fetchedComment);
+
+      // Collate comment
+      parsedComments.push(parsedComment);
+      console.log(parsedComment);
+    }
+
+    res.json(parsedComments);
   }).catch(function(err) {
     res.json({
       error: MESSAGES.ERROR_COMMENT_NOT_FOUND
     });
-  });
+  })
 }
 
 // Get comments from a specific user
 CommentsController.getUserComments = function(req, res) {
   const user_id = req.params.id;
-  const posts = Posts.where({
-    'user_id': user_id
-  });
-  Comments.where({
-    user_id: user_id
-  }).fetchAll().then(function(comments) {
-    res.json(comments.toJSON());
+
+  Comments.where('user_id', user_id).fetchAll({
+    withRelated: ['user']
+  }).then(function(comments) {
+    // Get all comment objects
+    var fetchedComments = comments.toJSON();
+    var parsedComments = [];
+
+    for (var i = 0; i < fetchedComments.length; ++i) {
+
+      // Get comment object
+      var fetchedComment = fetchedComments[i];
+
+      // Parse comment
+      var parsedComment = CommentsController.apiParse(fetchedComment);
+
+      // Collate comments
+      parsedComments.push(parsedComment);
+      console.log(parsedComment);
+    }
+
+    res.json(parsedComments);
   }).catch(function(err) {
     res.json({
-      error: MESSAGES.ERROR_USER_COMMENT_NOT_FOUND
+      error: MESSAGES.ERROR_COMMENT_NOT_FOUND
     });
   })
 }
 
-// Get a specific comment from a specific feed
+// Get a specific comment
 CommentsController.getComment = function(req, res) {
-  const post_id = req.params.post_id;
   const id = req.params.id;
-  Posts.where({
-    post_id: post_id,
-    id: id
-  }).fetch().then(function(post) {
-    res.json(post.related('comments').where({
-      id: id
-    }).fetch().then(function(comment) {
-      res.json(comment.toJSON());
-    }));
+
+  Comments.where('id', id).fetch({
+    withRelated: ['user']
+  }).then(function(comment) {
+    // Get all comment objects
+    var fetchedComment = comment.toJSON();
+
+    // Parse comment
+    var parsedComment = CommentsController.apiParse(fetchedComment);
+
+    res.json(parsedComment);
   }).catch(function(err) {
     res.json({
       error: MESSAGES.ERROR_COMMENT_NOT_FOUND

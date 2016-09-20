@@ -69,9 +69,6 @@ FeedsController.apiParse = function(fetchedPost) {
   return parsedPost;
 }
 
-/*** Back-end Queries ***/
-//...
-
 /*** Front-end Queries ***/
 
 // Get all the feeds across the database

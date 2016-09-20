@@ -46,7 +46,7 @@ module.exports = function(passport) {
   // Comments API
   router.get('/api/comments/feeds/:id', CommentsController.getFeedComments);
   router.get('/api/comments/users/:id', CommentsController.getUserComments);
-  router.get('/api/comments/feeds/:post_id/comments/:id', CommentsController.getComment);
+  router.get('/api/comments/:id', CommentsController.getComment);
   router.post('/api/feeds/:post_id/comments', CommentsController.postComment);
 
   // TODO: Votes API
