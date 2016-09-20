@@ -20,7 +20,6 @@ class EmojiInput extends Component {
     super(props)
 
     this.state = {
-      emoji: "",
       showEmojiPicker: false,
     }
 
@@ -63,12 +62,14 @@ class EmojiInput extends Component {
 
   updateState(onChange) {
     return e => {
+      console.log(e.target.value)
       onChange(e.target.value);
     }
   }
 
   setEmoji(onChange) {
     return emoji => {
+      console.log(emoji)
       onChange(emoji);
     }
   }
