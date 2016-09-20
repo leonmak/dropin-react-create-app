@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import AddForm from './AddForm';
 import {browserHistory} from 'react-router';
 
@@ -14,11 +14,17 @@ class AddComponent extends Component {
     return (
       <div className="row center-xs">
         <div className="col-xs-12">
-            <AddForm />
+            <AddForm user={this.props.user} location={this.props.location}/>
         </div>
       </div>
     )
   }
+}
+
+AddComponent.PropTypes = {
+  passSnackbarMessage: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 }
 
 export default AddComponent;

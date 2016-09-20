@@ -57,8 +57,19 @@ export default class SocketHandler {
 		switch (this.type) {
 			case COMMENTS_SOCKET:
 		    return {channelId: this.channelId, event: "comment:send", data: {userId: data.userId, postId: data.postId, text: data.text}};
+		  
 		  case FEEDS_SOCKET:
-		    return {channelId: this.channelId, event: "feed:send", data: {userId: data.userId, title: data.title, longitude: data.longitude, latitude: data.latitude}};
+		    return {channelId: this.channelId, event: "feed:send", data: 
+		    	{userID: data.userID,
+		    	emoji: data.emoji, 
+		    	title: data.title,
+		    	video: data.video,
+		    	image: data.image,
+		    	sound: data.sound, 
+		    	longitude: data.longitude, 
+		    	latitude: data.latitude,
+		    	date: data.date}};
+		  
 		  case VOTES_SOCKET:
 		    return {channelId: this.channelId, event: "vote:send", data: {userId: data.userId, postId: data.postId, voteType: data.voteType}};
 		  default:
@@ -71,9 +82,18 @@ export default class SocketHandler {
     socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
 	}
 
-	post({userId, title, longitude, latitude}) { //accept a hash {userId: , title: , longitude: , latitude: }
+	post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { //accept a hash {userId: , title: , longitude: , latitude: }
 		console.log("sended post");
-		socket.emit('client:sendEvent', this._packSocket({userId, title, longitude, latitude}));
+		socket.emit('client:sendEvent', this._packSocket({
+			userID, 
+			emoji,
+			title,
+			video,
+			image,
+			sound, 
+			longitude, 
+			latitude,
+			date}));
 	}
 
 	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }

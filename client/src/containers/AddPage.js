@@ -5,7 +5,8 @@ import AddComponent from '../components/AddComponent';
 
 function mapStateToProps(state) {
   return {
-    user: state.userAuthSession.userObject
+    user: state.userAuthSession.userObject,
+    location: state.location.lngLat,
   };
 }
 
