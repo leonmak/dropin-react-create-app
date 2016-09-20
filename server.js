@@ -43,6 +43,7 @@ passport.deserializeUser(function(obj, callback) {
 app.set('port', (process.env.PORT || 3001));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+
 var session = require('express-session');
 // var MySQLStore = require('express-mysql-session')(session);
 
