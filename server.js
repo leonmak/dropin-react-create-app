@@ -15,13 +15,13 @@ var cookieParser = require('cookie-parser');
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
 passport.use(new FacebookTokenStrategy({
-    clientID: process.env.REACT_APP_FB_CLIENT_ID,
-    clientSecret: process.env.FB_CLIENT_SECRET,
-    options: {
-      profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
-    }
-  },
-  FacebookController.loginCallback
+  clientID: process.env.REACT_APP_FB_CLIENT_ID,
+  clientSecret: process.env.FB_CLIENT_SECRET,
+  options: {
+    profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
+  }
+},
+FacebookController.loginCallback
 ));
 
 // passport.use(new strategy({
@@ -86,13 +86,13 @@ io.on('connection', function(socket) {
 
   socket.on('client:sendEvent', function(packet) {
 
-      console.log(packet);
+    console.log(packet);
 
-      if (packet.event == 'comment:send') {
-        CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
-        io.emit('server:sendEvent', packet);
-      }
-      if (packet.event == 'feed:send') {
+    if (packet.event == 'comment:send') {
+      CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
+      io.emit('server:sendEvent', packet);
+    }
+    if (packet.event == 'feed:send') {
         //feedscontroller needs to return an id for me to work with
         var feedObject = FeedsController.directPost(packet.data);
         var newPacket = packet;
@@ -125,7 +125,7 @@ io.on('connection', function(socket) {
     //     }
     //   });
     // }
-});
+  });
 
 http.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console

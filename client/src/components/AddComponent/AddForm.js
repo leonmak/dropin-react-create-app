@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import { reduxForm, Field } from 'redux-form'
 
 import { TextField } from 'redux-form-material-ui'
+import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
 import EmojiInput from './EmojiInput'
 import ImageUpload from '../ImageUpload'
@@ -11,15 +12,34 @@ import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
 
 import '../../styles/form.css';
 
-const handler = (reset, socketHandler) => values =>
+const handler = (reset, socketHandler, user, location) => values =>
 {
   if(values.emojiUni === null){
     values.emojiUni = 'default-marker';
   }
+  console.log(values);
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-  socketHandler.post({userId: 1, title: "hihi", longitude: 3, latitude: 4});
+
+  console.log('user', user);
+  console.log('locObject', location);
+
+
+  socketHandler.post(
+    {userId: 1,
+      emoji: values.emojiUni, 
+      title: values.title,
+      video: values.videoUrl,
+      image: values.imageId,  
+      sound: values.soundcloudUrl, 
+      longitude: location[0], 
+      latitude: location[1],
+      date: moment()});
+
+
   reset();
 }
+
+
 /*new Promise(resolve => {
   setTimeout(() => {
     if(values.emojiUni === null)
@@ -58,27 +78,26 @@ const handler = (reset, socketHandler) => values =>
   class AddForm extends Component {
 
     componentDidMount() {
-      // TODO: duplicate with list view!
       socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
       /*request.get('api/feeds/1/comments').end(function(err,res){
       console.log(res);
     });*/
     }
 
+    postReceive(){
+
+    }
+
     componentWillUnmount() {
       socketHandler.uninstall();
     }
 
-    postReceive(){
-    }
-
-
-    sendMessage(msg) {
+    /*sendMessage(msg) {
       return ()=>{
         socketHandler.post({userId: 1, title: "hihi", longitude: 3, latitude: 4});
         console.log("Add form has posted to socket!");  
       }
-    }
+    }*/
 
 
   //should add geolocation state here if not you dunno where you submit a new drop
@@ -91,7 +110,8 @@ render() {
   const { handleSubmit, pristine, reset, submitting } = this.props;
 
   return (
-    <form onSubmit={ handleSubmit(handler(reset, socketHandler)) }>
+    <form onSubmit={ handleSubmit(handler(reset, socketHandler, 
+      this.props.user, this.props.location)) }>
     <h1>New message</h1>
 
     <div className="row center-xs">
@@ -128,5 +148,10 @@ AddForm = reduxForm({
   form: 'addForm',
   validate
 })(AddForm)
+
+AddForm.PropTypes = {
+  user: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+}
 
 export default AddForm;
