@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
+import {CommentForm} from './CommentForm';
 import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
+import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -101,7 +103,7 @@ var drop = {
 */
 
 
-
+const socketHandler = new SocketHandler();
 
 class DropComponent extends Component {
   componentWillMount() {
@@ -114,8 +116,10 @@ class DropComponent extends Component {
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
+		socketHandler.setup(COMMENTS_SOCKET, {}, this.commentReceive.bind(this));
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
+		console.log('loc', this.props.location);
 		//console.log(this.props.selectedDrop.selectedDrop);
 		//this.props.fetchCommentsForDrop(this.props.selectedDrop.selectedDrop.dropId);
 		/*request.get('http://localhost:3000/api/feeds').end(function(err,res){
@@ -131,17 +135,29 @@ class DropComponent extends Component {
 		//console.log('state when cleared',this.props.selectedDrop);
 	}
 
+	commentReceive(){
+
+	}
+
 	render() {
 
 		return (
 			<div>
 			<Drop drop={this.props.selectedDrop.selectedDrop} />
-				{/*<CommentsInput />*/}
 			<CommentsList comments={this.props.selectedDrop.comments} />
+			<CommentForm 
+			location={this.props.location} 
+			user={this.props.user} 
+			socketHandler={socketHandler}/>
+			
+			
+			
 			</div>
 			)
 	}
 }
+
+/**/
 
 /*<CommentsList comments={comments} />*/
 
@@ -152,7 +168,9 @@ DropComponent.propTypes = {
 	toggleTopBarBackButton: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	clearSingleDropHistory: PropTypes.func.isRequired
+	clearSingleDropHistory: PropTypes.func.isRequired,
+	location: PropTypes.object.isRequired,
+	user: PropTypes.object.isRequired
 };
 
 

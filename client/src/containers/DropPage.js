@@ -14,6 +14,7 @@ function mapStateToProps(state) {
     pageVisibility: state.pageVisibility,
     selectedDrop: state.selectedDrop,
     user: state.userAuthSession.userObject,
+    location: state.location.lnglat
   };
 }
 
