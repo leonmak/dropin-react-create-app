@@ -8,6 +8,7 @@ import EmojiInput from './EmojiInput'
 import ImageUpload from '../ImageUpload'
 import validUrl from 'valid-url'
 import EmojiAnnotationToUni from '../../utils/emoji-annotation-to-unicode';
+import * as geo from '../../utils/geolocator';
 
 import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
 
@@ -67,19 +68,28 @@ const handler = (reset, socketHandler, user, location) => values =>
 
   class AddForm extends Component {
 
+    constructor(props) {
+      super(props);
+      this.geoId = null;
+      this.updateLocation = this.updateLocation.bind(this);
+    }
+
+    updateLocation(coords) {
+      this.props.setLocation([coords.longitude, coords.latitude])
+    }
+
     componentDidMount() {
       socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
-      /*request.get('api/feeds/1/comments').end(function(err,res){
-      console.log(res);
-    });*/
+      this.geoId = geo.geoListener(this.updateLocation);
+    }
+
+    componentWillUnmount() {
+      navigator.geolocation.clearWatch(this.geoId);
+      socketHandler.uninstall();
     }
 
     postReceive(){
 
-    }
-
-    componentWillUnmount() {
-      socketHandler.uninstall();
     }
 
     /*sendMessage(msg) {
@@ -100,8 +110,7 @@ render() {
   const { handleSubmit, pristine, reset, submitting } = this.props;
 
   return (
-    <form onSubmit={ handleSubmit(handler(reset, socketHandler,
-      this.props.user, this.props.location)) }>
+    <form onSubmit={ handleSubmit(handler(reset, socketHandler, this.props.user, this.props.location)) }>
     <h1>New message</h1>
 
     <div className="row center-xs">

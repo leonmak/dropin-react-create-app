@@ -52,7 +52,7 @@ export default class ImageUpload extends Component {
           {uploadedUrl === '' ? null :
           <div>
             <img className="uploaded-img" alt={uploadedUrl} src={uploadedUrl} />
-            <small>{uploadedFile.name}</small>
+            <p>{uploadedFile.name}</p>
           </div>}
         </div>
       </div>
