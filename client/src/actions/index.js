@@ -5,6 +5,7 @@ export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
 export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
+export const CLEAR_SINGLE_DROP_HISTORY = 'CLEAR_SINGLE_DROP_HISTORY';
 
 /***********************************************************************
 ACTION IS CALLED ON THE LIST PAGE
@@ -41,7 +42,7 @@ ACTION IS CALLED ON THE DROP PAGE
 ***********************************************************************/
 
 //function to fetch all comments for a single drop
-export function fetchCommentsForDrop(dropId){
+function fetchCommentsForDrop(dropId){
 	return (dispatch)=>{
 		BackendHelper.getSingleDropComments(dropId)
 		.then(response=>dispatch(receiveCommentsForDrop(response)));
@@ -57,13 +58,26 @@ function receiveCommentsForDrop(comments){
 	}
 }
 
+export function clearSingleDropHistory(){
+	return{
+		type: CLEAR_SINGLE_DROP_HISTORY
+	}
+}
+
 /***********************************************************************
 ACTION IS CALLED ON LIST->DROP OR PROFILE->DROP
 ***********************************************************************/
 
 //action to pass drop object from list to drop
 export function passingFromOthersToDrop(drop){
-	console.log(drop);
+
+	return (dispatch)=>{
+		dispatch(fetchCommentsForDrop(drop.dropId));
+		dispatch(populatingDropFromOthrs(drop));
+	}
+}
+
+function populatingDropFromOthrs(drop){
 	return{
 		type: PASSING_FROM_OTHERS_TO_DROP,
 		drop: drop
