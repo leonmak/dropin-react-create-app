@@ -173,6 +173,10 @@ FeedsController.directPost = function({
   //   id = posts.count() + 1;
   // }
 
+
+  console.log("IS THERE USER ID???", userID);
+
+
   // Create new data entry
   var postHash = {
     user_id: userID,
@@ -191,23 +195,18 @@ FeedsController.directPost = function({
     new Posts().save(postHash).then(function(post) {
       // Then means success
       // THANH: save means posted to DB
+      // console.log("THIS IS THE POST OBJECT IN THE PROMISE: ", post);
 
       if (res !== null) {
-        res.json(post);
-      } else { // Thanh added as Kai Yi mention below
-        //return new Promise().FeedsController.apiParse(post);
-        resolve(FeedsController.apiParse(post));
+        res.json(post.toJSON());
+        reject("Feeds POST Request: Error in Promise Object");
+      } else {
+        var jsonObject = FeedsController.apiParse(post.attributes);
+        console.log(jsonObject);
+        resolve(jsonObject);
       }
-    }).catch(function(err) {
-      // Catch means failure
-      // Return error
-      // if (res !== null) {
-      //   res.json({
-      //     error: MESSAGES.ERROR_CREATING_DROP
-      //   });
-      // } else {
-        reject(MESSAGES.ERROR_CREATING_DROP);
-      // }
+      // Thanh added as Kai Yi mention below
+        // return new Promise().FeedsController.apiParse(post);
     });
   });
 
@@ -218,7 +217,7 @@ FeedsController.directPost = function({
   //   if (res !== null) {
   //     res.json(post);
   //   } else { // Thanh added as Kai Yi mention below
-  //     return new Promise().FeedsController.apiParse(post);
+  //     return FeedsController.apiParse(post);
   //   }
   // }).catch(function(err) {
   //   // Catch means failure

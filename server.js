@@ -94,8 +94,9 @@ io.on('connection', function(socket) {
     }
     if (packet.event == 'feed:send') {
         //feedscontroller needs to return an id for me to work with
+        console.log('input to feed controller', packet.data);
         FeedsController.directPost(packet.data).then(function(res){
-          console.log(res);
+          console.log('output from feedcontroller',res);
           var newPacket = packet;
           newPacket.data = res;
           console.log(newPacket);
