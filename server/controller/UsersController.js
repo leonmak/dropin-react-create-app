@@ -57,7 +57,7 @@ UsersController.getUserObject = function(id) {
 }
 
 // Creating a new user
-UsersController.createUser = function(accessToken, profile) {
+UsersController.createUser = function(accessToken, profile, callback) {
   Users.where('facebook_id', profile.id).fetch().then(function(user) {
     if (user) {
       // update access token
@@ -65,6 +65,9 @@ UsersController.createUser = function(accessToken, profile) {
         facebook_token: accessToken,
         facebook_profile_img: profile.photos.length > 0 ? profile.photos[0].value : null
       });
+      // add user id to profile
+      profile.userId = user.id;
+      return callback(null, profile);
     } else {
       // create new one
       const userHash = {
@@ -74,7 +77,8 @@ UsersController.createUser = function(accessToken, profile) {
         facebook_token: accessToken
       }
       new Users().save(userHash).then(function(user) {
-        console.log(user)
+        profile.userId = user.id;
+        return callback(null, profile);
       }).catch(function(err) {
         console.log(err)
           // res.json({error: MESSAGES.ERROR_CREATING_USER});
