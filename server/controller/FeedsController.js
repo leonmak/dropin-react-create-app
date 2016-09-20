@@ -211,28 +211,28 @@ FeedsController.directPost = function({
     });
   });
 
-  new Posts().save(postHash).then(function(post) {
-    // Then means success
-    // THANH: save means posted to DB
-
-    if (res !== null) {
-      res.json(post);
-    } else { // Thanh added as Kai Yi mention below
-      return new Promise().FeedsController.apiParse(post);
-    }
-  }).catch(function(err) {
-    // Catch means failure
-    // Return error
-    if (res !== null) {
-      res.json({
-        error: MESSAGES.ERROR_CREATING_DROP
-      });
-    } else {
-      return {
-        error: MESSAGES.ERROR_CREATING_DROP
-      };
-    }
-  });
+  // new Posts().save(postHash).then(function(post) {
+  //   // Then means success
+  //   // THANH: save means posted to DB
+  //
+  //   if (res !== null) {
+  //     res.json(post);
+  //   } else { // Thanh added as Kai Yi mention below
+  //     return new Promise().FeedsController.apiParse(post);
+  //   }
+  // }).catch(function(err) {
+  //   // Catch means failure
+  //   // Return error
+  //   if (res !== null) {
+  //     res.json({
+  //       error: MESSAGES.ERROR_CREATING_DROP
+  //     });
+  //   } else {
+  //     return {
+  //       error: MESSAGES.ERROR_CREATING_DROP
+  //     };
+  //   }
+  // });
 
   return promise;
 }
