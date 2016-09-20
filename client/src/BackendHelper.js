@@ -9,12 +9,12 @@ var request = require('superagent');
 //      console.log(',',res);
 //    });
 
-const HOST = 'http://localhost:3001/';
+const HOST = 'https://drop-dev.herokuapp.com/';
 
 function defaultPromise(req){
     return new Promise(function(resolve, reject) {
         var final = HOST+req;
-        request.get(final).end( 
+        request.get(final).end(
             function(err,res){
                 if(err==null){
                 	if(res.body.error){
