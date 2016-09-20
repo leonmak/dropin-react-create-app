@@ -4,13 +4,11 @@ const http = require('http').Server(app);
 const io = require("socket.io")(http);
 const routesConfig = require('./server/routes');
 const passport = require('passport');
-// const strategy = require('passport-facebook').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
+const path = require('path');
 const FacebookController = require('./server/controller/FacebookController');
-var CommentsController = require('./server/controller/CommentsController');
-var FeedsController = require('./server/controller/FeedsController');
-// var clientSockets = [];
-var cookieParser = require('cookie-parser');
+const CommentsController = require('./server/controller/CommentsController');
+const FeedsController = require('./server/controller/FeedsController');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 
@@ -42,7 +40,8 @@ passport.deserializeUser(function(obj, callback) {
   callback(null, obj);
 });
 
-app.set('port', (process.env.API_PORT || 3001));
+app.set('port', (process.env.PORT || 3001));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 var session = require('express-session');
 // var MySQLStore = require('express-mysql-session')(session);

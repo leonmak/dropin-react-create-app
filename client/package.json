@@ -4,9 +4,9 @@
   "proxy": "http://localhost:3001/",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.4.1"
   },
   "dependencies": {
+    "react-scripts": "0.4.1",
     "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "foreman": "^2.0.0",
