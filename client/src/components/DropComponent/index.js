@@ -175,6 +175,7 @@ class DropComponent extends Component {
 
 	commentReceive(data){
 		console.log('received comment', data);
+		this.props.updateAComment(data);
     	//this.props.updateANearbyDrop(data);
 	}
 
@@ -209,7 +210,8 @@ DropComponent.propTypes = {
 	toggleTopBarBackButton: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	setLocation: PropTypes.func.isRequired
+	setLocation: PropTypes.func.isRequired,
+	updateAComment: PropTypes.func.isRequired
 };
 
 
