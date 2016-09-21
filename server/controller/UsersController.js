@@ -92,20 +92,44 @@ UsersController.directEdit = function({
 	user_avatar_url,
 	anonymous,
 }, res = null) {
-
+  Users.where('id', id).fetch().then(function(user) {
+    // update access token
+    console.log(user);
+    console.log(anonymous);
+    if (user_avatar_url != undefined) {
+	    user.save({
+    	  user_avatar_url: user_avatar_url,
+    	});
+	  }
+    if (anonymous != undefined) {
+	    console.log('saving anonymous');
+	    user.save({
+      	anonymous: anonymous
+    	});
+	  }
+  }).catch(function(err) {
+  	if (res != null) {
+	    res.json({
+  	    error: MESSAGES.ERROR_USER_NOT_FOUND
+    	});
+	  }
+  });
 };
 
 UsersController.editUser = function(req, res) {
-  var packet = {
-    id: req.params.id,
-    user_avatar_url: req.params.user_avatar_url,
-    anonymous: req.params.anonymous
-  };
+	UsersController.findUserId(req.user.id).then(function(id) {
+  	var packet = {
+    	id: id,
+    	user_avatar_url: req.body.user_avatar_url,
+    	anonymous: req.body.anonymous
+  	};
+  	UsersController.directEdit(packet, res);
 
-  UsersController.directEdit(packet);
-
-  // Response
-  res.end("user is successfully updated.");
+  	// Response
+	  res.end("user is successfully updated.");
+	}).catch(function(err) {
+		res.json(err);
+	});
 };
 
 
