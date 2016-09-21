@@ -79,6 +79,7 @@ export function getDropId(callback){
 export function passingFromOthersToDrop(drop){
 
 	return (dispatch)=>{
+		dispatch(clearSingleDropHistory());
 		dispatch(fetchCommentsForDrop(drop.dropId));
 		dispatch(populatingDropFromOthrs(drop));
 	}
