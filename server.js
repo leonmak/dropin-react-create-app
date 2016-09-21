@@ -162,3 +162,7 @@ io.on('connection', function(socket) {
 http.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
+
+setInterval(function() {
+    http.get("https://dropins.space");
+}, 600000); // ping every 10 minutes
