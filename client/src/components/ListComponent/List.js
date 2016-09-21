@@ -47,6 +47,7 @@ export class List extends Component {
           selectedDropSrc={this.props.selectedDropSrc}
           selectedDropIdx={this.props.selectedDropIdx}
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
+          openDialog={this.props.openDialog}
           />;
       })}
       </div>

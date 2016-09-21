@@ -113,7 +113,7 @@ const ListItem = props => (
           <IconButton tooltipPosition="bottom-center" tooltip="Edit" onTouchTap={()=>goToEdit(props)}>
             {Icons.MUI('mode_edit')}
           </IconButton>
-          <IconButton tooltipPosition="bottom-center" tooltip="Delete">
+          <IconButton tooltipPosition="bottom-center" tooltip="Delete" onTouchTap={()=>props.openDialog(props.dropId)} >
             {Icons.MUI('delete')}
           </IconButton>
         </div>
