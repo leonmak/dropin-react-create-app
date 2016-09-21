@@ -132,6 +132,10 @@ VotesController.directVote = function({
 
 };
 
+VotesController.editVote = function(req, res) {
+
+};
+
 VotesController.postVote = function(req, res) {
   var packet = {
     user_id: req.body.userId,
