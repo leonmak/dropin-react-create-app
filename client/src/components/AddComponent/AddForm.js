@@ -5,7 +5,7 @@ import { TextField } from 'redux-form-material-ui'
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
 import EmojiInput from './EmojiInput'
-import ImageUpload from '../ImageUpload'
+import ImageUpload from '../ImageUpload/index.js'
 import validUrl from 'valid-url'
 import EmojiAnnotationToUni from '../../utils/emoji-annotation-to-unicode';
 import * as geo from '../../utils/geolocator';
@@ -14,8 +14,7 @@ import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
 
 import '../../styles/form.css';
 
-const handler = (reset, socketHandler, user, location) => values =>
-{
+const handler = (reset, socketHandler, user, location) => values => {
   if(values.emojiUni === null){
     //values.emojiUni = 'default-marker';
     values.emojiUni='1f61b';
@@ -44,102 +43,86 @@ const handler = (reset, socketHandler, user, location) => values =>
   reset();
 }
 
-  const validate = values => {
-    const errors = {};
-    const requiredFields = [ 'title' ];
-    requiredFields.forEach(field => {
-      if (!values[ field ]) {
-        errors[ field ] = 'Required'
-      }
-    });
-    const urlFields = [ 'soundcloudUrl', 'videoUrl' ];
-    urlFields.forEach(field => {
-      const str = values[field];
-      if(str && str.length > 0 && !validUrl.isUri(str)){
-        errors[ field ] = 'Invalid Link'
-      }
-    })
+const validate = values => {
+  const errors = {};
+  const requiredFields = [ 'title' ];
+  requiredFields.forEach(field => {
+    if (!values[ field ]) {
+      errors[ field ] = 'Required'
+    }
+  });
+  const urlFields = [ 'soundcloudUrl', 'videoUrl' ];
+  urlFields.forEach(field => {
+    const str = values[field];
+    if(str && str.length > 0 && !validUrl.isUri(str)){
+      errors[ field ] = 'Invalid Link'
+    }
+  })
 
-    return errors;
+  return errors;
+}
+
+const socketHandler = new SocketHandler();
+
+
+class AddForm extends Component {
+
+  constructor(props) {
+    super(props);
+    this.geoId = null;
+    this.updateLocation = this.updateLocation.bind(this);
   }
 
-  const socketHandler = new SocketHandler();
+  updateLocation(coords) {
+    this.props.setLocation([coords.longitude, coords.latitude])
+  }
 
+  componentDidMount() {
+    socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
+    this.geoId = geo.geoListener(this.updateLocation);
+  }
 
-  class AddForm extends Component {
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.geoId);
+    socketHandler.uninstall();
+  }
 
-    constructor(props) {
-      super(props);
-      this.geoId = null;
-      this.updateLocation = this.updateLocation.bind(this);
-    }
+  postReceive(){
 
-    updateLocation(coords) {
-      this.props.setLocation([coords.longitude, coords.latitude])
-    }
+  }
 
-    componentDidMount() {
-      socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
-      this.geoId = geo.geoListener(this.updateLocation);
-    }
+  render() {
+    const { handleSubmit, pristine, reset, submitting } = this.props;
 
-    componentWillUnmount() {
-      navigator.geolocation.clearWatch(this.geoId);
-      socketHandler.uninstall();
-    }
+    return (
+      <form onSubmit={ handleSubmit(handler(reset, socketHandler, this.props.user, this.props.location)) }>
+      <h1>New message</h1>
 
-    postReceive(){
+      <div className="row center-xs">
+        <div className="col-xs-10">
+          <Field name="emojiUni" component={EmojiInput} hintText="Choose Emoji"/>
+          <Field name="title" component={TextField} fullWidth={true}
+          floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
+          errorStyle={{textAlign: "left"}}
+          multiLine={true} rows={2}/>
+          </div>
+          <div className="col-xs-12"><h3>Other Options</h3></div>
+          <div className="col-xs-10">
+          <Field name="imageId" component={ImageUpload} />
+          <Field name="videoUrl" component={TextField} hintText="Youtube/ Vimeo Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
+          <Field name="soundcloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
+        </div>
 
-    }
-
-    /*sendMessage(msg) {
-      return ()=>{
-        socketHandler.post({userId: 1, title: "hihi", longitude: 3, latitude: 4});
-        console.log("Add form has posted to socket!");
-      }
-    }*/
-
-
-  //should add geolocation state here if not you dunno where you submit a new drop
-/*
-<form onSubmit={ handleSubmit(handler(reset)) }>*/
-//<form onSubmit={ handleSubmit(handler(reset, this.socketHandler)) }>
-//<form onSubmit={ this.sendMessage('hello') }>
-
-render() {
-  const { handleSubmit, pristine, reset, submitting } = this.props;
-
-  return (
-    <form onSubmit={ handleSubmit(handler(reset, socketHandler, this.props.user, this.props.location)) }>
-    <h1>New message</h1>
-
-    <div className="row center-xs">
-    <div className="col-xs-10">
-    <Field name="emojiUni" component={EmojiInput} hintText="Choose Emoji"/>
-    <Field name="title" component={TextField} fullWidth={true}
-    floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
-    errorStyle={{textAlign: "left"}}
-    multiLine={true} rows={2}/>
-    </div>
-    <div className="col-xs-12"><h3>Other Options</h3></div>
-    <div className="col-xs-10">
-    <Field name="imageId" component={ImageUpload} />
-    <Field name="videoUrl" component={TextField} hintText="Youtube/ Vimeo Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
-    <Field name="soundcloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
-    </div>
-
-    <div className="col-xs-12">
-    <RaisedButton type="submit" label="Submit"
-    labelStyle={{fontSize:"1.2rem"}} style={{margin: "2vh 0 5vh", width: "50%"}}
-    disabled={pristine || submitting} primary={true}
-    />
-    </div>
-    </div>
-
-
-    </form>
+        <div className="col-xs-12">
+          <RaisedButton type="submit" label="Submit"
+          labelStyle={{fontSize:"1.2rem"}} style={{margin: "2vh 0 5vh", width: "50%"}}
+          disabled={pristine || submitting} primary={true}
+          />
+        </div>
+        </div>
+      </form>
     )
-}
+  }
 }
 
 // Decorate with redux-form
