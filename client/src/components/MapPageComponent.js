@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles/Map.css';
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import {browserHistory} from 'react-router';
+import SocketHandler, {FEEDS_SOCKET} from '../SocketHandler';
 import * as fb from '../utils/facebook-url';
 import * as geo from '../utils/geolocator';
 
@@ -16,6 +17,7 @@ export default class MapPageComponent extends Component {
     this.state = { zoom: 18 }
 
     this.geoId = null;
+    this.socketHandler = new SocketHandler();
     this.updateLocation = this.updateLocation.bind(this);
   }
 
@@ -25,6 +27,7 @@ export default class MapPageComponent extends Component {
 
   componentWillMount() {
     this.props.fetchAllNearbyDrops();
+    this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
   }
 
   componentDidMount() {
@@ -33,6 +36,10 @@ export default class MapPageComponent extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.geoId);
+  }
+
+  newDropAdded(data){
+    this.props.updateANearbyDrop(data);
   }
 
   createFaceMarker(coordinates, imgUrl, map) {
@@ -99,7 +106,7 @@ export default class MapPageComponent extends Component {
   render() {
     const {zoom} = this.state
         , {location, user, drops} = this.props;
-console.log(this.props.drops)
+
     return (
       <div>
         <ReactMapboxGl
