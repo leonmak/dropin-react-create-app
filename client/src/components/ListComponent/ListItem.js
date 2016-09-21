@@ -31,7 +31,7 @@ const getDistanceFromUser = (location, userLocation) => {
 const goToURL = (props) => {
   browserHistory.push(`/drops/${props.dropId}`);
   props.selectedDropIdx(props.idx);
-  props.fetchCommentsForDrop(props.idx);
+  props.fetchCommentsForDrop(props.dropId);
 }
 
 const goToEdit = props => {
@@ -161,7 +161,8 @@ const ListItem = props => (
 )
 
 ListItem.PropTypes = {
-  passingFromOthersToDrop: PropTypes.func.isRequired
+  passingFromOthersToDrop: PropTypes.func.isRequired,
+  selectedDropIdx: PropTypes.func.isRequired
 }
 
 export default ListItem;

@@ -66,7 +66,7 @@ function updateCommentInDropPage(comment){
 	}
 }
 
-function updateCommentInListPage(comment){
+export function updateCommentInListPage(comment){
 	return{
 		type: UPDATE_COMMENT_IN_LIST_PAGE,
 		comment: comment

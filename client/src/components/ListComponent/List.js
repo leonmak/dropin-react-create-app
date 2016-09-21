@@ -51,3 +51,7 @@ export class List extends Component {
     );
   }
 }
+
+List.PropTypes={
+  selectedDropIdx:PropTypes.func.isRequired
+}

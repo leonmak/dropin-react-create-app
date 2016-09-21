@@ -1,0 +1,13 @@
+.commentsContainer{
+    padding-bottom: 100px;    /* height of footer */
+    background-color: #f2f2f2;
+    /*width: 97%;*/
+}
+
+footer{
+    width:100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background:#FAFAFA;
+}

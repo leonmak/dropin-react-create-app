@@ -82,6 +82,7 @@ export function getMyVotes(userId){
 
 //api/comments/feeds/1
 export function getSingleDropComments(dropId){
+    console.log('dropid',dropId);
 	var req = 'api/feeds/'+dropId+'/comments';
 	return defaultPromise(req);
 }

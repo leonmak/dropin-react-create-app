@@ -3,8 +3,9 @@ import {Drop} from './Drop';
 import {CommentForm} from './CommentForm';
 import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
-import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
+import SocketHandler, {COMMENTS_SOCKET, VOTES_SOCKET} from '../../SocketHandler';
 import promisePoller from 'promise-poller';
+import '../../styles/Drop.css';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -116,6 +117,7 @@ function geoListener(callback) {
 
 
 const socketHandler = new SocketHandler();
+const voteSocketHandler = new SocketHandler();
 
 class DropComponent extends Component {
 
@@ -166,6 +168,7 @@ class DropComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		socketHandler.uninstall();
 		navigator.geolocation.clearWatch(this.geoId);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
@@ -183,7 +186,8 @@ class DropComponent extends Component {
 
 		const {location, user, drops, selectedDrop} = this.props;
 
-		return (
+		return (this.props.user?
+			(
 			<div>
 			<Drop drop={drops[selectedDrop.selectedDropIdx]} />
 			<CommentsList comments={selectedDrop.comments} />
@@ -193,11 +197,24 @@ class DropComponent extends Component {
 			socketHandler={socketHandler}
 			drop={drops[selectedDrop.selectedDropIdx]}/>
 			</div>
+			):
+			<div></div>
 			)
 	}
 }
 
 /**/
+
+/*			<Drop drop={this.props.selectedDrop.selectedDrop} />
+			<CommentsList className='commentsContainer'
+			comments={this.props.selectedDrop.comments} />
+			<footer>
+			<CommentForm 
+			location={location} 
+			user={user} 
+			socketHandler={socketHandler}
+			drop={this.props.selectedDrop.selectedDrop}/>
+			</footer>*/
 
 /*<CommentsList comments={comments} />*/
 
