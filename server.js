@@ -27,6 +27,19 @@ passport.use(new FacebookTokenStrategy({
 FacebookController.loginCallback
 ));
 
+var https_redirect = function(req, res, next) {
+    if (process.env.NODE_ENV === 'production') {
+        if (req.headers['x-forwarded-proto'] != 'https') {
+            return res.redirect('https://' + req.headers.host + req.url);
+        } else {
+            return next();
+        }
+    } else {
+        return next();
+    }
+};
+app.use(https_redirect);
+
 // passport.use(new strategy({
 //     clientID: process.env.FB_CLIENT_ID,
 //     clientSecret: process.env.FB_CLIENT_SECRET,
