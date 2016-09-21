@@ -26,10 +26,10 @@ VotesController.getFeedVotes = function(req, res) {
     for (var i = 0; i < fetchedVotes.length; ++i) {
 
       // Count votes
-      if (fetchedVotes[i].vote_type == 0) {
-        parsedVotes.downvotes += 1;
-      } else {
+      if (fetchedVotes[i].vote_type == 1) {
         parsedVotes.upvotes += 1;
+      } else {
+        parsedVotes.downvotes += 1;
       }
     }
     res.json(parsedVotes);
