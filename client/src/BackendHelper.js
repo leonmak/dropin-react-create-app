@@ -9,7 +9,7 @@ var request = require('superagent');
 //      console.log(',',res);
 //    });
 
-const HOST = 'https://drop-dev.herokuapp.com/';
+const HOST = 'https://dropins.space/';
 
 function defaultPromise(req){
     return new Promise(function(resolve, reject) {
