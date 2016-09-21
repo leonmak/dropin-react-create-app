@@ -3,7 +3,7 @@ import {Drop} from './Drop';
 import {CommentForm} from './CommentForm';
 import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
-import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
+import SocketHandler, {COMMENTS_SOCKET, VOTES_SOCKET} from '../../SocketHandler';
 import promisePoller from 'promise-poller';
 import '../../styles/Drop.css';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
@@ -117,6 +117,7 @@ function geoListener(callback) {
 
 
 const socketHandler = new SocketHandler();
+const voteSocketHandler = new SocketHandler();
 
 class DropComponent extends Component {
 
@@ -128,10 +129,6 @@ class DropComponent extends Component {
 
 	updateLocation(coords) {
 		this.props.setLocation([coords.longitude, coords.latitude])
-	}
-
-	initilizeCommentSocket(dropId){
-		socketHandler.setup(COMMENTS_SOCKET, {postId: dropId}, this.commentReceive.bind(this));
 	}
 
 	componentWillMount() {
@@ -157,6 +154,9 @@ class DropComponent extends Component {
 			socketHandler.setup(COMMENTS_SOCKET, 
 				{postId: this.props.selectedDrop.selectedDrop.dropId}, 
 				this.commentReceive.bind(this));
+			voteSocketHandler.setup(VOTES_SOCKET, 
+				{postId: this.props.selectedDrop.selectedDrop.dropId}, 
+				this.votesReceive.bind(this));
 		}
 	}
 
