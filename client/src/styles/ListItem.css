@@ -1,9 +1,25 @@
 .top-container{
+  position: relative;
   margin: auto;
   margin-bottom: 0;
   margin-top: 20px;
   padding: 5px;
   border-radius: 9px 9px 9px 9px !important;
+}
+
+.edit-delete-btn{
+  position: absolute;
+  top: 9px;
+  right: 9px;
+}
+
+.edit-delete-btn > button {
+  padding: 0px !important;
+  max-width: 36px;
+  max-height: 36px;
+}
+.edit-delete-btn > button > div > span {
+  color: #dddddd !important;
 }
 
 .button-div{
@@ -67,7 +83,7 @@
 .quote-top {
   transform: rotateY(180deg);
   position: absolute;
-  left: 5%;
+  left: 3%;
   font-size: 21px;
 }
 
@@ -78,7 +94,7 @@
 
 .quote-btm {
   position: absolute;
-  right: 5%;
+  right: 3%;
   font-size: 21px;
 }
 
