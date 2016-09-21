@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {fetchAllNearbyDrops, updateANearbyDrop, populatingDropFromOthrs, selectedDropIdx} from '../actions';
+import {fetchAllNearbyDrops, updateANearbyDrop, fetchCommentsForDrop, selectedDropIdx} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 
 import ListComponent from '../components/ListComponent';
@@ -17,8 +17,9 @@ function mapDispatchToProps(dispatch) {
   return {
   	fetchAllNearbyDrops:() => dispatch(fetchAllNearbyDrops()),
     updateANearbyDrop: drop => dispatch(updateANearbyDrop(drop)),
-    passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop)),
+    // passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop)),
     selectedDropIdx: idx => dispatch(selectedDropIdx(idx)),
+    fetchCommentsForDrop: idx => dispatch(fetchCommentsForDrop(idx)),
     setLocation: lngLat => dispatch(setLocation(lngLat)),
   };
 }

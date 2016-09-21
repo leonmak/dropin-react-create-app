@@ -78,7 +78,7 @@ ACTION IS CALLED ON THE DROP PAGE
 ***********************************************************************/
 
 //function to fetch all comments for a single drop
-function fetchCommentsForDrop(dropId){
+export function fetchCommentsForDrop(dropId){
 	return (dispatch)=>{
 		BackendHelper.getSingleDropComments(dropId)
 		.then(response=>dispatch(receiveCommentsForDrop(response)));

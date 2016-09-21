@@ -28,10 +28,11 @@ const getDistanceFromUser = (location, userLocation) => {
     return 0
 }
 
-const goToURL = (url,props) => setTimeout(()=>{
-  browserHistory.push(url);
-  props.passingFromOthersToDrop(props);
-}, 300);
+const goToURL = (props) => {
+  browserHistory.push(`/drops/${props.dropId}`);
+  props.selectedDropIdx(props.idx);
+  props.fetchCommentsForDrop(props.idx);
+}
 
 const goToEdit = props => {
   browserHistory.push('/edit/'+props.dropId);
@@ -148,7 +149,7 @@ const ListItem = props => (
           <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
 
         <div className="button-div">
-        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`,props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
 {/*
         <CommentsInput dropId={props.dropId}/>
 */}

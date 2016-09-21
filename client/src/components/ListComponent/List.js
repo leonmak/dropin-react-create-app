@@ -44,14 +44,10 @@ export class List extends Component {
           userLocation={this.props.userLocation}
           isDrop={false}
           selectedDropIdx={this.props.selectedDropIdx}
-          passingFromOthersToDrop={this.props.passingFromOthersToDrop}
+          fetchCommentsForDrop={this.props.fetchCommentsForDrop}
           />;
       })}
       </div>
     );
   }
-
-}
-List.PropTypes = {
-  passingFromOthersToDrop: PropTypes.func.isRequired
 }
