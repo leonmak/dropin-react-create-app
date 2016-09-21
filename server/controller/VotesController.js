@@ -2,7 +2,6 @@ import {
   Votes, Posts
 } from '../database';
 
-var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
 var MESSAGES = require('./Messages');
 
@@ -87,30 +86,67 @@ VotesController.getVote = function(req, res) {
     res.json({
       error: MESSAGES.ERROR_VOTE_NOT_FOUND
     });
-  })
+  });
 
 };
-
 
 // TODO: Create a vote
 
-VotesController.directVote = function(id, res = null) {
+VotesController.directVote = function({
+  user_id,
+  post_id,
+  vote_type}, res = null) {
 
-};
+  // Prepare the formatted object to store in database
+  var voteHash = {
+    post_id: post_id,
+    user_id: user_id,
+    vote_type: vote_type
+  };
 
-VotesController.postVote = function(req, res) {
+  // Promise to store in database, then return an object for socket emission
+  var storePromise = new Promise(function(resolve, reject) {
 
-};
+    Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function(vote) {
+      // Destroy old entry if applicable
+      if (vote) {
+        vote.destroy();
+      }
+      // Create and save new entry
+      new Votes().save(voteHash).then(function(vote) {
+        if (vote) {
+          if (res !== null) {
+            res.json(vote.toJSON());
+          } else {
+            console.log(vote.toJSON());
+            resolve(vote.toJSON());
+          }
+        } else {
+          reject(vote);
+        }
+      });
+    });
+  });
 
-
-// TODO: Edit a vote
-
-VotesController.directEdit = function(id, res = null) {
+  return storePromise;
 
 };
 
 VotesController.editVote = function(req, res) {
 
+};
+
+VotesController.postVote = function(req, res) {
+  var packet = {
+    user_id: req.body.userId,
+    post_id: req.body.dropId,
+    vote_type: req.body.vote_type
+  };
+
+  VotesController.directVote(packet);
+
+  // Response
+  res.end("Vote successfully captured.");
 };
 
 
