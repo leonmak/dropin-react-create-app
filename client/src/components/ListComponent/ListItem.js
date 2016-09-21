@@ -118,7 +118,7 @@ const ListItem = props => (
     <div className="col-xs-11 col-sm-4">
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
-        <div className="edit-delete-btn">
+        {props.user && props.user.userId === props.userId && <div className="edit-delete-btn">
           <IconButton tooltipPosition="bottom-center" tooltip="Edit">
             {Icons.MUI('mode_edit')}
           </IconButton>
@@ -126,6 +126,7 @@ const ListItem = props => (
             {Icons.MUI('delete')}
           </IconButton>
         </div>
+        }
         <ItemTitle title={props.title}/>
         {!props.isDrop &&
           <div className="row center-xs item-media-icon">

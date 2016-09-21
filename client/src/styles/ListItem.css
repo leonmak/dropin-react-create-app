@@ -76,6 +76,7 @@
   margin: 9px 0;
 }
 .item-title {
+  z-index: 1;
   font-size: 18px;
   font-weight: 100;
 }

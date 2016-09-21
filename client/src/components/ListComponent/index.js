@@ -81,6 +81,7 @@ class ListComponent extends Component {
   render() {
     return (
       <List
+        user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
         passingFromOthersToDrop={this.props.passingFromOthersToDrop}
