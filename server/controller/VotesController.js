@@ -4,9 +4,7 @@ import {
 
 var FeedsController = require('./FeedsController');
 var MESSAGES = require('./Messages');
-
 var VotesController = {};
-
 
 /*** Front-end Queries ***/
 
@@ -14,7 +12,9 @@ var VotesController = {};
 
 VotesController.getFeedVotes = function(req, res) {
   const post_id = req.params.id;
-  const user_id = req.query.user_id;
+  // const user_id = req.params.user_id;
+  var user_id = req.query.user_id;
+
 
   Votes.where('post_id', post_id).fetchAll({
     withRelated: ['user']
@@ -24,11 +24,11 @@ VotesController.getFeedVotes = function(req, res) {
     var parsedVotes = {upvotes: 0, downvotes: 0, voted: 1};
     var hasVoted = false;
 
+
     for (var i = 0; i < fetchedVotes.length; ++i) {
 
-      console.log(user_id);
       // Check if user voted
-      if (fetchedVotes[i].user.id == user_id) {
+      if (fetchedVotes[i].user_id == user_id) {
         hasVoted = true;
       }
 
@@ -167,7 +167,7 @@ VotesController.postVote = function(req, res) {
 // TODO: Delete an existing vote
 
 VotesController.directDelete = function(id, res = null) {
-	
+
 };
 
 VotesController.deleteVote = function(req, res) {

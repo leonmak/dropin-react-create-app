@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var url = require('url')
+
 
 var Auth = require('./middleware/Auth')
 var LoginCheck = require('connect-ensure-login');
@@ -35,6 +37,7 @@ module.exports = function (passport) {
 
   // Votes API
   router.get('/api/feeds/:id/votes/:user_id', VotesController.getFeedVotes);
+  router.get('/api/feeds/:id/votes', VotesController.getFeedVotes);
   router.get('/api/users/:id/votes', VotesController.getVotesToUser);
   router.get('/api/votes/:id', VotesController.getVote);
   router.post('/api/feeds/:id/votes', VotesController.postVote);
@@ -44,11 +47,11 @@ module.exports = function (passport) {
   // Profiles API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
-  router.delete('/api/users/:id', UsersController.deleteUser);
   router.get('/api/profile', loginCheck, (req, res) => {
     res.json(req.user);
   });
   router.put('/api/profile', loginCheck, UsersController.editUser);
+  router.delete('/api/users/:id', UsersController.deleteUser);
 
   return router;
 }

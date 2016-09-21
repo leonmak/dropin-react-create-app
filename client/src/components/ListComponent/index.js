@@ -93,9 +93,11 @@ class ListComponent extends Component {
   render() {
     return (
       <List
+        user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
-        passingFromOthersToDrop={this.props.passingFromOthersToDrop}
+        selectedDropIdx={this.props.selectedDropIdx}
+        fetchCommentsForDrop={this.props.fetchCommentsForDrop}
       />
     )
   }
@@ -106,7 +108,8 @@ ListComponent.PropTypes = {
   updateANearbyDrop: PropTypes.func.isRequired,
   passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired,
-  updateCommentInListPage: PropTypes.func.isRequired
+  updateCommentInListPage: PropTypes.func.isRequired,
+  selectedDropIdx: PropTypes.func.isRequired
 }
 
 

@@ -8,6 +8,8 @@ function mapStateToProps(state) {
   return {
     user: state.userAuthSession.userObject,
     location: state.location.lngLat,
+    selectedDrop: state.selectedDrop,
+    drops: state.drops.drops
   };
 }
 

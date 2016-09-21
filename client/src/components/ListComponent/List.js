@@ -38,17 +38,20 @@ export class List extends Component {
         return <ListItem
           {...feedItem}
           key={idx}
+          idx={idx}
+          user={this.props.user}
           isProfile={this.props.isProfile}
           userLocation={this.props.userLocation}
           isDrop={false}
-          passingFromOthersToDrop={this.props.passingFromOthersToDrop}
+          selectedDropIdx={this.props.selectedDropIdx}
+          fetchCommentsForDrop={this.props.fetchCommentsForDrop}
           />;
       })}
       </div>
     );
   }
-
 }
-List.PropTypes = {
-  passingFromOthersToDrop: PropTypes.func.isRequired
+
+List.PropTypes={
+  selectedDropIdx:PropTypes.func.isRequired
 }

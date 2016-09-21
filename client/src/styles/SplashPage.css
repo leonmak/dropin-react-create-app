@@ -1,12 +1,13 @@
 #splash-page {
-    position: fixed;
-    padding-top: 15vh;
-    height: 100vh;
-    width: 100%;
-    background-color: #2f3031;
-    color: #b2b2b2;
+  position: fixed;
+  padding-top: 15vh;
+  height: 100vh;
+  width: 100%;
+  background-color: #2f3031;
+
+  color: #424242;
 }
 
 .kep-login-facebook.metro {
-    border-radius: 21px !important;
+  border-radius: 21px !important;
 }

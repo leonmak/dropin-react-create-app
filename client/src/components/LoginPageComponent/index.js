@@ -38,7 +38,7 @@ export default class LoginPageComponent extends Component {
     return (
       <div className="row center-xs" >
         <div className="col-xs-12" id="splash-page"
-          style={{background: `linear-gradient(rgba(46, 46, 46, 0.5), rgba(46, 46, 46, 0.5)), url(${process.env.REACT_APP_SPLASHPAGE_IMG_URL}) repeat`}}>
+          style={{background: `linear-gradient(rgba(255, 255, 255, 0.5), rgb(255, 255, 255)), url(${process.env.REACT_APP_SPLASHPAGE_IMG_URL}) repeat`}}>
           <img src={logo} alt="Logo" />
           <p>Find out what people around you are saying!</p>
           <h2>Drop into the conversation</h2>

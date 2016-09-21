@@ -132,40 +132,39 @@ class DropComponent extends Component {
 	}
 
 	componentWillMount() {
-
 		if(!this.props.user) {
 			this.props.passSnackbarMessage('Log in to view message')
 			browserHistory.push('/login');
 		}
 	}
 
-	//algo to initialize the comment socket
-	componentDidUpdate(prevProps,prevState){
-		if(
-			(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
-			selectedDrop:{},
-			comments:[]
-			})) &&
-			(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
-			selectedDrop:{},
-			comments:[]
-			}))
-		){
-			socketHandler.setup(COMMENTS_SOCKET, 
-				{postId: this.props.selectedDrop.selectedDrop.dropId}, 
-				this.commentReceive.bind(this));
-			voteSocketHandler.setup(VOTES_SOCKET, 
-				{postId: this.props.selectedDrop.selectedDrop.dropId}, 
-				this.votesReceive.bind(this));
-		}
-	}
+	//algo to initialize the comment socket // expensive deep comparison
+
+	// componentDidUpdate(prevProps,prevState){
+	// 	if(
+	// 		(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
+	// 		selectedDrop:{},
+	// 		comments:[]
+	// 		})) &&
+	// 		(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
+	// 		selectedDrop:{},
+	// 		comments:[]
+	// 		}))
+	// 	){
+	// 		socketHandler.setup(COMMENTS_SOCKET,
+	// 			{postId: this.props.selectedDrop.selectedDrop.dropId},
+	// 			this.commentReceive.bind(this));
+	// 	}
+	// }
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
-		this.geoId = geoListener(this.updateLocation);
+    const {drops, selectedDrop} = this.props;
+		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
+    socketHandler.setup(COMMENTS_SOCKET, {postId: drops[selectedDrop.selectedDropIdx].dropId}, this.commentReceive.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -185,11 +184,28 @@ class DropComponent extends Component {
 
 
 
-		const {location, user} = this.props;
+		const {location, user, drops, selectedDrop} = this.props;
 
-		return (
+		return (this.props.user?
+			(
 			<div>
-			<Drop drop={this.props.selectedDrop.selectedDrop} />
+			<Drop drop={drops[selectedDrop.selectedDropIdx]} />
+			<CommentsList comments={selectedDrop.comments} />
+			<CommentForm
+			location={location}
+			user={user}
+			socketHandler={socketHandler}
+			drop={drops[selectedDrop.selectedDropIdx]}/>
+			</div>
+			):
+			<div></div>
+			)
+	}
+}
+
+/**/
+
+/*			<Drop drop={this.props.selectedDrop.selectedDrop} />
 			<CommentsList className='commentsContainer'
 			comments={this.props.selectedDrop.comments} />
 			<footer>
@@ -198,14 +214,7 @@ class DropComponent extends Component {
 			user={user} 
 			socketHandler={socketHandler}
 			drop={this.props.selectedDrop.selectedDrop}/>
-			</footer>
-			
-			</div>
-			)
-	}
-}
-
-/**/
+			</footer>*/
 
 /*<CommentsList comments={comments} />*/
 
