@@ -23,6 +23,10 @@ export default class MapPageComponent extends Component {
     this.props.setLocation([coords.longitude, coords.latitude])
   }
 
+  componentWillMount() {
+    this.props.fetchAllNearbyDrops();
+  }
+
   componentDidMount() {
     this.geoId = geo.geoListener(this.updateLocation);
   }
@@ -94,8 +98,8 @@ export default class MapPageComponent extends Component {
 
   render() {
     const {zoom} = this.state
-        , {location, user} = this.props;
-
+        , {location, user, drops} = this.props;
+console.log(this.props.drops)
     return (
       <div>
         <ReactMapboxGl
@@ -123,10 +127,9 @@ export default class MapPageComponent extends Component {
             layout={{ "icon-image": "Map_marker", "icon-size": 0.3 }}>
             <Feature coordinates={location}/>
           </Layer>
-        {/* Example using custom uploaded svgs */}
-          {this.props.drops.map((drop, idx) => {
-            return (
-              <Layer type="symbol" key={idx}
+
+          {drops.map((drop, idx) => {
+            return (<Layer type="symbol" key={idx}
               layout={
               { "icon-image": drop.emojiUni,
                 "icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
