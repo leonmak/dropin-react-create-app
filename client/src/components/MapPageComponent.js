@@ -3,17 +3,7 @@ import '../styles/Map.css';
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import {browserHistory} from 'react-router';
 import * as fb from '../utils/facebook-url';
-
-function geoListener(callback) {
-  return navigator.geolocation.watchPosition(
-    ({ coords, timestamp }) => callback(coords),
-    (err) => console.log('Unable to find position - ' + err.message),
-    {
-      enableHighAccuracy: true,
-      timeout: 15000
-    }
-  )
-}
+import * as geo from '../utils/geolocator';
 
 const goToURL = (url,props,drop) => setTimeout(()=>{
   browserHistory.push(url);
@@ -34,7 +24,7 @@ export default class MapPageComponent extends Component {
   }
 
   componentDidMount() {
-    this.geoId = geoListener(this.updateLocation);
+    this.geoId = geo.geoListener(this.updateLocation);
   }
 
   componentWillUnmount() {

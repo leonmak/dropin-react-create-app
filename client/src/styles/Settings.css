@@ -10,5 +10,9 @@
 }
 
 .settings-btn {
-  margin: 21px 0;
+  margin: 12px 0;
+}
+
+.profile-img-btn {
+  margin: 0 0 15px !important;
 }
