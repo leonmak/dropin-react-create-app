@@ -160,11 +160,11 @@ class DropComponent extends Component {
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
-    const {drops, selectedDrop} = this.props;
+		const {drops, selectedDrop} = this.props;
 		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-    socketHandler.setup(COMMENTS_SOCKET, {postId: drops[selectedDrop.selectedDropIdx].dropId}, this.commentReceive.bind(this));
+		socketHandler.setup(COMMENTS_SOCKET, {postId: drops[selectedDrop.selectedDropIdx].dropId}, this.commentReceive.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -177,30 +177,34 @@ class DropComponent extends Component {
 	commentReceive(data){
 		console.log('received comment', data);
 		this.props.updateAComment(data);
-    	//this.props.updateANearbyDrop(data);
-	}
+    	//this.props.updateANearbyDrop(data	);
+    }
 
-	render() {
+    componentDidUpdate(prevProps,prevState){
+    	console.log('drop info',this.props);
+    }
+
+    render() {
 
 
 
-		const {location, user, drops, selectedDrop} = this.props;
+    	const {location, user, drops, selectedDrop} = this.props;
 
-		return (this.props.user?
-			(
-			<div>
-			<Drop drop={drops[selectedDrop.selectedDropIdx]} />
-			<CommentsList comments={selectedDrop.comments} />
-			<CommentForm
-			location={location}
-			user={user}
-			socketHandler={socketHandler}
-			drop={drops[selectedDrop.selectedDropIdx]}/>
-			</div>
-			):
-			<div></div>
-			)
-	}
+    	return (this.props.user?
+    		(
+    			<div>
+    			<Drop drop={drops[selectedDrop.selectedDropIdx]} />
+    			<CommentsList comments={selectedDrop.comments} />
+    			<CommentForm
+    			location={location}
+    			user={user}
+    			socketHandler={socketHandler}
+    			drop={drops[selectedDrop.selectedDropIdx]}/>
+    			</div>
+    			):
+    		<div></div>
+    		)
+    }
 }
 
 /**/
@@ -216,21 +220,21 @@ class DropComponent extends Component {
 			drop={this.props.selectedDrop.selectedDrop}/>
 			</footer>*/
 
-/*<CommentsList comments={comments} />*/
+			/*<CommentsList comments={comments} />*/
 
 
 
-DropComponent.propTypes = {
-	toggleBottomBar: PropTypes.func.isRequired,
-	toggleTopBarBackButton: PropTypes.func.isRequired,
-	selectedDrop: PropTypes.object.isRequired,
-	pageVisibility: PropTypes.object.isRequired,
-	setLocation: PropTypes.func.isRequired,
-	updateAComment: PropTypes.func.isRequired
-};
+			DropComponent.propTypes = {
+				toggleBottomBar: PropTypes.func.isRequired,
+				toggleTopBarBackButton: PropTypes.func.isRequired,
+				selectedDrop: PropTypes.object.isRequired,
+				pageVisibility: PropTypes.object.isRequired,
+				setLocation: PropTypes.func.isRequired,
+				updateAComment: PropTypes.func.isRequired
+			};
 
 
-export default DropComponent;
+			export default DropComponent;
 
 
 /*

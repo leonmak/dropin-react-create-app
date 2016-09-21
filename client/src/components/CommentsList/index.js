@@ -11,9 +11,11 @@ export class CommentsList extends Component {
     location: [103.8198, 1.3224]
   }
 
+  
+
   render() {
 
-    console.log(this.props.comments);
+    //console.log(this.props.comments);
 
     return (
       <div>
