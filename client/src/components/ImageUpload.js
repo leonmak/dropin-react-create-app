@@ -49,11 +49,7 @@ export default class ImageUpload extends Component {
       </FlatButton>
         { uploading && <LinearProgress mode="indeterminate" />}
         <div>
-          {uploadedUrl === '' ? null :
-          <div>
-            <img className="uploaded-img" alt={uploadedUrl} src={uploadedUrl} />
-            <p>{uploadedFile.name}</p>
-          </div>}
+          {uploadedUrl === '' ? null : <img className="uploaded-img" alt={uploadedUrl} src={uploadedUrl} />}
         </div>
       </div>
 
