@@ -84,9 +84,11 @@ class AddForm extends Component {
     // this.props.dropId && this.props.loadFormSucess(this.props.);
     if(this.props.dropId){
       const selectedIdx = this.props.selectedDrop.selectedDropIdx;
-      const selectedDrop = this.props.drops[selectedIdx];
-      selectedDrop.emojiUni = ':'+EmojiUniToAnnotation[selectedDrop.emojiUni]+':';
-      this.props.initialize(selectedDrop);
+      const selectedDrop = this.props.profileDrops[selectedIdx];
+      if(selectedDrop){
+        selectedDrop.emojiUni = ':'+EmojiUniToAnnotation[selectedDrop.emojiUni]+':';
+        this.props.initialize(selectedDrop);
+      }
     }
   }
 
