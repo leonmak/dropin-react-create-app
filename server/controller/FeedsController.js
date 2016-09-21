@@ -1,6 +1,7 @@
 import {
   Posts, Users
 } from '../database';
+
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
 var VotesController = require('./VotesController');
@@ -297,6 +298,14 @@ FeedsController.postFeed = function(req, res) {
 };
 
 // TODO: Delete an existing feed
+
+FeedsController.directDelete = function(id, res = null) {
+
+};
+
+FeedsController.deleteFeed = function(req, res) {
+
+};
 
 
 module.exports = FeedsController;
