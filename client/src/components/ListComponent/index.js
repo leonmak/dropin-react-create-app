@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
 import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
+import * as geo from '../../utils/geolocator';
 
 //dummy data
 // location is [lng, lat]
@@ -59,14 +60,6 @@ var data = [
 }
 ];
 
-const geoListener = (cb) => {
-  return navigator.geolocation.watchPosition(
-    ({ coords, timestamp }) => cb(coords),
-    (err) => console.log('Unable to find position - ' + err.message),
-    { enableHighAccuracy: true, timeout: 15000 }
-  )
-}
-
 /*
 socket:
 To Use:
@@ -105,7 +98,7 @@ class ListComponent extends Component {
     //method to fetch all nearby drops and set the state
     this.props.fetchAllNearbyDrops();
 
-    this.geoId = geoListener(this.updateLocation.bind(this));
+    this.geoId = geo.geoListener(this.updateLocation.bind(this));
     /*request.get('api/feeds/1/comments').end(function(err,res){
       console.log(res);
     });*/
@@ -118,7 +111,7 @@ class ListComponent extends Component {
     this.props.updateANearbyDrop(data);
   }
 
-  componentWillUnmount() {  
+  componentWillUnmount() {
     this.socketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
