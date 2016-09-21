@@ -4,6 +4,7 @@ import {CommentForm} from './CommentForm';
 import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
 import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
+import promisePoller from 'promise-poller';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -134,56 +135,42 @@ class DropComponent extends Component {
 
 	componentWillMount() {
 
-		/*console.log('bef promise', this.props.selectedDrop);
-		var promise = new Promise(function(resolve, reject) {
-			setTimeout(function(){
-				reject(Error("It broke"));
-			}, 1500);
-			console.log('aft promise', this.props.selectedDrop);
-			while(this.props.selectedDrop!={
-				selectedDrop:{},
-				comments:[]
-			})
-			{
-			}
-			resolve(this.props.selectedDrop.selectedDrop.dropId);	
-		});
-		promise.then(function(dropId){
-			socketHandler.setup(COMMENTS_SOCKET, {postId: dropId}, this.commentReceive.bind(this));
-		});*/
-
-		this.initilizeCommentSocket(1);
-
 		if(!this.props.user) {
 			this.props.passSnackbarMessage('Log in to view message')
 			browserHistory.push('/login');
 		}
 	}
 
-	emptyObject(obj){
-		return Object.keys(obj).length === 0 && obj.constructor === Object;
+	//algo to initialize the comment socket
+	componentDidUpdate(prevProps,prevState){
+		if(
+			(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
+			selectedDrop:{},
+			comments:[]
+			})) &&
+			(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
+			selectedDrop:{},
+			comments:[]
+			}))
+		){
+			socketHandler.setup(COMMENTS_SOCKET, 
+				{postId: this.props.selectedDrop.selectedDrop.dropId}, 
+				this.commentReceive.bind(this));
+		}
 	}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
 		this.geoId = geoListener(this.updateLocation);
-
-		//this.props.getDropId(initilizeCommentSocket);
-		
-
-
-
-
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-  }
+	}
 
-  componentWillUnmount() {
-  	navigator.geolocation.clearWatch(this.geoId);
-  	this.props.toggleTopBarBackButton(false);
-  	this.props.toggleBottomBar(true);
-  	this.props.clearSingleDropHistory();
+	componentWillUnmount() {
+		navigator.geolocation.clearWatch(this.geoId);
+		this.props.toggleTopBarBackButton(false);
+		this.props.toggleBottomBar(true);
 	}
 
 	commentReceive(){
@@ -216,12 +203,10 @@ class DropComponent extends Component {
 
 
 DropComponent.propTypes = {
-	getDropId: PropTypes.func.isRequired,
 	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	clearSingleDropHistory: PropTypes.func.isRequired,
 	setLocation: PropTypes.func.isRequired
 };
 
