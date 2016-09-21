@@ -2,6 +2,7 @@ import {
   Comments,
   Users
 } from '../database';
+
 var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
 var MESSAGES = require('./Messages');
@@ -203,6 +204,14 @@ CommentsController.postComment = function (req, res) {
 }
 
 // TODO: Delete an existing comment
+
+CommentsController.directDelete = function(id, res = null) {
+
+};
+
+CommentsController.deleteComment = function(req, res) {
+
+};
 
 
 module.exports = CommentsController;

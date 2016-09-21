@@ -5,8 +5,6 @@ var MESSAGES = require('./Messages');
 
 var UsersController = {};
 
-/*** Back-end Queries ***/
-
 
 /*** Front-end Queries ***/
 
@@ -87,6 +85,25 @@ UsersController.createUser = function(accessToken, profile, callback) {
   });
 }
 
+// TODO: Edit an existing user
+
+UsersController.directEdit = function(id, res = null) {
+
+};
+
+UsersController.editUser = function(req, res) {
+
+};
+
+
 // TODO: Delete an existing user
+
+UsersController.directDelete = function(id, res = null) {
+
+};
+
+UsersController.deleteUser = function(req, res) {
+
+};
 
 module.exports = UsersController;
