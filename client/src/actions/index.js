@@ -3,6 +3,8 @@ import * as BackendHelper from '../BackendHelper';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
+export const UPDATE_COMMENT_IN_DROP_PAGE = 'UPDATE_COMMENT_IN_DROP_PAGE';
+export const UPDATE_COMMENT_IN_LIST_PAGE = 'UPDATE_COMMENT_IN_LIST_PAGE';
 export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
 export const FETCH_ALL_MY_COMMENTS = 'FETCH_ALL_MY_COMMENTS';
@@ -31,12 +33,43 @@ function receiveAllNearbyDrops(allNearbyDrops){
 	}
 }
 
+/***********************************************************************
+ACTION IS CALLED ON DROP UPDATE
+***********************************************************************/
+
+//TODO: detect when a drop is deleted, cannot comment to it any more?
+
 //function to add a nearby drop when it is detected
 //called on list page to update current drops
 export function updateANearbyDrop(drop){
 	return{
 		type: UPDATE_A_NEARBY_DROP,
 		drop: drop
+	}
+}
+
+/***********************************************************************
+ACTION IS CALLED ON COMMENT UPDATE
+***********************************************************************/
+
+export function updateAComment(comment){
+	return (dispatch)=>{
+		dispatch(updateCommentInDropPage(comment));
+		dispatch(updateCommentInListPage(comment));
+	}
+}
+
+function updateCommentInDropPage(comment){
+	return{
+		type: UPDATE_COMMENT_IN_DROP_PAGE,
+		comment: comment
+	}
+}
+
+function updateCommentInListPage(comment){
+	return{
+		type: UPDATE_COMMENT_IN_LIST_PAGE,
+		comment: comment
 	}
 }
 
