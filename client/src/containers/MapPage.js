@@ -8,7 +8,7 @@ import MapPageComponent from '../components/MapPageComponent';
 function mapStateToProps(state) {
   return {
     user: state.userAuthSession.userObject,
-    location: state.location ? state.location.lngLat : null,
+    location: state.location.lngLat,
     drops: state.drops.drops,
   };
 }

@@ -8,7 +8,7 @@ import ListComponent from '../components/ListComponent';
 function mapStateToProps(state) {
   return {
     drops: state.drops,
-    location: state.location ? state.location.lngLat : null,
+    location: state.location.lngLat,
     user: state.userAuthSession.userObject,
   };
 }
