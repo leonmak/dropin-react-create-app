@@ -10,7 +10,6 @@ export function selectedDrop(state=initialState, action) {
 
 	switch (action.type) {
 		case FETCH_COMMENT_FOR_DROP:
-		console.log(action);
 		return Object.assign({}, state, {
 			comments: action.comments.body
 		})

@@ -67,6 +67,10 @@ export function clearSingleDropHistory(){
 /***********************************************************************
 ACTION IS CALLED ON LIST->DROP OR PROFILE->DROP
 ***********************************************************************/
+/*
+export function getDropId(callback){
+	callback(dropId);
+}*/
 
 //action to pass drop object from list to drop
 export function passingFromOthersToDrop(drop){
@@ -84,6 +88,7 @@ function populatingDropFromOthrs(drop){
 	}
 }
 
+
 /***********************************************************************
 ACTION IS CALLED ON PROFILE PAGE
 ***********************************************************************/
@@ -97,7 +102,6 @@ export function fetchAllMyDrops(userId){
 }
 
 export function receiveAllMyDrops(allMyDrops){
-	console.log(allMyDrops);
 	return{
 		type: FETCH_ALL_MY_DROPS,
 		drops: allMyDrops
