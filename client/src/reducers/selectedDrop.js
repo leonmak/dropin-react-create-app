@@ -33,9 +33,10 @@ export function selectedDrop(state=initialState, action) {
 		case UPDATE_COMMENT_IN_DROP_PAGE:
 		var oldComments = state.comments;
 		oldComments.push(action.comment);
-		//var newComments = this.newCommentState(state.comments, action.comment);
+		var newDropState = state.selectedDrop;
+		newDropState.replies = state.selectedDrop.replies+1;
 		return Object.assign({}, state, {
-			selectedDrop: state.selectedDrop,
+			selectedDrop: newDropState,
 			comments: oldComments
 		})
 
