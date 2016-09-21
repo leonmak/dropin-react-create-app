@@ -1,7 +1,7 @@
 #splash-page {
-    position: absolute;
-    padding-top: 25%;
-    height: 90%;
+    position: fixed;
+    padding-top: 15vh;
+    height: 100vh;
     width: 100%;
     background-color: #2f3031;
     color: #b2b2b2;
