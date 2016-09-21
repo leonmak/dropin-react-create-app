@@ -90,13 +90,16 @@ class ListComponent extends Component {
     this.props.setLocation([coords.longitude, coords.latitude]);
   }
 
+  componentWillMount() {
+    this.props.fetchAllNearbyDrops();
+  }
+
   componentDidMount() {
     //listening to the socket so that you
     //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
     //method to fetch all nearby drops and set the state
-    this.props.fetchAllNearbyDrops();
 
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
     /*request.get('api/feeds/1/comments').end(function(err,res){
