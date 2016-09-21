@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import {fetchAllNearbyDrops, updateANearbyDrop, passingFromOthersToDrop} from '../actions';
+import {fetchAllNearbyDrops, updateANearbyDrop, populatingDropFromOthrs, selectedDropIdx} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 
 import ListComponent from '../components/ListComponent';
@@ -8,7 +8,7 @@ import ListComponent from '../components/ListComponent';
 function mapStateToProps(state) {
   return {
     drops: state.drops,
-    location: state.location.lngLat,
+    location: state.location ? state.location.lngLat : null,
     user: state.userAuthSession.userObject,
   };
 }
@@ -18,6 +18,7 @@ function mapDispatchToProps(dispatch) {
   	fetchAllNearbyDrops:() => dispatch(fetchAllNearbyDrops()),
     updateANearbyDrop: drop => dispatch(updateANearbyDrop(drop)),
     passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop)),
+    selectedDropIdx: idx => dispatch(selectedDropIdx(idx)),
     setLocation: lngLat => dispatch(setLocation(lngLat)),
   };
 }

@@ -10,7 +10,7 @@ export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
 export const FETCH_ALL_MY_COMMENTS = 'FETCH_ALL_MY_COMMENTS';
 export const FETCH_ALL_MY_VOTES = 'FETCH_ALL_MY_VOTES';
 export const CLEAR_SINGLE_DROP_HISTORY = 'CLEAR_SINGLE_DROP_HISTORY';
-
+export const SELECT_DROP_IDX = 'SELECT_DROP_IDX';
 
 /***********************************************************************
 ACTION IS CALLED ON THE LIST PAGE
@@ -112,7 +112,7 @@ export function getDropId(callback){
 export function passingFromOthersToDrop(drop){
 
 	return (dispatch)=>{
-		dispatch(clearSingleDropHistory());
+		// dispatch(clearSingleDropHistory()); // redundant
 		dispatch(fetchCommentsForDrop(drop.dropId));
 		dispatch(populatingDropFromOthrs(drop));
 	}
@@ -125,6 +125,12 @@ function populatingDropFromOthrs(drop){
 	}
 }
 
+export function selectedDropIdx(idx) {
+  return {
+    type: SELECT_DROP_IDX,
+    selectedDropIdx: idx
+  }
+}
 
 /***********************************************************************
 ACTION IS CALLED ON PROFILE PAGE

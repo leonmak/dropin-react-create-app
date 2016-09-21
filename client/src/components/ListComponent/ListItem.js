@@ -28,26 +28,15 @@ const getDistanceFromUser = (location, userLocation) => {
     return 0
 }
 
-
 const goToURL = (url,props) => setTimeout(()=>{
   browserHistory.push(url);
-  props.passingFromOthersToDrop({
-    dropId:props.dropId,
-    username:props.username,
-    userId:props.userId,
-    userAvatarId:props.userAvatarId,
-    emojiUni:props.emojiUni,
-    title:props.title,
-    videoUrl:props.videoUrl,
-    imageId:props.imageId,
-    soundCloudUrl:props.soundCloudUrl,
-    votes:props.votes,
-    location:props.location,
-    date:props.date,
-    replies:props.replies
-    });
+  props.passingFromOthersToDrop(props);
 }, 300);
 
+const goToEdit = props => {
+  browserHistory.push('/edit/'+props.dropId);
+  props.selectedDropIdx(props.idx);
+};
 /*
     title:props.title,
     replies:props.replies,
@@ -119,7 +108,7 @@ const ListItem = props => (
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
         {props.user && props.user.userId === props.userId && <div className="edit-delete-btn">
-          <IconButton tooltipPosition="bottom-center" tooltip="Edit">
+          <IconButton tooltipPosition="bottom-center" tooltip="Edit" onTouchTap={()=>goToEdit(props)}>
             {Icons.MUI('mode_edit')}
           </IconButton>
           <IconButton tooltipPosition="bottom-center" tooltip="Delete">

@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   userAuthSession: updateUserInfo,
   profile: profile,
   snackbar,
-  location
+
 });
 
 export default rootReducer;

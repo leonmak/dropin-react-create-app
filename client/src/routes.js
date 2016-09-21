@@ -22,6 +22,7 @@ export default (
     <Route path="map" component={MapPage}/>
     <Route path="profile(/:profileId)" component={ProfilePage} />
     <Route path="add" component={AddPage}/>
+    <Route path="edit/:dropId" component={AddPage}/>
     <Route path="about" component={AboutPage}/>
     <Route path="settings" component={SettingsPage} />
     <Route path="login" component={LoginPage} />

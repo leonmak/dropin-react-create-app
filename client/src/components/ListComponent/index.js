@@ -84,6 +84,7 @@ class ListComponent extends Component {
         user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
+        selectedDropIdx={this.props.selectedDropIdx}
         passingFromOthersToDrop={this.props.passingFromOthersToDrop}
       />
     )

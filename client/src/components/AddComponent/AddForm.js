@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react'
+import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 
 import { TextField } from 'redux-form-material-ui'
@@ -8,10 +9,10 @@ import EmojiInput from './EmojiInput'
 import ImageUpload from '../ImageUpload/index.js'
 import validUrl from 'valid-url'
 import EmojiAnnotationToUni from '../../utils/emoji-annotation-to-unicode';
+import EmojiUniToAnnotation from '../../utils/emoji-unicode-to-annotation';
 import * as geo from '../../utils/geolocator';
 
 import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
-
 import '../../styles/form.css';
 
 const handler = (reset, socketHandler, user, location) => values => {
@@ -79,7 +80,21 @@ class AddForm extends Component {
 
   componentDidMount() {
     socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
-    this.geoId = geo.geoListener(this.updateLocation);
+    // this.geoId = geo.geoListener(this.updateLocation);
+    // this.props.dropId && this.props.loadFormSucess(this.props.);
+    if(this.props.dropId){
+      const selectedIdx = this.props.selectedDrop.selectedDropIdx;
+      const selectedDrop = this.props.drops[selectedIdx];
+      selectedDrop.emojiUni = ':'+EmojiUniToAnnotation[selectedDrop.emojiUni]+':';
+      this.props.initialize(selectedDrop);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // Clear form if going from edit to add message route
+    if(prevProps.dropId && !this.props.dropId){
+      this.props.initialize({});
+    }
   }
 
   componentWillUnmount() {
@@ -92,11 +107,11 @@ class AddForm extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting } = this.props;
+    const { handleSubmit, pristine, reset, submitting, dropId } = this.props;
 
     return (
       <form onSubmit={ handleSubmit(handler(reset, socketHandler, this.props.user, this.props.location)) }>
-      <h1>New message</h1>
+      <h1>{dropId ? 'Edit message' : 'New message'}</h1>
 
       <div className="row center-xs">
         <div className="col-xs-10">
