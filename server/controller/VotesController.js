@@ -14,15 +14,23 @@ var VotesController = {};
 
 VotesController.getFeedVotes = function(req, res) {
   const post_id = req.params.id;
+  const user_id = req.query.user_id;
 
   Votes.where('post_id', post_id).fetchAll({
     withRelated: ['user']
   }).then(function (votes) {
     // Get all votes objects
     var fetchedVotes = votes.toJSON();
-    var parsedVotes = {upvotes: 0, downvotes: 0};
+    var parsedVotes = {upvotes: 0, downvotes: 0, voted: 1};
+    var hasVoted = false;
 
     for (var i = 0; i < fetchedVotes.length; ++i) {
+
+      console.log(user_id);
+      // Check if user voted
+      if (fetchedVotes[i].user.id == user_id) {
+        hasVoted = true;
+      }
 
       // Count votes
       if (fetchedVotes[i].vote_type == 1) {
@@ -30,7 +38,13 @@ VotesController.getFeedVotes = function(req, res) {
       } else {
         parsedVotes.downvotes += 1;
       }
+
     }
+
+    if (!hasVoted && typeof user_id != 'undefined') {
+      parsedVotes.voted = -1;
+    }
+
     res.json(parsedVotes);
   }).catch(function (err) {
     res.json({
@@ -135,7 +149,7 @@ VotesController.directVote = function({
 VotesController.postVote = function(req, res) {
   var packet = {
     user_id: req.body.userId,
-    post_id: req.body.dropId,
+    post_id: req.params.id,
     vote_type: req.body.vote_type
   };
 

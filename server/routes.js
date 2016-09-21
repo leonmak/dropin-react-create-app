@@ -34,11 +34,10 @@ module.exports = function (passport) {
   router.post('/api/comments/:id', CommentsController.deleteComment);
 
   // Votes API
-  router.get('/api/feeds/:id/votes', VotesController.getFeedVotes);
+  router.get('/api/feeds/:id/votes/:user_id', VotesController.getFeedVotes);
   router.get('/api/users/:id/votes', VotesController.getVotesToUser);
   router.get('/api/votes/:id', VotesController.getVote);
   router.post('/api/feeds/:id/votes', VotesController.postVote);
-  router.post('/api/votes/:id/edit', VotesController.editVote);
   router.post('/api/votes/:id/delete', VotesController.deleteVote);
 
   // Profiles API
