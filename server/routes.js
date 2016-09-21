@@ -24,30 +24,31 @@ module.exports = function (passport) {
   router.get('/api/users/:id/feeds', FeedsController.getUserFeeds);
   router.get('/api/feeds/:id', FeedsController.getFeed);
   router.post('/api/feeds', FeedsController.postFeed);
-  router.post('/api/feeds/:id', FeedsController.deleteFeed);
+  router.delete('/api/feeds/:id', FeedsController.deleteFeed);
 
   // Comments API
   router.get('/api/feeds/:id/comments', CommentsController.getFeedComments);
   router.get('/api/users/:id/comments', CommentsController.getUserComments);
   router.get('/api/comments/:id', CommentsController.getComment);
   router.post('/api/feeds/:id/comments', CommentsController.postComment);
-  router.post('/api/comments/:id', CommentsController.deleteComment);
+  router.delete('/api/comments/:id', CommentsController.deleteComment);
 
   // Votes API
   router.get('/api/feeds/:id/votes/:user_id', VotesController.getFeedVotes);
   router.get('/api/users/:id/votes', VotesController.getVotesToUser);
   router.get('/api/votes/:id', VotesController.getVote);
   router.post('/api/feeds/:id/votes', VotesController.postVote);
-  router.post('/api/votes/:id/delete', VotesController.deleteVote);
+  router.put('/api/votes/:id', VotesController.editVote);
+  router.delete('/api/votes/:id', VotesController.deleteVote);
 
   // Profiles API
   router.get('/api/users', UsersController.getUsers);
   router.get('/api/users/:id', UsersController.getUser);
+  router.delete('/api/users/:id', UsersController.deleteUser);
   router.get('/api/profile', loginCheck, (req, res) => {
     res.json(req.user);
   });
-  router.post('/api/profile/edit', loginCheck, UsersController.editUser);
-  router.post('/api/profile/delete', loginCheck, UsersController.deleteUser);
+  router.put('/api/profile', loginCheck, UsersController.editUser);
 
   return router;
 }

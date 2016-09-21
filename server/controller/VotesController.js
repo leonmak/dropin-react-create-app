@@ -167,7 +167,7 @@ VotesController.postVote = function(req, res) {
 // TODO: Delete an existing vote
 
 VotesController.directDelete = function(id, res = null) {
-
+	
 };
 
 VotesController.deleteVote = function(req, res) {
