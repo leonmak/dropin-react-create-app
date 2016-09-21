@@ -4,13 +4,15 @@ import {
 	CLEAR_SINGLE_DROP_HISTORY,
   UPDATE_COMMENT_IN_DROP_PAGE,
   SELECT_DROP_IDX,
+  SELECT_DROP_SRC,
 } from '../actions';
 
 //designing initial state
 const initialState = {
 	selectedDrop:{},
 	comments: [],
-  selectedDropIdx: null
+  selectedDropIdx: null,
+  selectedDropSrc: ""
 }
 function newCommentState(stateComment, actionComment){
 	return stateComment.push(actionComment);
@@ -49,6 +51,11 @@ export function selectedDrop(state=initialState, action) {
     case SELECT_DROP_IDX:
     return Object.assign({}, state, {
       selectedDropIdx: action.selectedDropIdx
+    })
+
+    case SELECT_DROP_SRC:
+    return Object.assign({}, state, {
+      selectedDropSrc: action.selectedDropSrc
     })
 
 		default:

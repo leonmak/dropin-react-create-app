@@ -29,3 +29,7 @@
 .profile-stat > p {
   margin: 0;
 }
+
+.scrollarea.area {
+  margin-bottom: 21px;
+}

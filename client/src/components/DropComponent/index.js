@@ -122,6 +122,7 @@ class DropComponent extends Component {
 	constructor(props) {
 		super(props);
 		this.geoId = null;
+    this.clickedDrop = null;
 		this.updateLocation = this.updateLocation.bind(this);
 	}
 
@@ -134,6 +135,9 @@ class DropComponent extends Component {
 			this.props.passSnackbarMessage('Log in to view message')
 			browserHistory.push('/login');
 		}
+    const {drops, profileDrops, selectedDrop} = this.props;
+    this.clickedDrop = selectedDrop.source === "drops" ? drops[selectedDrop.selectedDropIdx]: profileDrops[selectedDrop.selectedDropIdx] ;
+
 	}
 
 	//algo to initialize the comment socket // expensive deep comparison
@@ -158,11 +162,12 @@ class DropComponent extends Component {
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
-    const {drops, selectedDrop} = this.props;
 		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-    socketHandler.setup(COMMENTS_SOCKET, {postId: drops[selectedDrop.selectedDropIdx].dropId}, this.commentReceive.bind(this));
+
+    if(this.clickedDrop)
+      socketHandler.setup(COMMENTS_SOCKET, {postId: this.clickedDrop.dropId}, this.commentReceive.bind(this));
 	}
 
 	componentWillUnmount() {
@@ -181,17 +186,17 @@ class DropComponent extends Component {
 
 
 
-		const {location, user, drops, selectedDrop} = this.props;
+		const {location, user, drops, profileDrops, selectedDrop} = this.props;
 
 		return (
 			<div>
-			<Drop drop={drops[selectedDrop.selectedDropIdx]} />
+			<Drop drop={this.clickedDrop} />
 			<CommentsList comments={selectedDrop.comments} />
 			<CommentForm
 			location={location}
 			user={user}
 			socketHandler={socketHandler}
-			drop={drops[selectedDrop.selectedDropIdx]}/>
+			drop={this.clickedDrop}/>
 			</div>
 			)
 	}

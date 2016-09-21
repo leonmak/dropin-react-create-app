@@ -31,6 +31,7 @@ const getDistanceFromUser = (location, userLocation) => {
 const goToURL = (props) => {
   browserHistory.push(`/drops/${props.dropId}`);
   props.selectedDropIdx(props.idx);
+  props.selectedDropSrc(props.dropSrc);
   props.fetchCommentsForDrop(props.idx);
 }
 

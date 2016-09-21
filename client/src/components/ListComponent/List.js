@@ -28,7 +28,7 @@ export class List extends Component {
             <MenuItem value={"date"} primaryText="Most Recent" />
             <MenuItem value={"replies"} primaryText="Most Comments" />
             <MenuItem value={"votes"} primaryText="Most Votes" />
-            <MenuItem value={"distance"} primaryText="Nearest" />
+            {/*<MenuItem value={"distance"} primaryText="Nearest" />*/}
           </DropDownMenu>
           </div>
         </div>
@@ -43,6 +43,8 @@ export class List extends Component {
           isProfile={this.props.isProfile}
           userLocation={this.props.userLocation}
           isDrop={false}
+          dropSrc={this.props.dropSrc}
+          selectedDropSrc={this.props.selectedDropSrc}
           selectedDropIdx={this.props.selectedDropIdx}
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
           />;

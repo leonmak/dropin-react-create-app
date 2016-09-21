@@ -11,6 +11,7 @@ export const FETCH_ALL_MY_COMMENTS = 'FETCH_ALL_MY_COMMENTS';
 export const FETCH_ALL_MY_VOTES = 'FETCH_ALL_MY_VOTES';
 export const CLEAR_SINGLE_DROP_HISTORY = 'CLEAR_SINGLE_DROP_HISTORY';
 export const SELECT_DROP_IDX = 'SELECT_DROP_IDX';
+export const SELECT_DROP_SRC = 'SELECT_DROP_SRC';
 
 /***********************************************************************
 ACTION IS CALLED ON THE LIST PAGE
@@ -123,6 +124,14 @@ function populatingDropFromOthrs(drop){
 		type: PASSING_FROM_OTHERS_TO_DROP,
 		drop: drop
 	}
+}
+
+
+export function selectedDropSrc(src) {
+  return {
+    type: SELECT_DROP_SRC,
+    selectedDropSrc: src
+  }
 }
 
 export function selectedDropIdx(idx) {

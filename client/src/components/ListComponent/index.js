@@ -88,6 +88,8 @@ class ListComponent extends Component {
         user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
+        dropSrc={"drops"}
+        selectedDropSrc={this.props.selectedDropSrc}
         selectedDropIdx={this.props.selectedDropIdx}
         fetchCommentsForDrop={this.props.fetchCommentsForDrop}
       />
