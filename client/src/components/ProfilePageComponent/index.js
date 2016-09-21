@@ -70,6 +70,8 @@ export default class ProfilePageComponent extends Component{
     }else{
       console.log('now only fetch thanhs drops');
       this.props.fetchAllMyDrops(4);
+      this.props.fetchAllMyComments(4);
+      this.props.fetchAllMyVotes(4);
     }
   }
 
@@ -106,7 +108,7 @@ export default class ProfilePageComponent extends Component{
             passingFromOthersToDrop={this.props.passingFromOthersToDrop}/>
           </Tab>
           <Tab label="Recent Comments" >
-            <CommentsList comments={comments} isProfile={true}/>
+            <CommentsList comments={this.props.profile.comments} isProfile={true}/>
           </Tab>
         </Tabs>
         </div>
@@ -121,6 +123,8 @@ export default class ProfilePageComponent extends Component{
 
 ProfilePageComponent.PropTypes = {
   fetchAllMyDrops: PropTypes.func.isRequired,
+  fetchAllMyComments: PropTypes.func.isRequired,
+  fetchAllMyVotes: PropTypes.func.isRequired,
   passSnackbarMessage: PropTypes.func.isRequired,
   passingFromOthersToDrop: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,

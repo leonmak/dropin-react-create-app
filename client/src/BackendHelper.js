@@ -61,12 +61,28 @@ export function getAllDrops(){
 }
 
 export function getMyDrops(userId){
-    var req = 'api/feeds/users/'+userId;
+    var req = 'api/users/'+userId+'/feeds';
     return defaultPromise(req);
+}
+
+export function getMyComments(userId){
+    var req = 'api/users/'+userId+'/comments';
+    return defaultPromise(req);
+}
+
+export function getVotesForDrop(dropId){
+    var req = 'api/feeds/'+dropId+'/votes';
+    return defaultPromise(req);
+}
+
+export function getMyVotes(userId){
+    var req = 'api/users/'+userId+'/votes';
+    return defaultPromise(req);   
 }
 
 //api/comments/feeds/1
 export function getSingleDropComments(dropId){
-	var req = 'api/comments/feeds/'+dropId;
+	var req = 'api/feeds/'+dropId+'/comments';
 	return defaultPromise(req);
 }
+
