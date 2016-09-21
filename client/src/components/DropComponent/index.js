@@ -102,37 +102,60 @@ var drop = {
 }
 */
 
+function geoListener(callback) {
+  return navigator.geolocation.watchPosition(
+    ({ coords, timestamp }) => callback(coords),
+    (err) => console.log('Unable to find position - ' + err.message),
+    {
+      enableHighAccuracy: true,
+      timeout: 15000
+    }
+  )
+}
+
 
 const socketHandler = new SocketHandler();
 
 class DropComponent extends Component {
-  componentWillMount() {
-    if(!this.props.user) {
-      this.props.passSnackbarMessage('Log in to view message')
-      browserHistory.push('/login');
-    }
-  }
+
+	constructor(props) {
+		super(props);
+		this.geoId = null;
+		this.updateLocation = this.updateLocation.bind(this);
+	}
+
+	updateLocation(coords) {
+		this.props.setLocation([coords.longitude, coords.latitude])
+	}
+
+	componentWillMount() {
+		if(!this.props.user) {
+			this.props.passSnackbarMessage('Log in to view message')
+			browserHistory.push('/login');
+		}
+	}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
+		this.geoId = geoListener(this.updateLocation);
 		socketHandler.setup(COMMENTS_SOCKET, {}, this.commentReceive.bind(this));
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-		console.log('loc', this.props.location);
 		//console.log(this.props.selectedDrop.selectedDrop);
 		//this.props.fetchCommentsForDrop(this.props.selectedDrop.selectedDrop.dropId);
 		/*request.get('http://localhost:3000/api/feeds').end(function(err,res){
-      console.log(',',res);
-    });*/
-	}
+      	console.log(',',res);
+      });*/
+  }
 
-	componentWillUnmount() {
+  componentWillUnmount() {
+  	navigator.geolocation.clearWatch(this.geoId);
 		//console.log('state befor unmount', this.props.selectedDrop);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
 		this.props.clearSingleDropHistory();
-		//console.log('state when cleared',this.props.selectedDrop);
+	  //console.log('state when cleared',this.props.selectedDrop);
 	}
 
 	commentReceive(){
@@ -141,17 +164,16 @@ class DropComponent extends Component {
 
 	render() {
 
+		const {location, user} = this.props;
+
 		return (
 			<div>
 			<Drop drop={this.props.selectedDrop.selectedDrop} />
 			<CommentsList comments={this.props.selectedDrop.comments} />
 			<CommentForm 
-			location={this.props.location} 
-			user={this.props.user} 
+			location={location} 
+			user={user} 
 			socketHandler={socketHandler}/>
-			
-			
-			
 			</div>
 			)
 	}
@@ -169,8 +191,7 @@ DropComponent.propTypes = {
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
 	clearSingleDropHistory: PropTypes.func.isRequired,
-	location: PropTypes.object.isRequired,
-	user: PropTypes.object.isRequired
+	setLocation: PropTypes.func.isRequired
 };
 
 
