@@ -138,28 +138,28 @@ class DropComponent extends Component {
 
 	//algo to initialize the comment socket // expensive deep comparison
 
-	componentDidUpdate(prevProps,prevState){
-		if(
-			(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
-			selectedDrop:{},
-			comments:[]
-			})) &&
-			(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
-			selectedDrop:{},
-			comments:[]
-			}))
-		){
-			socketHandler.setup(COMMENTS_SOCKET,
-				{postId: this.props.selectedDrop.selectedDrop.dropId},
-				this.commentReceive.bind(this));
-		}
-	}
+	// componentDidUpdate(prevProps,prevState){
+	// 	if(
+	// 		(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
+	// 		selectedDrop:{},
+	// 		comments:[]
+	// 		})) &&
+	// 		(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
+	// 		selectedDrop:{},
+	// 		comments:[]
+	// 		}))
+	// 	){
+	// 		socketHandler.setup(COMMENTS_SOCKET,
+	// 			{postId: this.props.selectedDrop.selectedDrop.dropId},
+	// 			this.commentReceive.bind(this));
+	// 	}
+	// }
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
     const {drops, selectedDrop} = this.props;
-		this.geoId = geoListener(this.updateLocation);
+		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
     socketHandler.setup(COMMENTS_SOCKET, {postId: drops[selectedDrop.selectedDropIdx].dropId}, this.commentReceive.bind(this));
