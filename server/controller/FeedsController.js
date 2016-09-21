@@ -185,6 +185,54 @@ FeedsController.getFeeds = function(req, res) {
   });
 }
 
+FeedsController._dist = function(long1, lat1, long2, lat2) {
+  return Math.sqrt((long1 - long2) * (long1 - long2) + (lat1 - lat2) * (lat1 - lat2))
+}
+
+// Get all the feeds across the database
+FeedsController.getFeedsInRadius = function(req, res) {
+
+  // Get the logged-in userID
+  var user_id = -1;
+  if (typeof req.query.user_id != 'undefined') {
+    user_id = req.query.user_id;
+  }
+
+  // Get joint table objects
+  Posts.fetchAll({
+    withRelated: ['votes', 'comments', 'user']
+  }).then(function(posts) {
+    // Get all posts objects
+    var fetchedPosts = posts.toJSON();
+    var parsedPosts = [];
+    var userLong = req.query.longitude;
+    var userLat = req.query.latitude;
+    var userRadius = req.query.radius;
+
+    for (var i = 0; i < fetchedPosts.length; ++i) {
+
+      // Get post object
+      var fetchedPost = fetchedPosts[i];
+      if (FeedsController._dist(fetchedPost.longitude, fetchedPost.latitude, userLong, userLat) <= userRadius) {
+        // Parse post
+        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+
+        // Collate post
+        parsedPosts.push(parsedPost);
+        // console.log(parsedPost);
+      }
+    }
+
+    // console.log(fetchedPosts);
+    res.json(parsedPosts);
+
+  }).catch(function(err) {
+    res.json({
+      error: MESSAGES.ERROR_POST_NOT_FOUND
+    });
+  });
+}
+
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function(req, res) {
   const id = req.params.id;

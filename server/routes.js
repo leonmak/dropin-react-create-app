@@ -23,6 +23,7 @@ module.exports = function (passport) {
 
   // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds);
+  router.get('/api/feeds/local', FeedsController.getFeedsInRadius);
   router.get('/api/users/:id/feeds', FeedsController.getUserFeeds);
   router.get('/api/feeds/:id', FeedsController.getFeed);
   router.post('/api/feeds', FeedsController.postFeed);

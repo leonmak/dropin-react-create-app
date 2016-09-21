@@ -22,7 +22,10 @@ class BottomBarComponent extends Component {
     const tabIdx = this.props.urlIdx;
     return (
       <div>
-      { this.props.pageVisibility.bottomBarVisibility &&
+      { 
+
+      this.props.pageVisibility.bottomBarVisibility ?
+      
       <Paper zDepth={1} className="bottom-navigation">
       <BottomNavigation selectedIndex={tabIdx}>
       <BottomNavigationItem onTouchTap={this.goToURL('/drops')} label="Feed" icon={Icons.MUI('list')} />
@@ -32,6 +35,8 @@ class BottomBarComponent extends Component {
       <BottomNavigationItem onTouchTap={this.goToURL('/settings')} label="Settings" icon={Icons.MUI('build')} />
       </BottomNavigation>
       </Paper>
+      :
+      <div></div>
       }
       </div>
     )

@@ -162,7 +162,8 @@ const ListItem = props => (
 )
 
 ListItem.PropTypes = {
-  passingFromOthersToDrop: PropTypes.func.isRequired
+  passingFromOthersToDrop: PropTypes.func.isRequired,
+  selectedDropIdx: PropTypes.func.isRequired
 }
 
 export default ListItem;
