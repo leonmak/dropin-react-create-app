@@ -30,6 +30,13 @@
     }
   });
 
+  global.toolbox.router.get(/\.mapbox\.com\//, global.toolbox.cacheFirst, {
+    cache: {
+      name: 'mapbox',
+      maxEntries: 500,
+      maxAgeSeconds: 30
+    }
+  });
   global.toolbox.router.default = global.toolbox.networkFirst;
 
   // Boilerplate to ensure our service worker takes control of the page as soon
