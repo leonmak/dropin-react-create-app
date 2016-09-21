@@ -10,6 +10,10 @@ const path = require('path');
 const FacebookController = require('./server/controller/FacebookController');
 const CommentsController = require('./server/controller/CommentsController');
 const FeedsController = require('./server/controller/FeedsController');
+var url = require('url')
+
+// var clientSockets = [];
+var cookieParser = require('cookie-parser');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
 const env = require('node-env-file');
@@ -107,17 +111,22 @@ io.on('connection', function(socket) {
     console.log(packet);
 
     if (packet.event == 'comment:send') {
-      CommentsController.directComment(packet.data.userId, packet.data.postId, packet.data.text);
-      io.emit('server:sendEvent', packet);
+      CommentsController.directComment(packet.data).then(function(res) {
+          // console.log('output from commentcontroller',res);
+          var newPacket = packet;
+          newPacket.data = res;
+          // console.log(newPacket);
+        io.emit('server:sendEvent', newPacket);
+      });
     }
     if (packet.event == 'feed:send') {
         //feedscontroller needs to return an id for me to work with
         console.log('input to feed controller', packet.data);
-        FeedsController.directPost(packet.data).then(function(res){
-          console.log('output from feedcontroller',res);
+        FeedsController.directPost(packet.data).then(function(res) {
+          // console.log('output from feedcontroller',res);
           var newPacket = packet;
           newPacket.data = res;
-          console.log(newPacket);
+          // console.log(newPacket);
           io.emit('server:sendEvent', newPacket);
         });
 

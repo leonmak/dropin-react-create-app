@@ -25,19 +25,19 @@ export default class SocketHandler {
 		this.handler = handler;
 		switch (type) {
 			case COMMENTS_SOCKET:
-				this.channelId = "comment:" + data.postId;
-				break;
+			this.channelId = "comment:" + data.postId;
+			break;
 			case FEEDS_SOCKET:
-				this.channelId = "feed:";
-				break;
+			this.channelId = "feed:";
+			break;
 			case VOTES_SOCKET:
-				this.channelId = "vote:" + data.commentId;
-				break;
+			this.channelId = "vote:" + data.commentId;
+			break;
 			default:
-				break;
+			break;
 		}
 		console.log('listening to: ',this.channelId);
-    socket.on('server:sendEvent', this._eventHandler.bind(this));
+		socket.on('server:sendEvent', this._eventHandler.bind(this));
 	}
 
 	uninstall() {
@@ -56,50 +56,59 @@ export default class SocketHandler {
 	_packSocket(data) {
 		switch (this.type) {
 			case COMMENTS_SOCKET:
-		    return {channelId: this.channelId, event: "comment:send", data: {userId: data.userId, postId: data.postId, text: data.text}};
-		  
-		  case FEEDS_SOCKET:
-		    return {channelId: this.channelId, event: "feed:send", data: 
-		    	{userID: data.userID,
-		    	emoji: data.emoji, 
-		    	title: data.title,
-		    	video: data.video,
-		    	image: data.image,
-		    	sound: data.sound, 
-		    	longitude: data.longitude, 
-		    	latitude: data.latitude,
-		    	date: data.date}};
-		  
-		  case VOTES_SOCKET:
-		    return {channelId: this.channelId, event: "vote:send", data: {userId: data.userId, postId: data.postId, voteType: data.voteType}};
-		  default:
-		  	return {channelId: this.channelId, event: "error", data: {}}; 
-		}
-	}
+			return {channelId: this.channelId, event: "comment:send", data: 
+			{dropId: data.dropId,
+				userId: data.userId, 
+				text: data.text,
+				date: data.date}};
 
-	comment({userId, postId, text}) { //accept a hash {userId: , postId: , text: }
-		console.log("sent new comment to server");
-    socket.emit('client:sendEvent', this._packSocket({userId, postId, text}));
-	}
+				case FEEDS_SOCKET:
+				return {channelId: this.channelId, event: "feed:send", data: 
+				{userID: data.userID,
+					emoji: data.emoji, 
+					title: data.title,
+					video: data.video,
+					image: data.image,
+					sound: data.sound, 
+					longitude: data.longitude, 
+					latitude: data.latitude,
+					date: data.date}};
+
+					case VOTES_SOCKET:
+					return {channelId: this.channelId, event: "vote:send", data: {userId: data.userId, postId: data.postId, voteType: data.voteType}};
+					default:
+					return {channelId: this.channelId, event: "error", data: {}}; 
+				}
+			}
+
+	comment({dropId, userId, text, date}) { //accept a hash {userId: , postId: , text: }
+	console.log("sent new comment to server");
+	socket.emit('client:sendEvent', this._packSocket({
+		dropId,
+		userId,
+		text,
+		date
+	}));
+}
 
 	post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { //accept a hash {userId: , title: , longitude: , latitude: }
-		console.log("sent new post to server");
-		socket.emit('client:sendEvent', this._packSocket({
-			userID, 
-			emoji,
-			title,
-			video,
-			image,
-			sound, 
-			longitude, 
-			latitude,
-			date}));
-	}
+	console.log("sent new post to server");
+	socket.emit('client:sendEvent', this._packSocket({
+		userID, 
+		emoji,
+		title,
+		video,
+		image,
+		sound, 
+		longitude, 
+		latitude,
+		date}));
+}
 
 	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }
-		console.log("sent new vote to server");
-		socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
-	}
+	console.log("sent new vote to server");
+	socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
+}
 
 
 	/*var drop = {
@@ -114,5 +123,5 @@ export default class SocketHandler {
       "location": [103.7730933, 1.3056169],
       "date": "2016-09-08T11:06:43.511Z",
       "replies": 12
-    };*/
+  };*/
 }

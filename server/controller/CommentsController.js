@@ -205,13 +205,28 @@ CommentsController.postComment = function (req, res) {
 
 // TODO: Delete an existing comment
 
-CommentsController.directDelete = function(id, res = null) {
-
+CommentsController.directDelete = function({id}, res = null) {
+  Comments.where('id', id).destroy().then(function(comment) {
+    res.json(CommentsController.apiParse(comment));
+  }).catch(function(err) {
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_COMMENT_NOT_FOUND
+     });
+    }
+  });
 };
 
 CommentsController.deleteComment = function(req, res) {
 
-};
+  var packet = {
+    id: req.params.id,
+  };
 
+  CommentsController.directDelete(packet, res);
+
+  // Response
+  res.end("comment is successfully deleted.");
+};
 
 module.exports = CommentsController;

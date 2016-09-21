@@ -16,7 +16,9 @@ class AddComponent extends Component {
     return (
       <div className="row center-xs">
         <div className="col-xs-12">
-            <AddForm user={this.props.user} location={this.props.location} setLocation={this.props.setLocation} />
+          <AddForm
+            {...this.props}
+            dropId={this.props.params.dropId} />
         </div>
       </div>
     )

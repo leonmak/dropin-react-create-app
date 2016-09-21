@@ -3,12 +3,14 @@ import * as BackendHelper from '../BackendHelper';
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
+export const UPDATE_COMMENT_IN_DROP_PAGE = 'UPDATE_COMMENT_IN_DROP_PAGE';
+export const UPDATE_COMMENT_IN_LIST_PAGE = 'UPDATE_COMMENT_IN_LIST_PAGE';
 export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
 export const FETCH_ALL_MY_COMMENTS = 'FETCH_ALL_MY_COMMENTS';
 export const FETCH_ALL_MY_VOTES = 'FETCH_ALL_MY_VOTES';
 export const CLEAR_SINGLE_DROP_HISTORY = 'CLEAR_SINGLE_DROP_HISTORY';
-
+export const SELECT_DROP_IDX = 'SELECT_DROP_IDX';
 
 /***********************************************************************
 ACTION IS CALLED ON THE LIST PAGE
@@ -31,6 +33,12 @@ function receiveAllNearbyDrops(allNearbyDrops){
 	}
 }
 
+/***********************************************************************
+ACTION IS CALLED ON DROP UPDATE
+***********************************************************************/
+
+//TODO: detect when a drop is deleted, cannot comment to it any more?
+
 //function to add a nearby drop when it is detected
 //called on list page to update current drops
 export function updateANearbyDrop(drop){
@@ -41,11 +49,36 @@ export function updateANearbyDrop(drop){
 }
 
 /***********************************************************************
+ACTION IS CALLED ON COMMENT UPDATE
+***********************************************************************/
+
+export function updateAComment(comment){
+	return (dispatch)=>{
+		dispatch(updateCommentInDropPage(comment));
+		dispatch(updateCommentInListPage(comment));
+	}
+}
+
+function updateCommentInDropPage(comment){
+	return{
+		type: UPDATE_COMMENT_IN_DROP_PAGE,
+		comment: comment
+	}
+}
+
+function updateCommentInListPage(comment){
+	return{
+		type: UPDATE_COMMENT_IN_LIST_PAGE,
+		comment: comment
+	}
+}
+
+/***********************************************************************
 ACTION IS CALLED ON THE DROP PAGE
 ***********************************************************************/
 
 //function to fetch all comments for a single drop
-function fetchCommentsForDrop(dropId){
+export function fetchCommentsForDrop(dropId){
 	return (dispatch)=>{
 		BackendHelper.getSingleDropComments(dropId)
 		.then(response=>dispatch(receiveCommentsForDrop(response)));
@@ -79,6 +112,7 @@ export function getDropId(callback){
 export function passingFromOthersToDrop(drop){
 
 	return (dispatch)=>{
+		// dispatch(clearSingleDropHistory()); // redundant
 		dispatch(fetchCommentsForDrop(drop.dropId));
 		dispatch(populatingDropFromOthrs(drop));
 	}
@@ -91,6 +125,12 @@ function populatingDropFromOthrs(drop){
 	}
 }
 
+export function selectedDropIdx(idx) {
+  return {
+    type: SELECT_DROP_IDX,
+    selectedDropIdx: idx
+  }
+}
 
 /***********************************************************************
 ACTION IS CALLED ON PROFILE PAGE

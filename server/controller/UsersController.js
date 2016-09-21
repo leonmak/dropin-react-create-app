@@ -87,23 +87,75 @@ UsersController.createUser = function(accessToken, profile, callback) {
 
 // TODO: Edit an existing user
 
-UsersController.directEdit = function(id, res = null) {
-
+UsersController.directEdit = function({
+	id,
+	user_avatar_url,
+	anonymous,
+}, res = null) {
+  Users.where('id', id).fetch().then(function(user) {
+    // update access token
+    console.log(user);
+    console.log(anonymous);
+    if (user_avatar_url != undefined) {
+	    user.save({
+    	  user_avatar_url: user_avatar_url,
+    	});
+	  }
+    if (anonymous != undefined) {
+	    console.log('saving anonymous');
+	    user.save({
+      	anonymous: anonymous
+    	});
+	  }
+  }).catch(function(err) {
+  	if (res != null) {
+	    res.json({
+  	    error: MESSAGES.ERROR_USER_NOT_FOUND
+    	});
+	  }
+  });
 };
 
 UsersController.editUser = function(req, res) {
+	UsersController.findUserId(req.user.id).then(function(id) {
+  	var packet = {
+    	id: id,
+    	user_avatar_url: req.body.user_avatar_url,
+    	anonymous: req.body.anonymous
+  	};
+  	UsersController.directEdit(packet, res);
 
+  	// Response
+	  res.end("user is successfully updated.");
+	}).catch(function(err) {
+		res.json(err);
+	});
 };
 
 
 // TODO: Delete an existing user
 
 UsersController.directDelete = function(id, res = null) {
-
+  Users.where('id', id).destroy().then(function(user) {
+    res.json(user);
+  }).catch(function(err) {
+  	if (res != null) {
+	    res.json({
+  	    error: MESSAGES.ERROR_USER_NOT_FOUND
+    	});
+	  }
+  });
 };
 
 UsersController.deleteUser = function(req, res) {
+  var packet = {
+    id: req.params.id,
+  };
 
+  UsersController.directDelete(packet, res);
+
+  // Response
+  res.end("user is successfully deleted.");
 };
 
 module.exports = UsersController;

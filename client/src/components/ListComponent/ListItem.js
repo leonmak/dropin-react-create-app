@@ -28,26 +28,16 @@ const getDistanceFromUser = (location, userLocation) => {
     return 0
 }
 
+const goToURL = (props) => {
+  browserHistory.push(`/drops/${props.dropId}`);
+  props.selectedDropIdx(props.idx);
+  props.fetchCommentsForDrop(props.idx);
+}
 
-const goToURL = (url,props) => setTimeout(()=>{
-  browserHistory.push(url);
-  props.passingFromOthersToDrop({
-    dropId:props.dropId,
-    username:props.username,
-    userId:props.userId,
-    userAvatarId:props.userAvatarId,
-    emojiUni:props.emojiUni,
-    title:props.title,
-    videoUrl:props.videoUrl,
-    imageId:props.imageId,
-    soundCloudUrl:props.soundCloudUrl,
-    votes:props.votes,
-    location:props.location,
-    date:props.date,
-    replies:props.replies
-    });
-}, 300);
-
+const goToEdit = props => {
+  browserHistory.push('/edit/'+props.dropId);
+  props.selectedDropIdx(props.idx);
+};
 /*
     title:props.title,
     replies:props.replies,
@@ -118,6 +108,15 @@ const ListItem = props => (
     <div className="col-xs-11 col-sm-4">
       <Paper className="top-container" zDepth={0}>
         <EmojiDisplay emojiUni={props.emojiUni} />
+        {props.user && props.user.userId === props.userId && <div className="edit-delete-btn">
+          <IconButton tooltipPosition="bottom-center" tooltip="Edit" onTouchTap={()=>goToEdit(props)}>
+            {Icons.MUI('mode_edit')}
+          </IconButton>
+          <IconButton tooltipPosition="bottom-center" tooltip="Delete">
+            {Icons.MUI('delete')}
+          </IconButton>
+        </div>
+        }
         <ItemTitle title={props.title}/>
         {!props.isDrop &&
           <div className="row center-xs item-media-icon">
@@ -150,7 +149,7 @@ const ListItem = props => (
           <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
 
         <div className="button-div">
-        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(`/drops/${props.dropId}`,props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
+        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
 {/*
         <CommentsInput dropId={props.dropId}/>
 */}

@@ -1,4 +1,4 @@
-import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP} from '../actions';
+import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP, UPDATE_COMMENT_IN_LIST_PAGE} from '../actions';
 
 //designing state shape
 const initialState = {
@@ -17,14 +17,14 @@ const initialState = {
  "date": "2016-09-08T11:06:43.511Z",
  "replies": 12*/
 
-export function drops(state=initialState, action) {
+ export function drops(state=initialState, action) {
 
-	switch (action.type) {
+ 	switch (action.type) {
 
-		case FETCH_ALL_NEARBY_DROPS:
-		return Object.assign({}, state, {
-			drops: action.drops.body
-		})
+ 		case FETCH_ALL_NEARBY_DROPS:
+ 		return Object.assign({}, state, {
+ 			drops: action.drops.body
+ 		})
 
 		//need logic to append new drops here
 		case UPDATE_A_NEARBY_DROP:
@@ -32,6 +32,19 @@ export function drops(state=initialState, action) {
 		return Object.assign({}, state, {
 			drops: state.drops
 		})
+
+		case UPDATE_COMMENT_IN_LIST_PAGE:
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==action.comment.dropId){
+				newDrops[i].replies = state.drops[i].replies+1;
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})		
+
 		default:
 		return state
 	}

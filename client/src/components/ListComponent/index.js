@@ -37,17 +37,21 @@ class ListComponent extends Component {
     this.props.fetchAllNearbyDrops();
   }
 
+  //must register all socket at the start, and dynamically register and
+  //dynamically reg and dereg sockets on component change
+
   componentDidMount() {
     //listening to the socket so that you
     //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
     //method to fetch all nearby drops and set the state
-
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
     /*request.get('api/feeds/1/comments').end(function(err,res){
       console.log(res);
     });*/
+
+
   }
 
   //when receive the callback that a new drop has been added nearby, update the state
@@ -81,9 +85,11 @@ class ListComponent extends Component {
   render() {
     return (
       <List
+        user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
-        passingFromOthersToDrop={this.props.passingFromOthersToDrop}
+        selectedDropIdx={this.props.selectedDropIdx}
+        fetchCommentsForDrop={this.props.fetchCommentsForDrop}
       />
     )
   }
@@ -93,7 +99,8 @@ ListComponent.PropTypes = {
   fetchAllNearbyDrops: PropTypes.func.isRequired,
   updateANearbyDrop: PropTypes.func.isRequired,
   passingFromOthersToDrop: PropTypes.func.isRequired,
-  drops: PropTypes.object.isRequired
+  drops: PropTypes.object.isRequired,
+  updateCommentInListPage: PropTypes.func.isRequired
 }
 
 
