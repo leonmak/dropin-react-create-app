@@ -198,16 +198,23 @@ FeedsController.getFeedsInRadius = function(req, res) {
     user_id = req.query.user_id;
   }
 
+  var userLong = parseFloat(req.query.longitude);
+  var userLat = parseFloat(req.query.latitude);
+  var userRadius = parseFloat(req.query.radius);
+  console.log(userLong + userRadius);
   // Get joint table objects
-  Posts.fetchAll({
+  Posts.query(function(qb) {
+    qb.where('longitude', '>=', userLong - userRadius)
+    .andWhere('longitude', '<=', userLong + userRadius)
+    .andWhere('latitude', '>=', userLat - userRadius)
+    .andWhere('latitude', '<=', userLat + userRadius)    
+  }).
+  fetchAll({
     withRelated: ['votes', 'comments', 'user']
   }).then(function(posts) {
     // Get all posts objects
     var fetchedPosts = posts.toJSON();
     var parsedPosts = [];
-    var userLong = req.query.longitude;
-    var userLat = req.query.latitude;
-    var userRadius = req.query.radius;
 
     for (var i = 0; i < fetchedPosts.length; ++i) {
 
