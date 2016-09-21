@@ -299,12 +299,28 @@ FeedsController.postFeed = function(req, res) {
 
 // TODO: Delete an existing feed
 
-FeedsController.directDelete = function(id, res = null) {
-
+FeedsController.directDelete = function({id}, res = null) {
+  Posts.where('id', id).destroy().then(function(post) {
+    res.json(FeedsController.apiParse(post));
+  }).catch(function(err) {
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_POST_NOT_FOUND
+     });
+    }
+  });
 };
 
 FeedsController.deleteFeed = function(req, res) {
 
+  var packet = {
+    id: req.params.id,
+  };
+
+  FeedsController.directDelete(packet, res);
+
+  // Response
+  res.end("feed is successfully deleted.");
 };
 
 
