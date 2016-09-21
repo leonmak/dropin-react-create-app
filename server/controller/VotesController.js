@@ -1,5 +1,5 @@
 import {
-  Votes
+  Votes, Posts
 } from '../database';
 
 var UsersController = require('./UsersController');
@@ -19,7 +19,7 @@ VotesController.getFeedVotes = function(req, res) {
   Votes.where('post_id', post_id).fetchAll({
     withRelated: ['user']
   }).then(function (votes) {
-    // Get all comment objects
+    // Get all votes objects
     var fetchedVotes = votes.toJSON();
     var parsedVotes = {upvotes: 0, downvotes: 0};
 
@@ -43,6 +43,35 @@ VotesController.getFeedVotes = function(req, res) {
 // TODO: Get summary of all votes to a specific user
 
 VotesController.getVotesToUser = function(req, res) {
+  const user_id = req.params.id;
+
+  Posts.where('user_id', user_id).fetchAll({withRelated: ['votes']}).then(function (posts) {
+    // Get all posts objects
+    var fetchedPosts = posts.toJSON();
+    var parsedVotes = {upvotes: 0, downvotes: 0};
+
+    // Loop through posts by user
+    for (var i = 0; i < fetchedPosts.length; ++i) {
+
+      // Collate votes
+      var fetchedVotes = fetchedPosts[i].votes;
+      console.log(fetchedVotes);
+      for (var j = 0; j < fetchedVotes.length; ++j) {
+        // Count votes
+        if (fetchedVotes[j].vote_type == 1) {
+          parsedVotes.upvotes += 1;
+        } else {
+          parsedVotes.downvotes += 1;
+        }
+      }
+
+    }
+    res.json(parsedVotes);
+  }).catch(function (err) {
+    res.json({
+      error: MESSAGES.ERROR_VOTE_NOT_FOUND
+    });
+  })
 
 };
 
@@ -50,6 +79,15 @@ VotesController.getVotesToUser = function(req, res) {
 // TODO: Get a specific vote
 
 VotesController.getVote = function(req, res) {
+  const vote_id = req.params.id;
+
+  Votes.where('id', vote_id).fetch().then(function (vote) {
+    res.json(vote.toJSON());
+  }).catch(function (err) {
+    res.json({
+      error: MESSAGES.ERROR_VOTE_NOT_FOUND
+    });
+  })
 
 };
 
