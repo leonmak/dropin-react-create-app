@@ -173,8 +173,9 @@ class DropComponent extends Component {
 		this.props.toggleBottomBar(true);
 	}
 
-	commentReceive(){
-
+	commentReceive(data){
+		console.log('received comment', data);
+    	//this.props.updateANearbyDrop(data);
 	}
 
 	render() {
@@ -190,7 +191,8 @@ class DropComponent extends Component {
 			<CommentForm 
 			location={location} 
 			user={user} 
-			socketHandler={socketHandler}/>
+			socketHandler={socketHandler}
+			drop={this.props.selectedDrop.selectedDrop}/>
 			</div>
 			)
 	}
