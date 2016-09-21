@@ -10,6 +10,8 @@ class AddComponent extends Component {
       browserHistory.push('/login');
     }
   }
+
+
   render() {
     return (
       <div className="row center-xs">

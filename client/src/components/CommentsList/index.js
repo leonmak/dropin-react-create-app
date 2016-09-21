@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
+import ScrollArea from 'react-scrollbar';
 
 
 
@@ -15,6 +16,12 @@ export class CommentsList extends Component {
 
     return (
       <div>
+      <ScrollArea
+      speed={0.8}
+      className="area"
+      contentClassName="content"
+      horizontal={false}>
+      <div>
       {this.props.comments.map(comment => {
         let {text, createdAt, username, id, userId, userAvatar} = comment;
         return <Comment
@@ -27,6 +34,8 @@ export class CommentsList extends Component {
         isProfile={this.props.isProfile} />
       }
       )}
+      </div>
+      </ScrollArea>
       
       </div>
       );

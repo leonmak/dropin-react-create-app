@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ProfilePageComponent from '../components/ProfilePageComponent';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
 
-import {fetchAllMyDrops, passingFromOthersToDrop} from '../actions';
+import {fetchAllMyDrops, fetchAllMyComments, fetchAllMyVotes, passingFromOthersToDrop} from '../actions';
 
 ///import {}
 
@@ -11,7 +11,6 @@ function mapStateToProps(state) {
   return {
     user: state.userAuthSession.userObject,
     profile: state.profile
-    //drops: state.
   };
 }
 
@@ -23,6 +22,12 @@ function mapDispatchToProps(dispatch) {
     fetchAllMyDrops:(userId)=>{
   	  dispatch(fetchAllMyDrops(userId));
   	},
+    fetchAllMyComments:(userId)=>{
+      dispatch(fetchAllMyComments(userId));
+    },
+    fetchAllMyVotes:(userId)=>{
+      dispatch(fetchAllMyVotes(userId));
+    },
     passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop))
   };
 }

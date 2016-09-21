@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {Drop} from './Drop';
+import {CommentForm} from './CommentForm';
 import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
+import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -100,59 +102,127 @@ var drop = {
 }
 */
 
+function geoListener(callback) {
+	return navigator.geolocation.watchPosition(
+		({ coords, timestamp }) => callback(coords),
+		(err) => console.log('Unable to find position - ' + err.message),
+		{
+			enableHighAccuracy: true,
+			timeout: 15000
+		}
+		)
+}
 
 
+const socketHandler = new SocketHandler();
 
 class DropComponent extends Component {
-  componentWillMount() {
-    if(!this.props.user) {
-      this.props.passSnackbarMessage('Log in to view message')
-      browserHistory.push('/login');
-    }
-  }
+
+	constructor(props) {
+		super(props);
+		this.geoId = null;
+		this.updateLocation = this.updateLocation.bind(this);
+	}
+
+	updateLocation(coords) {
+		this.props.setLocation([coords.longitude, coords.latitude])
+	}
+
+	initilizeCommentSocket(dropId){
+		socketHandler.setup(COMMENTS_SOCKET, {postId: dropId}, this.commentReceive.bind(this));
+	}
+
+	componentWillMount() {
+
+		/*console.log('bef promise', this.props.selectedDrop);
+		var promise = new Promise(function(resolve, reject) {
+			setTimeout(function(){
+				reject(Error("It broke"));
+			}, 1500);
+			console.log('aft promise', this.props.selectedDrop);
+			while(this.props.selectedDrop!={
+				selectedDrop:{},
+				comments:[]
+			})
+			{
+			}
+			resolve(this.props.selectedDrop.selectedDrop.dropId);	
+		});
+		promise.then(function(dropId){
+			socketHandler.setup(COMMENTS_SOCKET, {postId: dropId}, this.commentReceive.bind(this));
+		});*/
+
+		this.initilizeCommentSocket(1);
+
+		if(!this.props.user) {
+			this.props.passSnackbarMessage('Log in to view message')
+			browserHistory.push('/login');
+		}
+	}
+
+	emptyObject(obj){
+		return Object.keys(obj).length === 0 && obj.constructor === Object;
+	}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
+		this.geoId = geoListener(this.updateLocation);
+
+		//this.props.getDropId(initilizeCommentSocket);
+		
+
+
+
+
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-		//console.log(this.props.selectedDrop.selectedDrop);
-		//this.props.fetchCommentsForDrop(this.props.selectedDrop.selectedDrop.dropId);
-		/*request.get('http://localhost:3000/api/feeds').end(function(err,res){
-      console.log(',',res);
-    });*/
+  }
+
+  componentWillUnmount() {
+  	navigator.geolocation.clearWatch(this.geoId);
+  	this.props.toggleTopBarBackButton(false);
+  	this.props.toggleBottomBar(true);
+  	this.props.clearSingleDropHistory();
 	}
 
-	componentWillUnmount() {
-		//console.log('state befor unmount', this.props.selectedDrop);
-		this.props.toggleTopBarBackButton(false);
-		this.props.toggleBottomBar(true);
-		this.props.clearSingleDropHistory();
-		//console.log('state when cleared',this.props.selectedDrop);
+	commentReceive(){
+
 	}
 
 	render() {
 
+
+
+		const {location, user} = this.props;
+
 		return (
 			<div>
 			<Drop drop={this.props.selectedDrop.selectedDrop} />
-				{/*<CommentsInput />*/}
 			<CommentsList comments={this.props.selectedDrop.comments} />
+			<CommentForm 
+			location={location} 
+			user={user} 
+			socketHandler={socketHandler}/>
 			</div>
 			)
 	}
 }
+
+/**/
 
 /*<CommentsList comments={comments} />*/
 
 
 
 DropComponent.propTypes = {
+	getDropId: PropTypes.func.isRequired,
 	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired,
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	clearSingleDropHistory: PropTypes.func.isRequired
+	clearSingleDropHistory: PropTypes.func.isRequired,
+	setLocation: PropTypes.func.isRequired
 };
 
 

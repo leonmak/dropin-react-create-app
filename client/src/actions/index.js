@@ -5,7 +5,10 @@ export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
 export const PASSING_FROM_OTHERS_TO_DROP = 'PASSING_FROM_OTHERS_TO_DROP';
 export const FETCH_ALL_MY_DROPS = 'FETCH_ALL_MY_DROPS';
+export const FETCH_ALL_MY_COMMENTS = 'FETCH_ALL_MY_COMMENTS';
+export const FETCH_ALL_MY_VOTES = 'FETCH_ALL_MY_VOTES';
 export const CLEAR_SINGLE_DROP_HISTORY = 'CLEAR_SINGLE_DROP_HISTORY';
+
 
 /***********************************************************************
 ACTION IS CALLED ON THE LIST PAGE
@@ -67,6 +70,10 @@ export function clearSingleDropHistory(){
 /***********************************************************************
 ACTION IS CALLED ON LIST->DROP OR PROFILE->DROP
 ***********************************************************************/
+/*
+export function getDropId(callback){
+	callback(dropId);
+}*/
 
 //action to pass drop object from list to drop
 export function passingFromOthersToDrop(drop){
@@ -84,6 +91,7 @@ function populatingDropFromOthrs(drop){
 	}
 }
 
+
 /***********************************************************************
 ACTION IS CALLED ON PROFILE PAGE
 ***********************************************************************/
@@ -97,10 +105,39 @@ export function fetchAllMyDrops(userId){
 }
 
 export function receiveAllMyDrops(allMyDrops){
-	console.log(allMyDrops);
 	return{
 		type: FETCH_ALL_MY_DROPS,
 		drops: allMyDrops
+	}
+}
+
+//action to get drops for one user
+export function fetchAllMyComments(userId){
+	return (dispatch)=>{
+		BackendHelper.getMyComments(userId)
+		.then(response=>dispatch(receiveAllMyComments(response)));
+	}
+}
+
+export function receiveAllMyComments(allMyComments){
+	return{
+		type: FETCH_ALL_MY_COMMENTS,
+		comments: allMyComments
+	}
+}
+
+//action to get drops for one user
+export function fetchAllMyVotes(userId){
+	return (dispatch)=>{
+		BackendHelper.getMyVotes(userId)
+		.then(response=>dispatch(receiveAllMyVotes(response)));
+	}
+}
+
+export function receiveAllMyVotes(allMyVotes){
+	return{
+		type: FETCH_ALL_MY_VOTES,
+		votes: allMyVotes
 	}
 }
 
