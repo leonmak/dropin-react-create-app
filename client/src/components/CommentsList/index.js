@@ -23,14 +23,14 @@ export class CommentsList extends Component {
       horizontal={false}>
       <div>
       {this.props.comments.map(comment => {
-        let {text, createdAt, username, id, userId, userAvatar} = comment;
+        let {text, created_at, username, id, userId, userAvatarId} = comment;
         return <Comment
         key={id}
         text={text}
         username={username}
         userId={userId}
-        userAvatar={userAvatar}
-        createdAt={createdAt}
+        userAvatar={userAvatarId}
+        createdAt={created_at}
         isProfile={this.props.isProfile} />
       }
       )}

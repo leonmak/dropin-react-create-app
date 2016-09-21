@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
+import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
 
 /*
@@ -26,6 +26,7 @@ class ListComponent extends Component {
     super(props);
 
     this.socketHandler = new SocketHandler();
+    this.commentSocketHandler = new SocketHandler();
     this.geoId = null;
   }
 
@@ -45,6 +46,8 @@ class ListComponent extends Component {
     //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
+    this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
+
     //method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
     /*request.get('api/feeds/1/comments').end(function(err,res){
@@ -60,9 +63,14 @@ class ListComponent extends Component {
     console.log('receiveddrop', data);
     this.props.updateANearbyDrop(data);
   }
+  newCommentAdded(data){
+    console.log('receivedcomment', data);
+    this.props.updateCommentInListPage(data);
+  }
 
   componentWillUnmount() {
     this.socketHandler.uninstall();
+    this.commentSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 

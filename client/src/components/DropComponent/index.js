@@ -5,6 +5,7 @@ import {CommentsList} from '../CommentsList';
 import {browserHistory} from 'react-router';
 import SocketHandler, {COMMENTS_SOCKET} from '../../SocketHandler';
 import promisePoller from 'promise-poller';
+import '../../styles/Drop.css';
 //import {CommentsInput} from '../ListComponent/CommentsInput'
 
 //import request from 'superagent';
@@ -168,6 +169,7 @@ class DropComponent extends Component {
 	}
 
 	componentWillUnmount() {
+		socketHandler.uninstall();
 		navigator.geolocation.clearWatch(this.geoId);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
@@ -188,12 +190,16 @@ class DropComponent extends Component {
 		return (
 			<div>
 			<Drop drop={this.props.selectedDrop.selectedDrop} />
-			<CommentsList comments={this.props.selectedDrop.comments} />
+			<CommentsList className='commentsContainer'
+			comments={this.props.selectedDrop.comments} />
+			<footer>
 			<CommentForm 
 			location={location} 
 			user={user} 
 			socketHandler={socketHandler}
 			drop={this.props.selectedDrop.selectedDrop}/>
+			</footer>
+			
 			</div>
 			)
 	}
