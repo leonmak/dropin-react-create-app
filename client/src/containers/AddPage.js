@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
+import {setLocation} from '../actions/LngLatActions';
 
 import AddComponent from '../components/AddComponent';
 
@@ -12,7 +13,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg))
+    passSnackbarMessage: (msg)=> dispatch(passSnackbarMessage(msg)),
+    setLocation: lngLat => dispatch(setLocation(lngLat)),
   };
 }
 

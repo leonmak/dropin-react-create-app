@@ -2,6 +2,7 @@ import {
   Comments,
   Users
 } from '../database';
+
 var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
 var MESSAGES = require('./Messages');
@@ -190,7 +191,7 @@ CommentsController.directComment = function ({
 CommentsController.postComment = function (req, res) {
 
   var packet = {
-    dropId: req.params.post_id,
+    dropId: req.params.id,
     userId: req.body.userId,
     text: req.body.text,
     date: req.body.date
@@ -203,6 +204,14 @@ CommentsController.postComment = function (req, res) {
 }
 
 // TODO: Delete an existing comment
+
+CommentsController.directDelete = function(id, res = null) {
+
+};
+
+CommentsController.deleteComment = function(req, res) {
+
+};
 
 
 module.exports = CommentsController;
