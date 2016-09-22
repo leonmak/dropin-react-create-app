@@ -127,11 +127,9 @@ VotesController.directVote = function ({
               }
               var parsedVote = vote.toJSON();
               parsedVote.votes = count;
-              if (count == 0) {
-                parsedVote.post_id = post_id;
-                parsedVote.user_id = user_id;
-                parsedVote.vote_type = vote_type;
-              }
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
 
               // Resolve
               if (vote) {
@@ -162,11 +160,9 @@ VotesController.directVote = function ({
               }
               var parsedVote = vote.toJSON();
               parsedVote.votes = count;
-              if (count == 0) {
-                parsedVote.post_id = post_id;
-                parsedVote.user_id = user_id;
-                parsedVote.vote_type = vote_type;
-              }
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
 
               // Resolve
               if (vote) {
@@ -198,11 +194,9 @@ VotesController.directVote = function ({
             }
             var parsedVote = vote.toJSON();
             parsedVote.votes = count;
-            if (count == 0) {
-              parsedVote.post_id = post_id;
-              parsedVote.user_id = user_id;
-              parsedVote.vote_type = vote_type;
-            }
+            parsedVote.post_id = post_id;
+            parsedVote.user_id = user_id;
+            parsedVote.vote_type = vote_type;
 
             // Resolve
             if (vote) {
@@ -232,11 +226,9 @@ VotesController.directVote = function ({
           }
           var parsedVote = vote.toJSON();
           parsedVote.votes = count;
-          if (count == 0) {
-            parsedVote.post_id = post_id;
-            parsedVote.user_id = user_id;
-            parsedVote.vote_type = vote_type;
-          }
+          parsedVote.post_id = post_id;
+          parsedVote.user_id = user_id;
+          parsedVote.vote_type = vote_type;
 
           reject(parsedVote);
         });
