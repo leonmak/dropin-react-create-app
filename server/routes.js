@@ -24,7 +24,6 @@ module.exports = function (passport) {
   router.post('/logout', Auth.isLoggedIn, AuthController.logout);
 
 
-
   // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds); // Get all the feeds
   // Example: {{base_url}}api/feeds?user_id=6
