@@ -43,17 +43,6 @@ UsersController.getUser = function(req, res) {
   })
 }
 
-// Get a user object reference for back-end parsing and JSON object construction
-UsersController.getUserObject = function(id) {
-
-
-  Users.where('id', id).fetch().then(function(user) {
-    console.log(user.toJSON());
-  }).catch(function(err) {
-    //...
-  })
-}
-
 // Creating a new user
 UsersController.createUser = function(accessToken, profile, callback) {
   Users.where('facebook_id', profile.id).fetch().then(function(user) {
