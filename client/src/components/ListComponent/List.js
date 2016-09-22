@@ -24,7 +24,7 @@ export class List extends Component {
       feedItem.originalIdx=idx
       return feedItem;
     });
-    console.log(itemsOriginalIdx)
+
     return (
       <div style={{marginBottom: "27px"}}>
         <div className="row center-xs">

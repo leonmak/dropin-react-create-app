@@ -7,6 +7,7 @@ import {CommentsList} from '../CommentsList';
 import FlatButton from 'material-ui/FlatButton';
 import request from 'superagent';
 import Dialog from 'material-ui/Dialog';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import * as fb from '../../utils/facebook-url';
 import * as text from '../../utils/text';
@@ -20,7 +21,8 @@ export default class ProfilePageComponent extends Component{
 
     this.state = {
       isDialogOpen: false,
-      dropId: null
+      dropId: null,
+      userInfo: null,
     }
 
     this.openDialog = this.openDialog.bind(this);
@@ -53,7 +55,12 @@ export default class ProfilePageComponent extends Component{
       this.props.passSnackbarMessage('Log in to view profile')
       browserHistory.push('/login');
     }else{
-      const userId = this.props.user.userId;
+      const userId = this.props.params.profileId ? this.props.params.profileId : this.props.user.userId;
+
+      request
+      .get(`/api/users/${userId}`)
+      .end((err,res) => this.setState({ userInfo: res.body }))
+
       this.props.fetchAllMyDrops(userId);
       this.props.fetchAllMyComments(userId);
       this.props.fetchAllMyVotes(userId);
@@ -65,24 +72,26 @@ export default class ProfilePageComponent extends Component{
       <FlatButton label="Cancel" primary={true} onTouchTap={this.closeDialog} />,
       <FlatButton label="Delete" primary={true} onTouchTap={this.deleteDrop} />,
     ];
-    const {user, profile : { drops, comments } } = this.props
+    const { profile : { drops, comments } } = this.props;
+    const { userInfo } = this.state;
+    console.log(userInfo)
 		return (
       <div>
       <Dialog actions={actions} modal={false} open={this.state.isDialogOpen} onRequestClose={this.closeDialog}>
         Delete the message forever?
       </Dialog>
 
-      {user && <div>
+      {userInfo ? <div>
       <div className="row center-xs profile-container">
         <div className="col-xs-12 profile-pic">
           <Avatar
-            src={fb.profileImg(user.id, 90)}
+            src={userInfo.user_avatar_url}
             size={100}
           />
         </div>
         <div className="col-xs-12 profile-fb">
-          <h2>{user.displayName}</h2>
-          <a target="_window" href={fb.msgUrl(user.id)}>Message on Facebook</a>
+          <h2>{userInfo.user_name}</h2>
+          <a target="_window" href={fb.msgUrl(userInfo.facebook_id)}>Message on Facebook</a>
         </div>
         <div className="col-xs-12 ">
           <div className="row center-xs">
@@ -113,6 +122,7 @@ export default class ProfilePageComponent extends Component{
 
       </div>
       </div>
+      : <CircularProgress className="spinner"/>
       }
       </div>
 		)
