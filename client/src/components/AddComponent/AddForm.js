@@ -38,7 +38,7 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
         date: moment(),
-        anonymous: values.anonymous ? 0 : 1
+        anonymous: values.anonymous ? 1 : 0
       });
       browserHistory.push('/drops')
     });

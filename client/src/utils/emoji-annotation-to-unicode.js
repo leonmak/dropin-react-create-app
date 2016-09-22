@@ -802,7 +802,7 @@ module.exports = {
   "trident": "1f531",
   "triumph": "1f624",
   "trolleybus": "1f68e",
-  "trollface": null,
+  "trollface": "2753",
   "trophy": "1f3c6",
   "tropical_drink": "1f379",
   "tropical_fish": "1f420",
