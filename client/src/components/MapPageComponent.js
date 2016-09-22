@@ -3,7 +3,10 @@ import '../styles/Map.css';
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import {browserHistory} from 'react-router';
 import SocketHandler, {FEEDS_SOCKET} from '../SocketHandler';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import * as fb from '../utils/facebook-url';
+import * as Icons from '../utils/Icons';
 import * as geo from '../utils/geolocator';
 
 const goToURL = (url,props,drop) => setTimeout(()=>{
@@ -14,8 +17,12 @@ const goToURL = (url,props,drop) => setTimeout(()=>{
 export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { zoom: 18 }
+    this.state = {
+      zoom: 18,
+      // center: props.location
+    }
 
+    this.map = null;
     this.geoId = null;
     this.socketHandler = new SocketHandler();
     this.updateLocation = this.updateLocation.bind(this);
@@ -105,6 +112,7 @@ export default class MapPageComponent extends Component {
 
       map.boxZoom.disable();
       map.keyboard.disable();
+      this.map = map;
     }
   }
 
@@ -114,6 +122,14 @@ export default class MapPageComponent extends Component {
 
     return (
       <div>
+
+        <div className="my-location">
+          <FloatingActionButton primary={true}
+            onTouchTap={() => this.map.flyTo({ center: location, zoom: 19, bearing: 0, speed: 0.4, curve: 1, easing: t => t }) } >
+            {Icons.MUI('my_location')}
+          </FloatingActionButton>
+        </div>
+
         <ReactMapboxGl
           onStyleLoad={this.setupMap(user, location)}
           containerStyle={{height: window.innerHeight - 56 - 64}}
@@ -121,8 +137,7 @@ export default class MapPageComponent extends Component {
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[zoom]}
           pitch={60}
-          hash={true}
-          center={location}>
+          hash={true}>
 
           <Layer
             type="fill"
