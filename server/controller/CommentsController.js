@@ -215,30 +215,51 @@ CommentsController.editComment = function (req, res) {
   UsersController.findUserId(req.user.id).then(function(user_id) {
     Comments.where({id: req.params.id, user_id: user_id}).fetch().then(function (comment) {
       if (comment == null) {
-        throw ({error: Messages.ERROR_COMMENT_NOT_FOUND});
-      }
-      if (comment != null) {
+        if (res != null) {
+           res.json({error: Messages.ERROR_COMMENT_NOT_FOUND});
+        }
+      } else {
         comment.save({text: req.body.text}).then(function (comment) {
-          res.json(comment);
+          if (res != null) {
+            res.json(comment);
+          }
         }).catch(function (err) {
-          res.json({error: Messages.ERROR_UPDATING_COMMENT});
+          if (res != null) {
+            res.json({error: Messages.ERROR_UPDATING_COMMENT});
+          }
         })
       } 
     }).catch(function (err) {
-      res.json({error: Messages.ERROR_COMMENT_NOT_FOUND});
+      if (res != null) {
+        res.json({error: Messages.ERROR_COMMENT_NOT_FOUND});
+      }
     });
   }).catch(function(err) {
-    res.json({
-      error: Messages.ERROR_USER_NOT_FOUND
-    });
+    if (res != null) {
+      res.json({
+        error: Messages.ERROR_USER_NOT_FOUND
+      });
+    }
   });
 }
 
 // Deleting a comment
 CommentsController.directDelete = function ({id, fb_id}, res = null) {
   UsersController.findUserId(fb_id).then(function(user_id) {
-    Comments.where({id: id, user_id: user_id}).destroy().then(function (comment) {
-      res.json(CommentsController.apiParse(comment));
+    Comments.where({id: id, user_id: user_id}).fetch().then(function (comment) {
+      if (comment) {
+        comment.destroy().then(function(comment) {
+          if (res != null) {
+            res.json(CommentsController.apiParse(comment));
+          }
+        });
+      } else {
+        if (res != null) {
+          res.json({
+            error: Messages.ERROR_COMMENT_NOT_FOUND
+          });
+        }
+      }
     }).catch(function (err) {
       if (res != null) {
         res.json({

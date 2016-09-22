@@ -515,15 +515,25 @@ FeedsController.editFeed = function (req, res) {
 };
 
 // Deleting a Feed
-FeedsController.directDelete = function ({id, userID}, res = null) {
-  console.log(id);
-  console.log(userID);
-  Posts.where({'id': id, 'user_id': userID}).destroy().then(function (post) {
-    res.end(FeedsController.apiParse(post.toJSON()));
-  }).catch(function (err) {
-    if (res != null) {
-      res.end(Messages.ERROR_POST_NOT_FOUND);
-    }
+FeedsController.directDelete = function ({id, fb_id}, res = null) {
+  UsersController.findUserId(fb_id).then(function(user_id) {
+    Posts.where({'id': id, 'user_id': user_id}).fetch().then(function (post) {
+      if (post) {
+        post.destroy().then(function(post) {
+          if (res != null) {
+            res.json(FeedsController.apiParse(post.toJSON()));
+          }
+        });
+      } else {
+        if (res != null) {
+          res.json(Messages.ERROR_POST_NOT_FOUND);
+        }
+      }
+    }).catch(function (err) {
+      if (res != null) {
+        res.json(Messages.ERROR_POST_NOT_FOUND);
+      }
+    });
   });
 };
 
@@ -531,14 +541,11 @@ FeedsController.directDelete = function ({id, userID}, res = null) {
 FeedsController.deleteFeed = function (req, res) {
 
   var packet = {
-    id: req.body.id,
-    userID: req.body.userID
+    id: req.params.id,
+    fb_id: req.user.id
   };
 
   FeedsController.directDelete(packet, res);
-
-  // Response
-  res.end(Messages.SUCCESS_DELETED_POST);
 };
 
 module.exports = FeedsController;
