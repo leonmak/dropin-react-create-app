@@ -77,29 +77,41 @@ const redirectToLogin = props =>{
       <div className="row item-voting">
       <div className="col-xs-12">
 
-      <IconButton 
-      onClick={()=>{
-        if(!props.user){
-          redirectToLogin(props);
-        }else{
-          console.log('auth');
-        }
-      }}
-      > {Icons.MUI('keyboard_arrow_up')}</IconButton>
+      {props.user?
+        ((props.voted===1)?
+          (<IconButton onClick={()=>{alert(1)}}
+          > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
+          ((props.voted===-1)?
+            (<IconButton onClick={()=>{alert(-1)}}
+            > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
+            (<IconButton onClick={()=>{alert(0)}}
+            > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
+          )
+        )
+        :
+        (<IconButton onClick={()=>{redirectToLogin(props)}}
+          > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
+      }
 
       </div>
       <div className="col-xs-12 votes-container">{props.votes}</div>
       <div className="col-xs-12">
 
-      <IconButton 
-      onClick={()=>{
-        if(!props.user){
-          redirectToLogin(props);
-        }else{
-          console.log('auth');
-        }
-      }}
-      > {Icons.MUI('keyboard_arrow_down')}</IconButton>
+      {props.user?
+        ((props.voted===1)?
+          (<IconButton onClick={()=>{alert(1)}}
+          > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
+          ((props.voted===-1)?
+            (<IconButton onClick={()=>{alert(-1)}}
+            > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
+            (<IconButton onClick={()=>{alert(0)}}
+            > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
+          )
+        )
+        :
+        (<IconButton onClick={()=>{redirectToLogin(props)}}
+          > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
+      }
 
       </div>
       </div>
@@ -155,7 +167,8 @@ const redirectToLogin = props =>{
     <div className="row center-xs middle-xs item-description">
     <div className="col-xs-2">
     <ItemVoting votes={props.votes} user={props.user} 
-    dropId={props.dropId} passSnackbarMessage={props.passSnackbarMessage}/>
+    dropId={props.dropId} passSnackbarMessage={props.passSnackbarMessage}
+    voted={props.voted}/>
     </div>
     <div className="col-xs-9">
     <ItemDetails
