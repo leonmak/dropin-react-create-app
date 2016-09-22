@@ -14,7 +14,7 @@ export function makeAVote(dropId, voteAction, initialVoted, userId){
 		socketHandler.setup('votes',{postId: dropId},getNewVote);
 		//vote({userId, postId, voteType}) 
 		socketHandler.vote({userId: userId, postId: dropId, voteType: voteAction});
-		socketHandler.uninstall();
+		//socketHandler.uninstall();
 
 		/*request
 		.put('api/votes')
@@ -29,6 +29,16 @@ export function makeAVote(dropId, voteAction, initialVoted, userId){
 }
 
 function getNewVote(data){
+}
+
+export function updateMyVoteInListPage(vote){
+	console.log('updating my vote');
+	return {};
+}
+
+export function updateOthersVoteInListPage(vote){
+	console.log('updating other vote');
+	return {};
 }
 	
 

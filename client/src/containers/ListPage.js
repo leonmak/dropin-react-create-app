@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {fetchAllNearbyDrops, updateANearbyDrop, fetchCommentsForDrop, selectedDropIdx, selectedDropSrc, updateCommentInListPage} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 import {passSnackbarMessage} from '../actions/SnackBarActions'
-import {makeAVote} from '../actions/VoteActions'
+import {makeAVote, updateMyVoteInListPage, updateOthersVoteInListPage} from '../actions/VoteActions'
 
 import ListComponent from '../components/ListComponent';
 
@@ -25,7 +25,9 @@ function mapDispatchToProps(dispatch) {
     setLocation: lngLat => dispatch(setLocation(lngLat)),
     updateCommentInListPage: comment=>dispatch(updateCommentInListPage(comment)),
     passSnackbarMessage: msg=>dispatch(passSnackbarMessage(msg)),
-    makeAVote:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVote(dropId,voteAction, initialVoted, userId))
+    makeAVote:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVote(dropId,voteAction, initialVoted, userId)),
+    updateMyVoteInListPage:(vote)=>dispatch(updateMyVoteInListPage(vote)),
+    updateOthersVoteInListPage:(vote)=>dispatch(updateOthersVoteInListPage(vote))
     //receiveVoteChange:()
   };
 }

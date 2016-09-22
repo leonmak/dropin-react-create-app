@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTE_SOCKET} from '../../SocketHandler';
+import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTES_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
 
 /*
@@ -51,7 +51,7 @@ class ListComponent extends Component {
 
     this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
 
-    this.voteSocketHandler.setup(OPEN_VOTE_SOCKET,{},this.newVoteAdded.bind(this));
+    this.voteSocketHandler.setup(OPEN_VOTES_SOCKET,{},this.newVoteAdded.bind(this));
 
     // TODO: method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
@@ -67,33 +67,49 @@ class ListComponent extends Component {
   }
   newCommentAdded(data){
     // console.log('receivedcomment', data);
+    console.log('receivedcomment', data);
     this.props.updateCommentInListPage(data);
   }
 
   newVoteAdded(data){
-    this.props.updateVoteInListPage(data);
+    //console.log('receivedvote', data);
+    //need to change state of the thing if it is wrong
+    console.log(data.user_id, this.props.user);
+    if(this.props.user){
+      if(data.user_id===this.props.user.userId){
+        console.log('up my vote');
+        this.props.updateMyVoteInListPage(data);
+      }else{
+        console.log('up others vote');
+        this.props.updateOthersVoteInListPage(data);
+      }
+    }else{
+      console.log('up others vote');
+      this.props.updateOthersVoteInListPage(data);
+    }
   }
 
   componentWillUnmount() {
     this.socketHandler.uninstall();
     this.commentSocketHandler.uninstall();
+    this.voteSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 
   render() {
     return (
       <List
-        user={this.props.user}
-        feed={this.props.drops.drops}
-        userLocation={this.props.location}
-        dropSrc={"drops"}
-        selectedDropSrc={this.props.selectedDropSrc}
-        selectedDropIdx={this.props.selectedDropIdx}
-        fetchCommentsForDrop={this.props.fetchCommentsForDrop}
-        passSnackbarMessage={this.props.passSnackbarMessage}
-        makeAVote={this.props.makeAVote}
+      user={this.props.user}
+      feed={this.props.drops.drops}
+      userLocation={this.props.location}
+      dropSrc={"drops"}
+      selectedDropSrc={this.props.selectedDropSrc}
+      selectedDropIdx={this.props.selectedDropIdx}
+      fetchCommentsForDrop={this.props.fetchCommentsForDrop}
+      passSnackbarMessage={this.props.passSnackbarMessage}
+      makeAVote={this.props.makeAVote}
       />
-    )
+      )
   }
 }
 
@@ -103,6 +119,8 @@ ListComponent.PropTypes = {
   passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired,
   updateCommentInListPage: PropTypes.func.isRequired,
+  updateMyVoteInListPage: PropTypes.func.isRequired,
+  updateOthersVoteInListPage: PropTypes.func.isRequired,
   selectedDropIdx: PropTypes.func.isRequired,
   passSnackbarMessage: PropTypes.func.isRequired,
   makeAVote: PropTypes.func.isRequired
