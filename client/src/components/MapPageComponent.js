@@ -30,8 +30,8 @@ export default class MapPageComponent extends Component {
       this.props.fetchAllNearbyDrops(this.props.user.userId);
     }else{
       this.props.fetchAllNearbyDrops(null);
-    } 
-    
+    }
+
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
   }
 
@@ -48,7 +48,7 @@ export default class MapPageComponent extends Component {
   }
 
   createFaceMarker(coordinates, imgUrl, map) {
-    const self = this, width = 48, height = 48;
+    const self = this, width = 24, height = 24;
     // Return the x/y position from coordinates
     // var width = 48, height = 48;
     let position = map.project(coordinates);
@@ -101,7 +101,7 @@ export default class MapPageComponent extends Component {
   setupMap(user, center) {
     return map => {
       if(user)
-        this.createFaceMarker(center, fb.profileImg(user.id, 48), map)
+        this.createFaceMarker(center, fb.profileImg(user.id, 24), map)
 
       map.boxZoom.disable();
       map.keyboard.disable();
@@ -141,11 +141,11 @@ export default class MapPageComponent extends Component {
           </Layer>
 
           {drops.map((drop, idx) => {
-            return (<Layer type="symbol" key={idx}
-              layout={
-              { "icon-image": drop.emojiUni,
-                "icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
-                <xx
+            return (
+              <Layer type="symbol" key={idx} ref="marker-icons"
+                layout={{"icon-padding": 5, "icon-image": drop.emojiUni,"icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
+                <Feature
+                  properties={{"icon": drop.emojiUni, "title": drop.username, "description": drop.description}}
                   coordinates={drop.location}
                   onClick={()=> goToURL(`/drops/${drop.dropId}`,this.props, drop)}
                 />
