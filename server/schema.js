@@ -15,11 +15,6 @@ var Schema = {
       type: 'string',
       nullable: false
     },
-    anonymous: {
-      type: 'boolean',
-      nullable: false,
-      defaultTo: true
-    },
     facebook_id: {
       type: 'string',
       nullable: false,
@@ -79,6 +74,11 @@ var Schema = {
     latitude: {
       type: 'float',
       nullable: false
+    },
+    anonymous: {
+      type: 'boolean',
+      nullable: false,
+      defaultTo: true
     },
     created_at: {
       type: 'string',
