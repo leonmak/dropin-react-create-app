@@ -199,12 +199,13 @@ FeedsController.getUserFeeds = function (req, res) {
 
   // Get the logged-in userID
   var user_id = -1;
+
   if (typeof req.query.user_id != 'undefined') {
     user_id = req.query.user_id;
   }
 
   // Display or hide anonymous posts according to login session
-  if (typeof req.user == 'undefined' || req.user == null || req.user.id != id) {
+  if (user_id != id) {
     // Get joint table objects
     Posts.where({'user_id': id, 'anonymous': 0}).fetchAll({
       withRelated: ['votes', 'comments', 'user']
@@ -225,7 +226,7 @@ FeedsController.getUserFeeds = function (req, res) {
         parsedPosts.push(parsedPost);
       }
 
-      // console.log("GET USER FEEDS : ", parsedPosts);
+      console.log("GET USER FEEDS : ", parsedPosts);
       res.json(parsedPosts);
     }).catch(function (err) {
       res.json({
@@ -247,13 +248,13 @@ FeedsController.getUserFeeds = function (req, res) {
         var fetchedPost = fetchedPosts[i];
 
         // Parse post
-        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+        var parsedPost = FeedsController.apiParse(fetchedPost, id);
 
         // Collate post
         parsedPosts.push(parsedPost);
       }
 
-      // console.log("GET USER FEEDS : ", parsedPosts);
+      console.log("GET USER FEEDS : ", parsedPosts);
       res.json(parsedPosts);
     }).catch(function (err) {
       res.json({
@@ -337,7 +338,6 @@ FeedsController.directPost = function ({
             var jsonObject = FeedsController.apiParse(postObj.toJSON(), userID);
             resolve(jsonObject);
           });
-
         }
       } else {
         reject(post);
@@ -351,14 +351,14 @@ FeedsController.directPost = function ({
 // Post a new feed
 FeedsController.postFeed = function (req, res) {
   var packet = {
-    userID: req.body.userId,
-    emoji: req.body.emojiUni,
+    userID: req.body.userID,
+    emoji: req.body.emoji,
     title: req.body.title,
-    video: req.body.videoUrl,
-    image: req.body.imageId,
-    sound: req.body.soundCloudUrl,
-    longitude: req.body.location[0],
-    latitude: req.body.location[1],
+    video: req.body.video,
+    image: req.body.image,
+    sound: req.body.sound,
+    longitude: req.body.longitude,
+    latitude: req.body.latitude,
     date: req.body.date,
     anonymous: req.body.anonymous
   };
@@ -399,7 +399,7 @@ FeedsController.directEdit = function ({
     var commentsJSON = null;
     var votesJSON = null;
     var userJSON = null;
-    Posts.where({id: postID}).fetch({withRelated: ['votes', 'comments', 'user']}).then(function (post) {
+    Posts.where({id: postID, user_id: userID}).fetch({withRelated: ['votes', 'comments', 'user']}).then(function (post) {
       // update access token
       if (post != null) {
         commentsJSON = post.toJSON().comments;
@@ -504,7 +504,8 @@ FeedsController.editFeed = function (req, res) {
     sound: req.body.soundCloudUrl,
     longitude: req.body.location[0],
     latitude: req.body.location[1],
-    updated_at: req.body.date
+    updated_at: req.body.date,
+    anonymous: req.body.anonymous
   };
 
   FeedsController.directEdit(packet, res);
@@ -513,16 +514,15 @@ FeedsController.editFeed = function (req, res) {
   res.end(Messages.SUCCESS_UPDATED_POST);
 };
 
-
 // Deleting a Feed
 FeedsController.directDelete = function ({id, userID}, res = null) {
+  console.log(id);
+  console.log(userID);
   Posts.where({'id': id, 'user_id': userID}).destroy().then(function (post) {
-    res.json(FeedsController.apiParse(post));
+    res.end(FeedsController.apiParse(post.toJSON()));
   }).catch(function (err) {
     if (res != null) {
-      res.json({
-        error: Messages.ERROR_POST_NOT_FOUND
-      });
+      res.end(Messages.ERROR_POST_NOT_FOUND);
     }
   });
 };
@@ -531,7 +531,7 @@ FeedsController.directDelete = function ({id, userID}, res = null) {
 FeedsController.deleteFeed = function (req, res) {
 
   var packet = {
-    id: req.params.id,
+    id: req.body.id,
     userID: req.body.userID
   };
 

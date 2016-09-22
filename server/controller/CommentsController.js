@@ -211,7 +211,21 @@ CommentsController.postComment = function (req, res) {
 }
 
 // Editing a comment
+CommentsController.editComment = function (req, res) {
 
+  Comments.where('id', req.params.id).fetch().then(function (comment) {
+    comment.save({text: req.body.text}).then(function (comment) {
+      res.json(comment);
+    }).catch(function (err) {
+      res.json(Messages.ERROR_UPDATING_COMMENT);
+    })
+  }).catch(function (err) {
+    res.json(Messages.ERROR_COMMENT_NOT_FOUND);
+  });
+
+  // Response
+  res.end("Comment has been successfully updated.");
+}
 
 // Deleting a comment
 CommentsController.directDelete = function ({id}, res = null) {
