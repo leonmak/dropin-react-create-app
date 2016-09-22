@@ -14,11 +14,13 @@ export class Drop extends Component {
     	{...this.props.drop}
     	user={this.props.user}
     	isProfile={false}
-    	isDrop={true} />
+    	isDrop={true} 
+        makeAVote={this.props.makeAVoteDropPage}/>
     	)
 }
 }
 Drop.propTypes = {
 	drop: PropTypes.object.isRequired,
-	user: PropTypes.object.isRequired
+	user: PropTypes.object.isRequired,
+    makeAVoteDropPage: PropTypes.func.isRequired
 };

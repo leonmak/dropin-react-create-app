@@ -98,14 +98,15 @@ componentWillMount() {
 	}
 
 	render() {
-		console.log("testing",(null||null));
+		//console.log("testing",(null||null));
 		const {location, user, drops, profileDrops, selectedDrop} = this.props;
 		const directLinkDrop = this.props.selectedDrop.selectedDrop;
 		const resolvedDrop = this.clickedDrop || directLinkDrop;
 
 		return (resolvedDrop ?
 			<div>
-			<Drop drop={resolvedDrop} user={this.props.user} />
+			<Drop drop={resolvedDrop} user={this.props.user} 
+			makeAVoteDropPage={this.props.makeAVoteDropPage}/>
 			<CommentsList comments={selectedDrop.comments} />
 			<CommentForm
 			location={location}
@@ -126,7 +127,11 @@ DropComponent.propTypes = {
 	setLocation: PropTypes.func.isRequired,
 	updateAComment: PropTypes.func.isRequired,
 	passingFromOthersToDrop: PropTypes.func.isRequired,
-	clearSingleDropHistory: PropTypes.func.isRequired
+	clearSingleDropHistory: PropTypes.func.isRequired,
+	makeAVoteDropPage: PropTypes.func.isRequired,
+	updateMyVoteInDropPage: PropTypes.func.isRequired,
+	updateOthersVoteInDropPage: PropTypes.func.isRequired,
+	makeAVoteDropPageSrcList: PropTypes.func.isRequired
 };
 
 export default DropComponent;

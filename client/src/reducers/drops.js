@@ -1,5 +1,6 @@
 import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP, UPDATE_COMMENT_IN_LIST_PAGE} from '../actions';
-import {VOTE_INITIAL_UI_UPDATE,UPDATE_MY_VOTE_IN_LIST_PAGE,UPDATE_OTHERS_VOTE_IN_LIST_PAGE} from '../actions/VoteActions';
+import {VOTE_INITIAL_UI_UPDATE,UPDATE_MY_VOTE_IN_LIST_PAGE,UPDATE_OTHERS_VOTE_IN_LIST_PAGE,
+MAKE_A_VOTE_DROP_PAGE,UPDATE_MY_VOTE_IN_DROP_PAGE,UPDATE_OTHERS_VOTE_IN_DROP_PAGE} from '../actions/VoteActions';
 
 //designing state shape
 const initialState = {
@@ -130,6 +131,12 @@ const initialState = {
 		}
 		return Object.assign({}, state, {
 			drops: newDrops
+		})
+
+
+		case MAKE_A_VOTE_DROP_PAGE:
+		console.log('hello from drops reducer');
+		return Object.assign({}, state, {
 		})
 
 		default:

@@ -5,6 +5,7 @@ import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
 import {toggleTopBarBackButtonVisibility} from '../actions/PageVisibilityActions';
 import { getDropId, updateAComment, fetchCommentsForDrop, passingFromOthersToDrop, clearSingleDropHistory} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
+import {makeAVoteDropPage,updateMyVoteInDropPage,updateOthersVoteInDropPage,makeAVoteDropPageSrcList} from '../actions/VoteActions'
 
 import DropComponent from '../components/DropComponent';
 
@@ -30,9 +31,16 @@ function mapDispatchToProps(dispatch) {
     updateAComment:(comment)=>dispatch(updateAComment(comment)),
     fetchCommentsForDrop: dropId => dispatch(fetchCommentsForDrop(dropId)),
     passingFromOthersToDrop: (drop)=>dispatch(passingFromOthersToDrop(drop)),
-    clearSingleDropHistory:()=>dispatch(clearSingleDropHistory())
+    clearSingleDropHistory:()=>dispatch(clearSingleDropHistory()),
+    makeAVoteDropPageSrcList:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVoteDropPageSrcList(dropId,voteAction, initialVoted, userId)),
+    makeAVoteDropPage:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVoteDropPage(dropId,voteAction, initialVoted, userId)),
+
+    
   };
 }
+
+/*updateMyVoteInDropPage:(vote)=>dispatch(updateMyVoteInDropPage(vote)),
+    updateOthersVoteInDropPage:(vote)=>dispatch(updateOthersVoteInDropPage(vote))*/
 
 
 const DropPage = connect(

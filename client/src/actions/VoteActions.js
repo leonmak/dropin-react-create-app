@@ -5,6 +5,10 @@ export const VOTE_INITIAL_UI_UPDATE = 'VOTE_INITIAL_UI_UPDATE';
 //export const VOTE_CONFIRM_INITIAL_UI_UPDATE = 'VOTE_CONFIRM_INITIAL_UI_UPDATE';
 export const UPDATE_MY_VOTE_IN_LIST_PAGE='UPDATE_MY_VOTE_IN_LIST_PAGE';
 export const UPDATE_OTHERS_VOTE_IN_LIST_PAGE='UPDATE_OTHERS_VOTE_IN_LIST_PAGE';
+export const MAKE_A_VOTE_DROP_PAGE='MAKE_A_VOTE_DROP_PAGE';
+export const UPDATE_MY_VOTE_IN_DROP_PAGE = 'UPDATE_MY_VOTE_IN_DROP_PAGE';
+export const UPDATE_OTHERS_VOTE_IN_DROP_PAGE = 'UPDATE_OTHERS_VOTE_IN_DROP_PAGE';
+export const MAKE_A_VOTE_DROP_PAGE_SRC_LIST = 'MAKE_A_VOTE_DROP_PAGE_SRC_LIST';
 
 import SocketHandler from '../SocketHandler'; 
 
@@ -71,6 +75,40 @@ function voteInitialUIUpdate(dropId,voteAction,initialVoted){
 	}
 }
 
+export function makeAVoteDropPage(dropId, voteAction, initialVoted, userId){
+	return {
+		type: MAKE_A_VOTE_DROP_PAGE,
+		dropId: dropId,
+		voteAction: voteAction,
+		initialVoted: initialVoted
+	}
+}
+
+export function makeAVoteDropPageSrcList(dropId,voteAction,initialVoted,userId){
+	return {
+		type: MAKE_A_VOTE_DROP_PAGE_SRC_LIST,
+		dropId: dropId,
+		voteAction: voteAction,
+		initialVoted: initialVoted
+	}
+}
+
+export function updateMyVoteInDropPage(vote){
+	console.log('updating my vote');
+	return {
+		type: UPDATE_MY_VOTE_IN_DROP_PAGE,
+		vote: vote
+	};
+}
+
+export function updateOthersVoteInDropPage(vote){
+	console.log('updating other vote');
+	return {
+		type: UPDATE_OTHERS_VOTE_IN_DROP_PAGE,
+		vote: vote
+	};
+}
+
 /*function undoInitialUiUpdate(dropId,voteValue){
 	return {
 		type: VOTE_UNDO_INITIAL_UI_UPDATE,
@@ -88,7 +126,7 @@ function confirmInitialUIUpdate(dropId,voteValue){
 }*/
 
 /*VOTE ACTION*/
-export function undoAVote(dropId, voteValue){
+/*export function undoAVote(dropId, voteValue){
 	return(dispatch)=>{
 		dispatch(initialUIUpdate(dropId,voteValue));
 		request
@@ -101,7 +139,7 @@ export function undoAVote(dropId, voteValue){
 			//dispatch(makeAVoteUpdateUI());
 		});
 	}
-}
+}*/
 
 
 
@@ -111,54 +149,4 @@ export function undoAVote(dropId, voteValue){
       user_avatar_url: values.user_avatar_url,
       user_name: values.user_name,
       anonymous: values.anonymous,
-    })*//*
-
-    if(voteAction===1){
-					if(initalVoted===1){
-						newDrops[i].votes=state.drops[i].votes-1;
-						newDrops[i].voted=0;
-					}
-					if(initalVoted===0){
-						newDrops[i].votes=state.drops[i].votes+1;
-						newDrops[i].voted=1;
-					}
-					if(initalVoted===-1){
-						newDrops[i].votes=state.drops[i].votes+2;
-						newDrops[i].voted=1;
-					}
-				}
-				//if it is downvote
-				if(voteAction===-1){
-					if(initalVoted===1){
-						newDrops[i].votes=state.drops[i].votes-2;
-						newDrops[i].voted=-1;
-					}
-					if(initalVoted===0){
-						newDrops[i].votes=state.drops[i].votes-1;
-						newDrops[i].voted=-1;
-					}
-					if(initalVoted===-1){
-						newDrops[i].votes=state.drops[i].votes+1;
-						newDrops[i].voted=0;
-					}
-				}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-				/*UNVOTE ACTION*/
-				export function undoAVote(voteValue){
-					return{
-						type: UNDO_A_VOTE,
-						voteValue:voteValue
-					}
-				}
+    })*/
