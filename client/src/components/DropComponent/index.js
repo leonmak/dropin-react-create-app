@@ -90,6 +90,8 @@ class DropComponent extends Component {
         console.log(res.body)
         socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
       })
+
+    this.props.fetchCommentsForDrop(this.props.params.dropId);
 	}
 
 	componentWillUnmount() {
