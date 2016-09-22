@@ -62,7 +62,7 @@ module.exports = function (passport) {
   router.get('/api/comments/:id', CommentsController.getComment); // Get a specific comment
   // Example: {{base_url}}api/comments/4
 
-  router.put('/api/comments/:id', CommentsController.editComment);
+  router.put('/api/comments/:id', loginCheck, CommentsController.editComment);
 
   router.post('/api/feeds/:id/comments', loginCheck, CommentsController.postComment); // Create a new comment for an existing feed
   // Example: {{base_url}}api/feeds/1/comments
