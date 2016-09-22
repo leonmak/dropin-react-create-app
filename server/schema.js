@@ -70,13 +70,13 @@ var Schema = {
     longitude: {
       type: 'float',
       nullable: false,
-      precision: 3,
+      precision: 9,
       scale: 6
     },
     latitude: {
       type: 'float',
       nullable: false,
-      precision: 2,
+      precision: 8,
       scale: 6
     },
     anonymous: {
