@@ -1,5 +1,6 @@
 import * as BackendHelper from '../BackendHelper';
 
+
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
@@ -114,7 +115,7 @@ export function passingFromOthersToDrop(drop){
 
 	return (dispatch)=>{
 		// dispatch(clearSingleDropHistory()); // redundant
-		dispatch(fetchCommentsForDrop(drop.dropId));
+		//dispatch(fetchCommentsForDrop(drop.dropId));
 		dispatch(populatingDropFromOthrs(drop));
 	}
 }
@@ -189,6 +190,7 @@ export function receiveAllMyVotes(allMyVotes){
 		votes: allMyVotes
 	}
 }
+
 
 /*export function selectDrop()*/
 

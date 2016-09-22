@@ -28,9 +28,9 @@ class DropComponent extends Component {
 	constructor(props) {
 		super(props);
 
-    this.state ={
+    /*this.state ={
       directLinkDrop: null
-    }
+    }*/
 
 		this.geoId = null;
     this.clickedDrop = null;
@@ -65,7 +65,9 @@ class DropComponent extends Component {
       request
       .get('/api/feeds/'+this.props.params.dropId)
       .end((err,res) => {
-        this.setState({directLinkDrop: res.body})
+        //this.setState({directLinkDrop: res.body})
+        this.props.passingFromOthersToDrop(res.body);
+
         console.log(res.body)
         socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
       })
@@ -78,6 +80,7 @@ class DropComponent extends Component {
 		navigator.geolocation.clearWatch(this.geoId);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
+		this.props.clearSingleDropHistory();
 	}
 
 	commentReceive(data){
@@ -87,8 +90,9 @@ class DropComponent extends Component {
 	}
 
 	render() {
+		console.log("testing",(null||null));
 		const {location, user, drops, profileDrops, selectedDrop} = this.props;
-    const {directLinkDrop} = this.state;
+    const directLinkDrop = this.props.selectedDrop.selectedDrop;
     const resolvedDrop = this.clickedDrop || directLinkDrop;
 
 		return (resolvedDrop ?
@@ -112,7 +116,9 @@ DropComponent.propTypes = {
 	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
 	setLocation: PropTypes.func.isRequired,
-	updateAComment: PropTypes.func.isRequired
+	updateAComment: PropTypes.func.isRequired,
+	passingFromOthersToDrop: PropTypes.func.isRequired,
+	clearSingleDropHistory: PropTypes.func.isRequired
 };
 
 export default DropComponent;

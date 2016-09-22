@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {fetchAllNearbyDrops, updateANearbyDrop, fetchCommentsForDrop, selectedDropIdx, selectedDropSrc, updateCommentInListPage} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 import {passSnackbarMessage} from '../actions/SnackBarActions'
+import {makeAVote} from '../actions/VoteActions'
 
 import ListComponent from '../components/ListComponent';
 
@@ -23,7 +24,8 @@ function mapDispatchToProps(dispatch) {
     fetchCommentsForDrop: idx => dispatch(fetchCommentsForDrop(idx)),
     setLocation: lngLat => dispatch(setLocation(lngLat)),
     updateCommentInListPage: comment=>dispatch(updateCommentInListPage(comment)),
-    passSnackbarMessage: msg=>dispatch(passSnackbarMessage(msg))
+    passSnackbarMessage: msg=>dispatch(passSnackbarMessage(msg)),
+    makeAVote:(dropId,voteValue)=>dispatch(makeAVote(dropId,voteValue))
   };
 }
 

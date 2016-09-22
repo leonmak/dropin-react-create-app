@@ -84,6 +84,7 @@ class ListComponent extends Component {
         selectedDropIdx={this.props.selectedDropIdx}
         fetchCommentsForDrop={this.props.fetchCommentsForDrop}
         passSnackbarMessage={this.props.passSnackbarMessage}
+        makeAVote={this.props.makeAVote}
       />
     )
   }
@@ -96,7 +97,8 @@ ListComponent.PropTypes = {
   drops: PropTypes.object.isRequired,
   updateCommentInListPage: PropTypes.func.isRequired,
   selectedDropIdx: PropTypes.func.isRequired,
-  passSnackbarMessage: PropTypes.func.isRequired
+  passSnackbarMessage: PropTypes.func.isRequired,
+  makeAVote: PropTypes.func.isRequired
 }
 
 
