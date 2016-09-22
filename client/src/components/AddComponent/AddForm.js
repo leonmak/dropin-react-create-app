@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
-import { TextField } from 'redux-form-material-ui'
+import { TextField, Toggle } from 'redux-form-material-ui'
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
 import EmojiInput from './EmojiInput'
@@ -111,6 +111,7 @@ class AddForm extends Component {
           floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
           errorStyle={{textAlign: "left"}}
           multiLine={true} rows={2}/>
+          <Field name="anonymous" component={Toggle} label="Anonymous" style={{textAlign:'left'}}/>
           </div>
           <div className="col-xs-12"><h3>Other Options</h3></div>
           <div className="col-xs-10">
