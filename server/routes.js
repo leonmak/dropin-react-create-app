@@ -47,8 +47,8 @@ module.exports = function (passport) {
   router.put('/api/feeds', loginCheck, FeedsController.editFeed); // Update an existing feed
   // Example: {{base_url}}api/feeds/ :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
-  router.delete('/api/feeds', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
-  // Example: {{base_url}}api/feeds/ :: {id, userID}
+  router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
+  // Example: {{base_url}}api/feeds/ 
 
 
 
