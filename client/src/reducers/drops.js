@@ -101,21 +101,32 @@ const initialState = {
 
 		case UPDATE_MY_VOTE_IN_LIST_PAGE:
 		var dropId = action.vote.post_id;
-		var changeInVote = action.vote.vote_type;
+		var voteAction = action.vote.vote_type;
+		var votes = action.vote.votes;
 		console.log('update my votes',action);
 		var newDrops = state.drops;
 		var arrayLength = newDrops.length;
 		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				newDrops[i].votes=votes;
+				newDrops[i].voted=voteAction;
+			}
 		}
 		return Object.assign({}, state, {
 			drops: newDrops
 		})
 
 		case UPDATE_OTHERS_VOTE_IN_LIST_PAGE:
+		var dropId = action.vote.post_id;
+		var voteAction = action.vote.vote_type;
+		var votes = action.vote.votes;
 		console.log('update others votes',action);
 		var newDrops = state.drops;
 		var arrayLength = newDrops.length;
 		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				newDrops[i].votes=votes;
+			}
 		}
 		return Object.assign({}, state, {
 			drops: newDrops
