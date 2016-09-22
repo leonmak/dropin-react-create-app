@@ -89,7 +89,8 @@ export default class SocketHandler {
 					sound: data.sound,
 					longitude: data.longitude,
 					latitude: data.latitude,
-					date: data.date}};
+					date: data.date,
+          anonymous: data.anonymous}};
 
 					case VOTES_SOCKET:
 					//console.log(data);

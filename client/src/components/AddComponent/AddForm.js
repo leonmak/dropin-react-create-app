@@ -24,7 +24,15 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
   }
 
   if(dropId){
-    console.log("send put request for edit")
+    values.dropId = dropId;
+    values.userId = user.userId;
+    request
+    .put('/api/feeds')
+    .send(values)
+    .end((err,res) => {
+      passSnackbarMessage('Updated message details');
+      browserHistory.push('/drops/' + dropId);
+    })
   } else if (navigator.geolocation) {
     passSnackbarMessage('Getting location and submitting..')
     navigator.geolocation.getCurrentPosition(position=>{
