@@ -35,11 +35,8 @@ VotesController.getFeedVotes = function(req, res) {
       } else {
         parsedVotes.downvotes += 1;
       }
-
     }
-
     parsedVotes.voted = voteState;
-
     res.json(parsedVotes);
   }).catch(function (err) {
     res.json({
@@ -114,20 +111,32 @@ VotesController.directVote = function({
   var storePromise = new Promise(function(resolve, reject) {
 
     Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function (vote) {
-      // Destroy old entry if applicable
+      // Existing vote found
       if (vote) {
-
+        // Destroy useless vote
         if (vote_type == 0) {
-          vote.destroy();
-        }
+          vote.destroy().then(function(vote){
+            if (vote) {
+              if (res !== null) {
+                res.json(vote.toJSON());
+              } else {
+                // console.log(vote.toJSON());
+                resolve(vote.toJSON());
+              }
+            } else {
+              reject(vote);
+            }
+          });
 
+        }
+        // Save useful vote
         else {
           vote.save(voteHash).then(function (vote) {
             if (vote) {
               if (res !== null) {
                 res.json(vote.toJSON());
               } else {
-                console.log(vote.toJSON());
+                // console.log(vote.toJSON());
                 resolve(vote.toJSON());
               }
             } else {
@@ -136,7 +145,6 @@ VotesController.directVote = function({
           });
         }
       }
-
       // Create and save new entry
       else if (vote_type != 0) {
         new Votes().save(voteHash).then(function (vote) {
@@ -152,16 +160,14 @@ VotesController.directVote = function({
           }
         });
       }
-
+      // Discard useless new vote
       else {
         reject(vote);
       }
-
     });
   });
 
   return storePromise;
-
 };
 
 VotesController.postVote = function(req, res) {

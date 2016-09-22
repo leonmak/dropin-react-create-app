@@ -37,14 +37,14 @@ module.exports = function (passport) {
   router.get('/api/feeds/:id', FeedsController.getFeed); // Get a specific feed
   // Example: {{base_url}}api/feeds/2
 
-  router.post('/api/feeds', FeedsController.postFeed); // Create a new feed
-  // Example: {{base_url}}api/feeds/ :: {emojiUni, title, location, date}
+  router.post('/api/feeds', loginCheck, FeedsController.postFeed); // Create a new feed
+  // Example: {{base_url}}api/feeds/ :: {userID, emoji, title, video, image, sound, longitude, latitude, date, anonymous}
 
-  router.put('/api/feeds', FeedsController.editFeed); // Update an existing feed
-  // Example: {{base_url}}api/feeds/ :: {dropId, emojiUni, title, videoUrl, imageId, soundCloudUrl, location, date}
+  router.put('/api/feeds', loginCheck, FeedsController.editFeed); // Update an existing feed
+  // Example: {{base_url}}api/feeds/ :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
-  router.delete('/api/feeds/:id', FeedsController.deleteFeed); // Delete an existing feed
-  // Example: {{base_url}}api/feeds/2
+  router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
+  // Example: {{base_url}}api/feeds/ :: {id, userID}
 
 
 
@@ -58,13 +58,13 @@ module.exports = function (passport) {
   router.get('/api/comments/:id', CommentsController.getComment); // Get a specific comment
   // Example: {{base_url}}api/comments/4
 
-  router.post('/api/feeds/:id/comments', CommentsController.postComment); // Create a new comment for an existing feed
+  router.post('/api/feeds/:id/comments', loginCheck, CommentsController.postComment); // Create a new comment for an existing feed
   // Example: {{base_url}}api/feeds/1/comments
 
-  // router.put('/api/comments/:id', CommentsController.editComment); // Update an existing comment
+  // router.put('/api/comments/:id', loginCheck, CommentsController.editComment); // Update an existing comment
   // Example: {{base_url}}api/comments/2
 
-  router.delete('/api/comments/:id', CommentsController.deleteComment); // Delete an existing comment
+  router.delete('/api/comments/:id', loginCheck, CommentsController.deleteComment); // Delete an existing comment
   // Example: {{base_url}}api/comments/4
 
 
@@ -76,13 +76,13 @@ module.exports = function (passport) {
   router.get('/api/users/:id/votes', VotesController.getVotesToUser); // Get votes on a user
   // Example: {{base_url}}api/users/4/votes
 
-  router.post('/api/feeds/:id/votes', VotesController.postVote); // Create a new vote Leave back to larry
+  router.post('/api/feeds/:id/votes', loginCheck, VotesController.postVote); // Create a new vote Leave back to larry
   // {{base_url}}api/feeds/3/votes :: {userId, vote_type}
 
   router.put('/api/votes', loginCheck, VotesController.editVote); // Edit an existing vote
   // {{base_url}}api/votes :: {drop_id, vote_type}
 
-  router.delete('/api/votes', VotesController.deleteVote); // Delete an existing vote
+  router.delete('/api/votes', loginCheck, VotesController.deleteVote); // Delete an existing vote
   // {{base_url}}api/votes?dropId=5&userId=2
 
 
@@ -102,7 +102,7 @@ module.exports = function (passport) {
   router.put('/api/profile', loginCheck, UsersController.editUser); // Update an existing user
   // Example: {{base_url}}api/profile :: {user_avatar_url, anonymous}
 
-  router.delete('/api/users/:id', UsersController.deleteUser); // Delete an existing user
+  router.delete('/api/users/:id', loginCheck, UsersController.deleteUser); // Delete an existing user
   // Example: {{base_url}}api/users/1
 
   return router;

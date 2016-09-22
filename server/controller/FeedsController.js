@@ -14,20 +14,15 @@ FeedsController.apiParse = function (fetchedPost, user_id) {
   // Get user details
   var username = "someone";
   var userID = -1;
-  var avatar = "";
+  var avatar = "http://unshelteredvoices.org/img/people/anon.jpg";
 
   // Validate user and anonymity
-  if (typeof fetchedPost.user != 'undefined') {
+  // console.log(fetchedPost.user);
+  if (typeof fetchedPost.user != 'undefined' && fetchedPost.user != null && fetchedPost.anonymous == 0) {
     var user = fetchedPost.user;
-    if (fetchedPost.anonymous == 0) {
-      username = user.facebook_name;
-      avatar = user.facebook_profile_img;
-      userID = user.id;
-    } else {
-      username = "anonymous";
-      userID = user.id;
-      avatar = "http://unshelteredvoices.org/img/people/anon.jpg";
-    }
+    username = user.facebook_name;
+    avatar = user.facebook_profile_img;
+    userID = user.id;
   }
 
   // Get the votes count and status
@@ -132,7 +127,7 @@ FeedsController.getFeeds = function (req, res) {
       // console.log(parsedPost);
     }
 
-    // console.log(fetchedPosts);
+    // console.log("GET ALL FEEDS : ", fetchedPosts);
     res.json(parsedPosts);
 
   }).catch(function (err) {
@@ -188,7 +183,7 @@ FeedsController.getFeedsInRadius = function (req, res) {
         // console.log(parsedPost);
       }
     }
-    // console.log(fetchedPosts);
+    // console.log("GET FEEDS IN RANGE : ", fetchedPosts);
     res.json(parsedPosts);
 
   }).catch(function (err) {
@@ -208,33 +203,65 @@ FeedsController.getUserFeeds = function (req, res) {
     user_id = req.query.user_id;
   }
 
-  // Get joint table objects
-  Posts.where('user_id', id).fetchAll({
-    withRelated: ['votes', 'comments', 'user']
-  }).then(function (posts) {
-    // Get all posts objects
-    var fetchedPosts = posts.toJSON();
-    var parsedPosts = [];
+  // Display or hide anonymous posts according to login session
+  if (typeof req.user == 'undefined' || req.user == null || req.user.id != id) {
+    // Get joint table objects
+    Posts.where({'user_id': id, 'anonymous': 0}).fetchAll({
+      withRelated: ['votes', 'comments', 'user']
+    }).then(function (posts) {
+      // Get all posts objects
+      var fetchedPosts = posts.toJSON();
+      var parsedPosts = [];
 
-    for (var i = 0; i < fetchedPosts.length; ++i) {
+      for (var i = 0; i < fetchedPosts.length; ++i) {
 
-      // Get post object
-      var fetchedPost = fetchedPosts[i];
+        // Get post object
+        var fetchedPost = fetchedPosts[i];
 
-      // Parse post
-      var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+        // Parse post
+        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
 
-      // Collate post
-      parsedPosts.push(parsedPost);
-    }
+        // Collate post
+        parsedPosts.push(parsedPost);
+      }
 
-    res.json(parsedPosts);
-  }).catch(function (err) {
-    res.json({
-      error: Messages.ERROR_FETCHING_POST
-    });
-  })
-}
+      // console.log("GET USER FEEDS : ", parsedPosts);
+      res.json(parsedPosts);
+    }).catch(function (err) {
+      res.json({
+        error: Messages.ERROR_FETCHING_POST
+      });
+    })
+  } else {
+    // Get joint table objects
+    Posts.where('user_id', id).fetchAll({
+      withRelated: ['votes', 'comments', 'user']
+    }).then(function (posts) {
+      // Get all posts objects
+      var fetchedPosts = posts.toJSON();
+      var parsedPosts = [];
+
+      for (var i = 0; i < fetchedPosts.length; ++i) {
+
+        // Get post object
+        var fetchedPost = fetchedPosts[i];
+
+        // Parse post
+        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+
+        // Collate post
+        parsedPosts.push(parsedPost);
+      }
+
+      // console.log("GET USER FEEDS : ", parsedPosts);
+      res.json(parsedPosts);
+    }).catch(function (err) {
+      res.json({
+        error: Messages.ERROR_FETCHING_POST
+      });
+    })
+  }
+};
 
 // Get a specific feed
 FeedsController.getFeed = function (req, res) {
@@ -268,8 +295,8 @@ FeedsController.directPost = function ({
   sound,
   longitude,
   latitude,
-  date
-}, res = null) {
+  date,
+  anonymous}, res = null) {
 
   // Promise a user lookup
   var userPromise = new Promise(function (resolve, reject) {
@@ -293,7 +320,8 @@ FeedsController.directPost = function ({
     longitude: longitude,
     latitude: latitude,
     created_at: date,
-    updated_at: null
+    updated_at: null,
+    anonymous: anonymous
   };
 
   // Promise to store in database, then return an object for socket emission
@@ -331,7 +359,8 @@ FeedsController.postFeed = function (req, res) {
     sound: req.body.soundCloudUrl,
     longitude: req.body.location[0],
     latitude: req.body.location[1],
-    date: req.body.date
+    date: req.body.date,
+    anonymous: req.body.anonymous
   };
 
   FeedsController.directPost(packet);
@@ -352,8 +381,8 @@ FeedsController.directEdit = function ({
   sound,
   longitude,
   latitude,
-  updated_at
-}, res = null) {
+  updated_at,
+  anonymous}, res = null) {
 
   // Promise a user lookup
   var userPromise = new Promise(function (resolve, reject) {
@@ -396,7 +425,8 @@ FeedsController.directEdit = function ({
           sound,
           longitude,
           latitude,
-          updated_at
+          updated_at,
+          anonymous
         }).then(function (post) {
           var jsonObj = post.toJSON();
           jsonObj.votes = votesJSON;
@@ -406,9 +436,9 @@ FeedsController.directEdit = function ({
           console.log("THIS IS THE EDITED POST: ", parsedPost);
           resolve(parsedPost);
         }).catch(function (err) {
-          // reject({
-          //   error: Messages.ERROR_UPDATING_POST
-          // });
+          reject({
+            error: Messages.ERROR_UPDATING_POST
+          });
         })
       } else {
 
@@ -433,7 +463,8 @@ FeedsController.directEdit = function ({
           longitude: longitude,
           latitude: latitude,
           created_at: updated_at,
-          updated_at: null
+          updated_at: null,
+          anonymous: anonymous
         }).then(function (post) {
 
           userPromise.then(function (user) {
@@ -445,15 +476,15 @@ FeedsController.directEdit = function ({
           });
 
         }).catch(function (err) {
-          // reject({
-          //   error: Messages.ERROR_UPDATING_POST
-          // })
+          reject({
+            error: Messages.ERROR_UPDATING_POST
+          })
         });
       }
     }).catch(function (err) {
-      // reject({
-      //   error: Messages.ERROR_POST_NOT_FOUND
-      // })
+      reject({
+        error: Messages.ERROR_POST_NOT_FOUND
+      })
     });
   });
 
@@ -484,8 +515,8 @@ FeedsController.editFeed = function (req, res) {
 
 
 // Deleting a Feed
-FeedsController.directDelete = function ({id}, res = null) {
-  Posts.where('id', id).destroy().then(function (post) {
+FeedsController.directDelete = function ({id, userID}, res = null) {
+  Posts.where({'id': id, 'user_id': userID}).destroy().then(function (post) {
     res.json(FeedsController.apiParse(post));
   }).catch(function (err) {
     if (res != null) {
@@ -501,6 +532,7 @@ FeedsController.deleteFeed = function (req, res) {
 
   var packet = {
     id: req.params.id,
+    userID: req.body.userID
   };
 
   FeedsController.directDelete(packet, res);
