@@ -112,24 +112,28 @@ VotesController.directVote = function ({
   var storePromise = new Promise(function (resolve, reject) {
 
     Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function (vote) {
-      Votes.where('post_id', post_id).fetchAll().then(function (votes) {
-        var votesJSON = votes.toJSON();
-        var count = 0;
-        for (var i = 0; i < votesJSON.length; ++i) {
-          count += votesJSON[i].vote_type;
-        }
-        count += vote_type;
+      // Existing vote found
+      if (vote != null) {
+        // Destroy useless vote
+        if (vote_type == 0) {
+          vote.destroy().then(function (vote) {
 
-        // Existing vote found
-        if (vote != null) {
-          // Destroy useless vote
-          if (vote_type == 0) {
-            vote.destroy().then(function (vote) {
-
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
+              }
               var parsedVote = vote.toJSON();
               parsedVote.votes = count;
+              if (count == 0) {
+                parsedVote.post_id = post_id;
+                parsedVote.user_id = user_id;
+                parsedVote.vote_type = vote_type;
+              }
 
-
+              // Resolve
               if (vote) {
                 if (res !== null) {
                   console.log(parsedVote);
@@ -142,16 +146,29 @@ VotesController.directVote = function ({
               } else {
                 reject(vote);
               }
+
             });
-
-          }
-          // Save useful vote
-          else {
-            vote.save(voteHash).then(function (vote) {
-
+          });
+        }
+        // Save useful vote
+        else {
+          vote.save(voteHash).then(function (vote) {
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
+              }
               var parsedVote = vote.toJSON();
               parsedVote.votes = count;
+              if (count == 0) {
+                parsedVote.post_id = post_id;
+                parsedVote.user_id = user_id;
+                parsedVote.vote_type = vote_type;
+              }
 
+              // Resolve
               if (vote) {
                 if (res !== null) {
                   console.log(parsedVote);
@@ -164,18 +181,31 @@ VotesController.directVote = function ({
               } else {
                 reject(parsedVote);
               }
-            });
-          }
-        }
-        // Create and save new entry
-        else if (vote_type != 0) {
-          new Votes().save(voteHash).then(function (vote) {
 
+            });
+          });
+        }
+      }
+      // Create and save new entry
+      else if (vote_type != 0) {
+        new Votes().save(voteHash).then(function (vote) {
+          // Count votes
+          Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+            var votesJSON = votes.toJSON();
+            var count = 0;
+            for (var i = 0; i < votesJSON.length; ++i) {
+              count += votesJSON[i].vote_type;
+            }
             var parsedVote = vote.toJSON();
             parsedVote.votes = count;
+            if (count == 0) {
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
+            }
 
+            // Resolve
             if (vote) {
-
               if (res !== null) {
                 console.log(parsedVote);
                 res.json(parsedVote);
@@ -187,18 +217,34 @@ VotesController.directVote = function ({
             } else {
               reject(parsedVote);
             }
+
           });
-        }
-        // Discard useless new vote
-        else {
+
+        });
+      }
+      // Discard useless new vote
+      else {
+        Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+          var votesJSON = votes.toJSON();
+          var count = 0;
+          for (var i = 0; i < votesJSON.length; ++i) {
+            count += votesJSON[i].vote_type;
+          }
           var parsedVote = vote.toJSON();
           parsedVote.votes = count;
-          reject(parsedVote);
-        }
-      });
+          if (count == 0) {
+            parsedVote.post_id = post_id;
+            parsedVote.user_id = user_id;
+            parsedVote.vote_type = vote_type;
+          }
 
+          reject(parsedVote);
+        });
+      }
     });
+
   });
+
 
   return storePromise;
 };
