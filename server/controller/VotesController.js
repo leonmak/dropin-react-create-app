@@ -244,7 +244,7 @@ VotesController.editVote = function(req, res) {
 
   UsersController.findUserId(req.user.id).then(function(user_id) {
     var packet = {
-      post_id: req.body.drop_id,
+      post_id: req.params.id,
       vote_type: req.body.vote_type,
       user_id: user_id
     }

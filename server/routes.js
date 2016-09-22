@@ -76,11 +76,11 @@ module.exports = function (passport) {
   router.get('/api/users/:id/votes', VotesController.getVotesToUser); // Get votes on a user
   // Example: {{base_url}}api/users/4/votes
 
-  router.post('/api/feeds/:id/votes', VotesController.postVote); // Create a new vote
+  // router.post('/api/feeds/:id/votes', VotesController.postVote); // Create a new vote
   // {{base_url}}api/feeds/3/votes :: {userId, vote_type}
 
-  router.put('/api/votes', loginCheck, VotesController.editVote); // Edit an existing vote
-  // {{base_url}}api/votes {drop_id, vote_type}
+  router.put('/api/feeds/:id/votes', loginCheck, VotesController.editVote); // Edit an existing vote
+  // {{base_url}}api/votes {vote_type}
 
   router.delete('/api/votes', VotesController.deleteVote); // Delete an existing vote
   // {{base_url}}api/votes?dropId=5&userId=2
