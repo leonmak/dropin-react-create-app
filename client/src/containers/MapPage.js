@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchAllNearbyDrops: () => dispatch(fetchAllNearbyDrops()),
+    fetchAllNearbyDrops: (userId) => dispatch(fetchAllNearbyDrops(userId)),
     updateANearbyDrop: drop => dispatch(updateANearbyDrop(drop)),
     passSnackbarMessage: msg => dispatch(passSnackbarMessage(msg)),
     setLocation: lngLat => dispatch(setLocation(lngLat)),

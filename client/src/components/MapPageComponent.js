@@ -26,7 +26,12 @@ export default class MapPageComponent extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAllNearbyDrops();
+    if(this.props.user){
+      this.props.fetchAllNearbyDrops(this.props.user.userId);
+    }else{
+      this.props.fetchAllNearbyDrops(null);
+    } 
+    
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
   }
 

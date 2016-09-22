@@ -226,7 +226,7 @@ CommentsController.deleteComment = function(req, res) {
   CommentsController.directDelete(packet, res);
 
   // Response
-  res.end("comment is successfully deleted.");
+  res.end("Comment has been successfully deleted.");
 };
 
 module.exports = CommentsController;
