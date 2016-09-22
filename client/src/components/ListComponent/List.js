@@ -55,7 +55,8 @@ export class List extends Component {
           selectedDropIdx={this.props.selectedDropIdx}
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
           openDialog={this.props.openDialog} 
-          passSnackbarMessage={this.props.passSnackbarMessage}/>;
+          passSnackbarMessage={this.props.passSnackbarMessage}
+          makeAVote={this.props.makeAVote}/>;
       })}
       </div>
       : <CircularProgress className="spinner"/>
@@ -66,5 +67,6 @@ export class List extends Component {
 List.PropTypes={
   selectedDropIdx:PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  passSnackbarMessage: PropTypes.func.isRequired
+  passSnackbarMessage: PropTypes.func.isRequired,
+  makeAVote: PropTypes.func.isRequired
 }

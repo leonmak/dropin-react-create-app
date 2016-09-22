@@ -3,7 +3,7 @@ import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
 import {toggleTopBarBackButtonVisibility} from '../actions/PageVisibilityActions';
-import { getDropId, updateAComment, fetchCommentsForDrop} from '../actions';
+import { getDropId, updateAComment, fetchCommentsForDrop, passingFromOthersToDrop, clearSingleDropHistory} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 
 import DropComponent from '../components/DropComponent';
@@ -29,6 +29,8 @@ function mapDispatchToProps(dispatch) {
     setLocation:(lnglat)=>dispatch(setLocation(lnglat)),
     updateAComment:(comment)=>dispatch(updateAComment(comment)),
     fetchCommentsForDrop: dropId => dispatch(fetchCommentsForDrop(dropId)),
+    passingFromOthersToDrop: (drop)=>dispatch(passingFromOthersToDrop(drop)),
+    clearSingleDropHistory:()=>dispatch(clearSingleDropHistory())
   };
 }
 

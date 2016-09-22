@@ -14,6 +14,8 @@ function createTable(tableName) {
         column = table[Schema[tableName][key].type](key, Schema[tableName][key].fieldtype);
       } else if (Schema[tableName][key].type === 'string' && Schema[tableName][key].hasOwnProperty('maxlength')) {
         column = table[Schema[tableName][key].type](key, Schema[tableName][key].maxlength);
+      } else if (Schema[tableName][key].type === 'float' && Schema[tableName][key].hasOwnProperty('precision') && Schema[tableName][key].hasOwnProperty('scale')) {
+        column = table[Schema[tableName][key].type](key, Schema[tableName][key].precision, Schema[tableName][key].scale);
       } else {
         column = table[Schema[tableName][key].type](key);
       }

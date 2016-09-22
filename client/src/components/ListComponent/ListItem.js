@@ -79,17 +79,17 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton onClick={()=>{alert(1)}}
+          (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1,1)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton onClick={()=>{alert(-1)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,-1)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
-            (<IconButton onClick={()=>{alert(0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,0)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
           )
         )
         :
-        (<IconButton onClick={()=>{redirectToLogin(props)}}
+        (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
       }
 
@@ -99,17 +99,17 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton onClick={()=>{alert(1)}}
+          (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,1)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton onClick={()=>{alert(-1)}}
+            (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,-1,-1)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-            (<IconButton onClick={()=>{alert(0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,0)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
           )
         )
         :
-        (<IconButton onClick={()=>{redirectToLogin(props)}}
+        (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
       }
 
@@ -168,7 +168,7 @@ const redirectToLogin = props =>{
     <div className="col-xs-2">
     <ItemVoting votes={props.votes} user={props.user} 
     dropId={props.dropId} passSnackbarMessage={props.passSnackbarMessage}
-    voted={props.voted}/>
+    voted={props.voted} makeAVote={props.makeAVote} undoAVote={props.undoAVote}/>
     </div>
     <div className="col-xs-9">
     <ItemDetails
@@ -204,7 +204,9 @@ const redirectToLogin = props =>{
     ListItem.PropTypes = {
       passingFromOthersToDrop: PropTypes.func.isRequired,
       selectedDropIdx: PropTypes.func.isRequired,
-      user: PropTypes.object.isRequired
+      user: PropTypes.object.isRequired,
+      makeAVote: PropTypes.func.isRequired,
+      undoAVote: PropTypes.func.isRequired
     }
 
     export default ListItem;

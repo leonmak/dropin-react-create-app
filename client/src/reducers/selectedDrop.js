@@ -9,7 +9,7 @@ import {
 
 //designing initial state
 const initialState = {
-	selectedDrop:{},
+	selectedDrop:null,
 	comments: [],
   selectedDropIdx: null,
   selectedDropSrc: ""

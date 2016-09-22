@@ -64,7 +64,15 @@
 .item-voting > div {
   padding: 0;
 }
-.item-voting > div > button > div > span {
+/*.item-voting > div > button > div > span {
+  color: #808080 !important;
+}*/
+
+.voted >div> span {
+  color: #00bcd4 !important;
+}
+
+.not-voted>div>span{
   color: #808080 !important;
 }
 

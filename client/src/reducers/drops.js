@@ -1,4 +1,5 @@
 import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP, UPDATE_COMMENT_IN_LIST_PAGE} from '../actions';
+import {VOTE_INITIAL_UI_UPDATE,VOTE_UNDO_INITIAL_UI_UPDATE,VOTE_CONFIRM_INITIAL_UI_UPDATE} from '../actions/VoteActions';
 
 //designing state shape
 const initialState = {
@@ -34,7 +35,6 @@ const initialState = {
 		})
 
 		case UPDATE_COMMENT_IN_LIST_PAGE:
-		//console.log('dropId commnent is incrementing', action.comment.dropId);
 		var newDrops = state.drops;
 		var arrayLength = newDrops.length;
 		for (var i = 0; i < arrayLength; i++) {
@@ -45,7 +45,68 @@ const initialState = {
 		}
 		return Object.assign({}, state, {
 			drops: newDrops
-		})		
+		})
+
+
+
+
+
+		/***********************************
+		VOTE RELATED 
+		***********************************/
+		case VOTE_INITIAL_UI_UPDATE:
+		var dropId = action.dropId;
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				var voteAction = action.voteAction;
+				var initalVoted =action.initialVoted;
+
+				//it is an upvote
+				if(voteAction===1){
+					console.log('voteAction',voteAction);
+					if(initalVoted===1){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=0;
+					}
+					if(initalVoted===0){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=1;
+					}
+					if(initalVoted===-1){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes+2;
+						newDrops[i].voted=1;
+					}
+				}
+				//if it is downvote
+				if(voteAction===-1){
+					console.log('voteAction',voteAction);
+					if(initalVoted===1){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes-2;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===0){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===-1){
+						console.log('initalVoted',initalVoted);
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=0;
+					}
+				}
+				console.log('dropid:',action.dropId, 'new vote state:', newDrops[i].voted);
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
 
 		default:
 		return state
