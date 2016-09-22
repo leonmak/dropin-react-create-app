@@ -93,6 +93,10 @@ class AddForm extends Component {
     socketHandler.uninstall();
   }
 
+  postReceive() {
+
+  }
+
   render() {
     const { handleSubmit, pristine, passSnackbarMessage, submitting, dropId, user, location } = this.props;
 
