@@ -61,12 +61,13 @@ io.on('connection', function(socket) {
 
   socket.on('client:sendEvent', function(packet) {
 
-    console.log(packet);
+    console.log('received from client:',packet);
 
     if (packet.event == 'comment:send') {
       CommentsController.directComment(packet.data).then(function(res) {
           var newPacket = packet;
           newPacket.data = res;
+          console.log('comment packet emitted from server', newPacket);
         io.emit('server:sendEvent', newPacket);
       });
     }
@@ -75,6 +76,7 @@ io.on('connection', function(socket) {
         FeedsController.directPost(packet.data).then(function(res) {
           var newPacket = packet;
           newPacket.data = res;
+          console.log('feed packet emitted from server', newPacket);
           io.emit('server:sendEvent', newPacket);
         });
       }
@@ -83,7 +85,8 @@ io.on('connection', function(socket) {
       VotesController.directVote(packet.data).then(function(res){
         var newPacket = packet;
         newPacket.data = res;
-        io.emit('vote:sendEvent', newPacket);
+        console.log('vote packet emitted from server', newPacket);
+        io.emit('server:sendEvent', newPacket);
       })
     }
 

@@ -77,6 +77,7 @@ class ListComponent extends Component {
   componentWillUnmount() {
     this.socketHandler.uninstall();
     this.commentSocketHandler.uninstall();
+    this.voteSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 
