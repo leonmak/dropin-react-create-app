@@ -129,7 +129,7 @@ export default class SocketHandler {
 
 				vote({userId, postId, voteType}) { 
 					//console.log("sent new vote to server", userId,postId,voteType);
-					console.log("sent new vote to server");
+					console.log("sent new vote to server",voteType);
 					socket.emit('client:sendEvent', this._packSocket({
 						userId, 
 						postId, 
