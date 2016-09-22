@@ -47,8 +47,8 @@ module.exports = function (passport) {
   router.put('/api/feeds', loginCheck, FeedsController.editFeed); // Update an existing feed
   // Example: {{base_url}}api/feeds/ :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
-  router.delete('/api/feeds', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
-  // Example: {{base_url}}api/feeds/ :: {id, userID}
+  router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
+  // Example: {{base_url}}api/feeds/ 
 
 
 
@@ -82,8 +82,8 @@ module.exports = function (passport) {
   router.get('/api/users/:id/votes', VotesController.getVotesToUser); // Get votes on a user
   // Example: {{base_url}}api/users/4/votes
 
-  router.post('/api/feeds/:id/votes', loginCheck, VotesController.postVote); // Create a new vote Leave back to larry
-  // {{base_url}}api/feeds/3/votes :: {user_id, post_id, vote_type}
+  router.post('/api/feeds/votes', loginCheck, VotesController.postVote); // Create a new vote Leave back to larry
+  // {{base_url}}api/feeds/votes :: {user_id, post_id, vote_type}
 
   router.put('/api/votes', loginCheck, VotesController.editVote); // Edit an existing vote
   // {{base_url}}api/votes :: {drop_id, vote_type}

@@ -10,7 +10,7 @@ var VotesController = {};
 /*** Front-end Queries ***/
 
 // Get all votes for a specific feed
-VotesController.getFeedVotes = function(req, res) {
+VotesController.getFeedVotes = function (req, res) {
   const post_id = req.params.id;
   var user_id = req.query.user_id;
 
@@ -46,7 +46,7 @@ VotesController.getFeedVotes = function(req, res) {
 };
 
 // Get summary of all votes to a specific user
-VotesController.getVotesToUser = function(req, res) {
+VotesController.getVotesToUser = function (req, res) {
   const user_id = req.params.id;
 
   Posts.where('user_id', user_id).fetchAll({withRelated: ['votes']}).then(function (posts) {
@@ -81,7 +81,7 @@ VotesController.getVotesToUser = function(req, res) {
 
 
 // Get a specific vote
-VotesController.getVote = function(req, res) {
+VotesController.getVote = function (req, res) {
   const vote_id = req.params.id;
 
   Votes.where('id', vote_id).fetch().then(function (vote) {
@@ -95,10 +95,11 @@ VotesController.getVote = function(req, res) {
 };
 
 // Create a vote
-VotesController.directVote = function({
+VotesController.directVote = function ({
   user_id,
   post_id,
-  vote_type}, res = null) {
+  vote_type
+}, res = null) {
 
   // Prepare the formatted object to store in database
   var voteHash = {
@@ -108,72 +109,150 @@ VotesController.directVote = function({
   };
 
   // Promise to store in database, then return an object for socket emission
-  var storePromise = new Promise(function(resolve, reject) {
+  var storePromise = new Promise(function (resolve, reject) {
 
     Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function (vote) {
       // Existing vote found
-      if (vote) {
+      if (vote != null) {
         // Destroy useless vote
         if (vote_type == 0) {
-          vote.destroy().then(function(vote){
-            if (vote) {
-              if (res !== null) {
-                res.json(vote.toJSON());
-              } else {
-                // console.log(vote.toJSON());
-                resolve(vote.toJSON());
-              }
-            } else {
-              reject(vote);
-            }
-          });
+          vote.destroy().then(function (vote) {
 
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
+              }
+              var parsedVote = vote.toJSON();
+              parsedVote.votes = count;
+              if (count == 0) {
+                parsedVote.post_id = post_id;
+                parsedVote.user_id = user_id;
+                parsedVote.vote_type = vote_type;
+              }
+
+              // Resolve
+              if (vote) {
+                if (res !== null) {
+                  console.log(parsedVote);
+                  res.json(parsedVote);
+                } else {
+                  // console.log(vote.toJSON());
+                  console.log(parsedVote);
+                  resolve(parsedVote);
+                }
+              } else {
+                reject(vote);
+              }
+
+            });
+          });
         }
         // Save useful vote
         else {
           vote.save(voteHash).then(function (vote) {
-            if (vote) {
-              if (res !== null) {
-                res.json(vote.toJSON());
-              } else {
-                // console.log(vote.toJSON());
-                resolve(vote.toJSON());
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
               }
-            } else {
-              reject(vote);
-            }
+              var parsedVote = vote.toJSON();
+              parsedVote.votes = count;
+              if (count == 0) {
+                parsedVote.post_id = post_id;
+                parsedVote.user_id = user_id;
+                parsedVote.vote_type = vote_type;
+              }
+
+              // Resolve
+              if (vote) {
+                if (res !== null) {
+                  console.log(parsedVote);
+                  res.json(parsedVote);
+                } else {
+                  // console.log(vote.toJSON());
+                  console.log(parsedVote);
+                  resolve(parsedVote);
+                }
+              } else {
+                reject(parsedVote);
+              }
+
+            });
           });
         }
       }
       // Create and save new entry
       else if (vote_type != 0) {
         new Votes().save(voteHash).then(function (vote) {
-          if (vote) {
-            if (res !== null) {
-              res.json(vote.toJSON());
-            } else {
-              console.log(vote.toJSON());
-              resolve(vote.toJSON());
+          // Count votes
+          Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+            var votesJSON = votes.toJSON();
+            var count = 0;
+            for (var i = 0; i < votesJSON.length; ++i) {
+              count += votesJSON[i].vote_type;
             }
-          } else {
-            reject(vote);
-          }
+            var parsedVote = vote.toJSON();
+            parsedVote.votes = count;
+            if (count == 0) {
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
+            }
+
+            // Resolve
+            if (vote) {
+              if (res !== null) {
+                console.log(parsedVote);
+                res.json(parsedVote);
+              } else {
+                // console.log(parsedVote);
+                console.log(parsedVote);
+                resolve(parsedVote);
+              }
+            } else {
+              reject(parsedVote);
+            }
+
+          });
+
         });
       }
       // Discard useless new vote
       else {
-        reject(vote);
+        Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+          var votesJSON = votes.toJSON();
+          var count = 0;
+          for (var i = 0; i < votesJSON.length; ++i) {
+            count += votesJSON[i].vote_type;
+          }
+          var parsedVote = vote.toJSON();
+          parsedVote.votes = count;
+          if (count == 0) {
+            parsedVote.post_id = post_id;
+            parsedVote.user_id = user_id;
+            parsedVote.vote_type = vote_type;
+          }
+
+          reject(parsedVote);
+        });
       }
     });
+
   });
+
 
   return storePromise;
 };
 
-VotesController.postVote = function(req, res) {
+VotesController.postVote = function (req, res) {
   var packet = {
-    user_id: req.body.userId,
-    post_id: req.params.id,
+    user_id: req.body.user_id,
+    post_id: req.body.post_id,
     vote_type: req.body.vote_type
   };
 
@@ -184,12 +263,11 @@ VotesController.postVote = function(req, res) {
 };
 
 // Editing a vote
-VotesController.directEdit = function({post_id, vote_type, user_id}, res = null) {
-  var editPromise = new Promise(function(resolve, reject) {
-    Votes.where({post_id: post_id, user_id: user_id}).fetch().then(function(vote) {
+VotesController.directEdit = function ({post_id, vote_type, user_id}, res = null) {
+  var editPromise = new Promise(function (resolve, reject) {
+    Votes.where({post_id: post_id, user_id: user_id}).fetch().then(function (vote) {
       // update access token
       if (vote != null) {
-
         if (vote_type == 0) {
           vote.destroy();
         }
@@ -220,7 +298,7 @@ VotesController.directEdit = function({post_id, vote_type, user_id}, res = null)
         reject(vote);
       }
 
-    }).catch(function(err) {
+    }).catch(function (err) {
       reject({
         error: MESSAGES.ERROR_VOTE_NOT_FOUND
       })
@@ -230,23 +308,23 @@ VotesController.directEdit = function({post_id, vote_type, user_id}, res = null)
   return editPromise;
 }
 
-VotesController.editVote = function(req, res) {
+VotesController.editVote = function (req, res) {
 
-  UsersController.findUserId(req.user.id).then(function(user_id) {
+  UsersController.findUserId(req.user.id).then(function (user_id) {
     var packet = {
       post_id: req.params.id,
       vote_type: req.body.vote_type,
       user_id: user_id
     }
-    VotesController.directEdit(packet, res).then(function(editRes) {
+    VotesController.directEdit(packet, res).then(function (editRes) {
       res.json(editRes);
-    }).catch(function(editRes) {
+    }).catch(function (editRes) {
       res.json(editRes);
     })
 
     // Response
     // res.end("Vote has been successfully updated.");
-  }).catch(function(err) {
+  }).catch(function (err) {
     if (res != null) {
       res.json({
         error: MESSAGES.ERROR_USER_NOT_FOUND
@@ -256,10 +334,10 @@ VotesController.editVote = function(req, res) {
 };
 
 // Deleting a vote
-VotesController.directDelete = function({post_id, user_id}, res = null) {
+VotesController.directDelete = function ({post_id, user_id}, res = null) {
 
-  var deletePromise = new Promise(function(resolve, reject){
-    Votes.where('post_id', post_id).where('user_id', user_id).destroy().then(function(vote) {
+  var deletePromise = new Promise(function (resolve, reject) {
+    Votes.where('post_id', post_id).where('user_id', user_id).destroy().then(function (vote) {
       if (vote) {
         if (res === null) {
           resolve(vote.toJSON());
@@ -274,7 +352,7 @@ VotesController.directDelete = function({post_id, user_id}, res = null) {
 
 };
 
-VotesController.deleteVote = function(req, res) {
+VotesController.deleteVote = function (req, res) {
   var packet = {
     post_id: req.query.drop_id,
     user_id: req.query.user_id
