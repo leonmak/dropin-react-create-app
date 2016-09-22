@@ -3,7 +3,7 @@ import ListItem from './ListItem';
 import arraySort from 'array-sort';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import CircularProgress from 'material-ui/CircularProgress';
+import NoDrops from '../NoDrops';
 
 export class List extends Component {
 
@@ -35,7 +35,6 @@ export class List extends Component {
             <MenuItem value={"date"} primaryText="Most Recent" />
             <MenuItem value={"replies"} primaryText="Most Comments" />
             <MenuItem value={"votes"} primaryText="Most Votes" />
-            {/*<MenuItem value={"distance"} primaryText="Nearest" />*/}
           </DropDownMenu>
           </div>
         </div>
@@ -54,12 +53,12 @@ export class List extends Component {
           selectedDropSrc={this.props.selectedDropSrc}
           selectedDropIdx={this.props.selectedDropIdx}
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
-          openDialog={this.props.openDialog} 
+          openDialog={this.props.openDialog}
           passSnackbarMessage={this.props.passSnackbarMessage}
           makeAVote={this.props.makeAVote}/>;
       })}
       </div>
-      : <CircularProgress className="spinner"/>
+      : <NoDrops />
     );
   }
 }
