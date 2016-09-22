@@ -69,11 +69,15 @@ var Schema = {
     },
     longitude: {
       type: 'float',
-      nullable: false
+      nullable: false,
+      precision: 3,
+      scale: 6
     },
     latitude: {
       type: 'float',
-      nullable: false
+      nullable: false,
+      precision: 2,
+      scale: 6
     },
     anonymous: {
       type: 'boolean',
