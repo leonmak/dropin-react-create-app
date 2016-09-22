@@ -37,8 +37,10 @@ export default class SocketHandler {
 			break;
 			case OPEN_COMMENTS_SOCKET:
 			this.channelId = "open_comments";
+			break;
 			case OPEN_VOTES_SOCKET:
 			this.channelId = "open_votes";
+			break;
 			default:
 			break;
 		}
@@ -53,14 +55,17 @@ export default class SocketHandler {
 
 	//returning the data to the server
 	_eventHandler(packet) {
-		console.log("received event", packet);
-		if(this.channelId===OPEN_COMMENTS_SOCKET){
+		//console.log('received event',packet);
+		if(this.channelId===OPEN_COMMENTS_SOCKET&&packet.event==="comment:send"){
+			console.log("received event handled by open comment socket", packet);
 			this.handler(packet.data);
 		}
-		if(this.channelId===OPEN_VOTES_SOCKET){
+		else if(this.channelId===OPEN_VOTES_SOCKET&&packet.event==="vote:send"){
+			//console.log("received event handled by open vote socket", packet);
 			this.handler(packet.data);
 		}
 		else if (packet.channelId === this.channelId) {
+			//console.log("received event handled by normal socket", packet);
 			this.handler(packet.data);
 		}
 	}
@@ -124,7 +129,7 @@ export default class SocketHandler {
 
 				vote({userId, postId, voteType}) { 
 					//console.log("sent new vote to server", userId,postId,voteType);
-					console.log("sent new vote to server");
+					console.log("sent new vote to server",voteType);
 					socket.emit('client:sendEvent', this._packSocket({
 						userId, 
 						postId, 

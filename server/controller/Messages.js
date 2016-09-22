@@ -21,6 +21,7 @@ Messages.ERROR_DELETING_USER = "Error Deleting Existing User";
 Messages.ERROR_COMMENT_NOT_FOUND = "Comment Not Found";
 Messages.ERROR_USER_COMMENT_NOT_FOUND = "Error Retrieving User's Comments";
 Messages.ERROR_POSTING_COMMENT = "Error Posting Comment";
+Messages.ERROR_UPDATING_COMMENT = "Error Updating Comment";
 Messages.ERROR_CREATING_COMMENT = "Error Creating New Comment";
 Messages.ERROR_DELETING_COMMENT = "Error Deleting Existing Comment";
 
