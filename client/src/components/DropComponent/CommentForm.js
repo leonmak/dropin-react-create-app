@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from 'react'
 import { reduxForm, Field } from 'redux-form'
-
 import { TextField } from 'redux-form-material-ui'
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton';
+import * as Icons from '../../utils/Icons';
 
 const handler = (reset, socketHandler, user, location, drop) => values =>
 {
@@ -30,20 +31,16 @@ export class CommentForm extends Component{
 		return(
 		<form onSubmit={ handleSubmit(handler(reset, this.props.socketHandler,
 				this.props.user, this.props.location, this.props.drop)) }>
-			<div className="row center-xs">
+			<div className="row center-xs middle-xs">
 
   			<div className="col-xs-8">
     			<Field name="title" component={TextField} fullWidth={false}
-    			floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
-    			errorStyle={{textAlign: "left"}}
-    			multiLine={true} rows={2}/>
+            floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
+      			errorStyle={{textAlign: "left"}} multiLine={true} rows={2}/>
   			</div>
 
   			<div className="col-xs-3">
-    			<RaisedButton type="submit" label="Submit"
-    			labelStyle={{fontSize:"1.2rem"}} style={{margin: "1vh 0 1vh", width: "50%"}}
-    			disabled={pristine || submitting} primary={true}
-    			/>
+          <IconButton type="submit" iconStyle={{color: "#00bcd4"}} disabled={pristine || submitting}>{Icons.MUI('send')}</IconButton>
   			</div>
 			</div>
 		</form>
