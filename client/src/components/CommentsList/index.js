@@ -11,7 +11,7 @@ export class CommentsList extends Component {
     location: [103.8198, 1.3224]
   }
 
-  
+
 
   render() {
 
@@ -20,17 +20,18 @@ export class CommentsList extends Component {
     return (
       <div>
       {this.props.comments.map(comment => {
-        let {text, created_at, username, id, userId, userAvatarId} = comment;
+        let {text, created_at, username, id, userId, userAvatarId, dropId} = comment;
         return <Comment
         key={id}
         text={text}
+        dropId={dropId}
         username={username}
         userId={userId}
         userAvatar={userAvatarId}
         createdAt={created_at}
         isProfile={this.props.isProfile} />
       }
-      )}      
+      )}
       </div>
       );
   }

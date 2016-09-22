@@ -79,7 +79,7 @@ export class SettingsPageComponent extends Component {
       <div className="row center-xs settings-options">
         <div className="col-xs-10 col-sm-6 ">
           <h2>User Settings</h2>
-          <Field name="user_name" component={TextField} floatingLabelText="Display Name" />
+          <Field name="user_name" component={TextField} floatingLabelText="Display Name" style={{width: '100%'}} />
           <Field name="anonymous" component={Toggle} label="Anonymous"/>
         </div>
       </div>
