@@ -59,7 +59,7 @@ export default class ProfilePageComponent extends Component{
 
       request
       .get(`/api/users/${userId}`)
-      .end((err,res) => this.setState({ userInfo: res.body }))
+      .end((err,res) => this.setState({ userInfo: res.body }));
 
       this.props.fetchAllMyDrops(userId);
       this.props.fetchAllMyComments(userId);
