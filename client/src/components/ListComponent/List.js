@@ -21,7 +21,8 @@ export class List extends Component {
   handleChange = (event, index, value) => this.setState({sortType: value});
 
   render() {
-    const itemsOriginalIdx = this.props.feed.map((feedItem,idx)=> {
+    console.log(this.props.feed)
+    const itemsOriginalIdx = this.props.feed.error ? [] : this.props.feed.map((feedItem,idx)=> {
       feedItem.originalIdx=idx
       return feedItem;
     });
