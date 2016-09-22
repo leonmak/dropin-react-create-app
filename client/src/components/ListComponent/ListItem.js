@@ -79,12 +79,12 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1)}}
+          (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1,1)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton className='not-voted' onClick={()=>{alert(-1)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,-1)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
-            (<IconButton className='not-voted' onClick={()=>{alert(0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,0)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
           )
         )
@@ -99,12 +99,12 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton className='not-voted' onClick={()=>{alert(1)}}
+          (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,1)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton className='voted' 
+            (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,-1,-1)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-            (<IconButton className='not-voted' onClick={()=>{alert(0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,0)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
           )
         )
