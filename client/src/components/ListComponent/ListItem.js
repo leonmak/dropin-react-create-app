@@ -67,14 +67,35 @@ const ItemTitle = (props) => (
   </div>
 );
 
+
 const ItemVoting = (props) => (
   <div className="row item-voting">
     <div className="col-xs-12">
-      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_up')}</IconButton>
+
+      <IconButton 
+      onClick={()=>{
+        if(!props.user){
+          console.log('notauth');
+        }else{
+          console.log('auth');
+        }
+      }}
+      > {Icons.MUI('keyboard_arrow_up')}</IconButton>
+    
     </div>
     <div className="col-xs-12 votes-container">{props.votes}</div>
     <div className="col-xs-12">
-      <IconButton onClick={props.upvote}> {Icons.MUI('keyboard_arrow_down')}</IconButton>
+
+      <IconButton 
+      onClick={()=>{
+        if(!props.user){
+          console.log('notauth');
+        }else{
+          console.log('auth');
+        }
+      }}
+      > {Icons.MUI('keyboard_arrow_down')}</IconButton>
+
     </div>
   </div>
 );
@@ -128,7 +149,7 @@ const ListItem = props => (
         }
         <div className="row center-xs middle-xs item-description">
           <div className="col-xs-2">
-            <ItemVoting votes={props.votes}/>
+            <ItemVoting votes={props.votes} user={props.user}/>
           </div>
           <div className="col-xs-9">
             <ItemDetails
@@ -163,7 +184,8 @@ const ListItem = props => (
 
 ListItem.PropTypes = {
   passingFromOthersToDrop: PropTypes.func.isRequired,
-  selectedDropIdx: PropTypes.func.isRequired
+  selectedDropIdx: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default ListItem;

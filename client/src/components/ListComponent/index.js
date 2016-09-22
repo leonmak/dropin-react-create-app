@@ -35,7 +35,11 @@ class ListComponent extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAllNearbyDrops();
+    if(this.props.user){
+      this.props.fetchAllNearbyDrops(this.props.user.userId);
+    }else{
+      this.props.fetchAllNearbyDrops(null);
+    }
   }
 
   //must register all socket at the start, and dynamically register and

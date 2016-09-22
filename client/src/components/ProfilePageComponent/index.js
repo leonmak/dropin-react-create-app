@@ -112,6 +112,7 @@ export default class ProfilePageComponent extends Component{
               selectedDropSrc={this.props.selectedDropSrc}
               fetchCommentsForDrop={this.props.fetchCommentsForDrop}
               openDialog={this.openDialog}
+              user={this.props.user}
             />
           </Tab>
           <Tab label="Recent Comments" >

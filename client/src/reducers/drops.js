@@ -22,6 +22,7 @@ const initialState = {
  	switch (action.type) {
 
  		case FETCH_ALL_NEARBY_DROPS:
+ 		console.log(action.drops.body);
  		return Object.assign({}, state, {
  			drops: action.drops.body
  		})

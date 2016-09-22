@@ -197,7 +197,7 @@ class DropComponent extends Component {
 
 		return (this.props.user &&
 			<div>
-			<Drop drop={this.clickedDrop} />
+			<Drop drop={this.clickedDrop} user={this.props.user} />
 			<CommentsList comments={selectedDrop.comments} />
 			<CommentForm
 			location={location}
@@ -232,7 +232,8 @@ class DropComponent extends Component {
 				selectedDrop: PropTypes.object.isRequired,
 				pageVisibility: PropTypes.object.isRequired,
 				setLocation: PropTypes.func.isRequired,
-				updateAComment: PropTypes.func.isRequired
+				updateAComment: PropTypes.func.isRequired,
+				user: PropTypes.object.isRequired
 			};
 
 

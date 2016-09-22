@@ -61,5 +61,6 @@ export class List extends Component {
 }
 
 List.PropTypes={
-  selectedDropIdx:PropTypes.func.isRequired
+  selectedDropIdx:PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
