@@ -31,19 +31,23 @@ module.exports = function (passport) {
   router.get('/api/feeds/local', FeedsController.getFeedsInRadius); // Get all the feeds within a distance
   // Example: {{base_url}}api/feeds?longitude=123.212&latitude=23.33&user_id=6
 
+  // TODO: Fix the API Call ... '4' in the example is the profile page user and the '6' is the logged-in user
   router.get('/api/users/:id/feeds', FeedsController.getUserFeeds); // Get all the feeds belonging to a user
   // Example: {{base_url}}api/users/4/feeds?longitude=123.212&latitude=23.33&user_id=6
 
+  // TODO: Fix the API Call ... need to add the query line '6' as the logged-in user_id
   router.get('/api/feeds/:id', FeedsController.getFeed); // Get a specific feed
-  // Example: {{base_url}}api/feeds/2
+  // Example: {{base_url}}api/feeds/2?user_id=6
 
+  // TODO: Add userID as the logged-in user_id
   router.post('/api/feeds', loginCheck, FeedsController.postFeed); // Create a new feed
   // Example: {{base_url}}api/feeds/ :: {userID, emoji, title, video, image, sound, longitude, latitude, date, anonymous}
 
+  // TODO: Add userID as the logged-in user_id
   router.put('/api/feeds', loginCheck, FeedsController.editFeed); // Update an existing feed
   // Example: {{base_url}}api/feeds/ :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
-  router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
+  router.delete('/api/feeds', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
   // Example: {{base_url}}api/feeds/ :: {id, userID}
 
 
@@ -77,7 +81,7 @@ module.exports = function (passport) {
   // Example: {{base_url}}api/users/4/votes
 
   router.post('/api/feeds/:id/votes', loginCheck, VotesController.postVote); // Create a new vote Leave back to larry
-  // {{base_url}}api/feeds/3/votes :: {userId, vote_type}
+  // {{base_url}}api/feeds/3/votes :: {user_id, post_id, vote_type}
 
   router.put('/api/votes', loginCheck, VotesController.editVote); // Edit an existing vote
   // {{base_url}}api/votes :: {drop_id, vote_type}
