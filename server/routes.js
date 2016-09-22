@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var url = require('url')
+var url = require('url');
 
 // Authentication
 var Auth = require('./middleware/Auth')
@@ -37,13 +37,13 @@ module.exports = function (passport) {
   router.get('/api/feeds/:id', FeedsController.getFeed); // Get a specific feed
   // Example: {{base_url}}api/feeds/2
 
-  router.post('/api/feeds', FeedsController.postFeed); // Create a feed
+  router.post('/api/feeds', FeedsController.postFeed); // Create a new feed
   // Example: {{base_url}}api/feeds/ :: {emojiUni, title, location, date}
 
-  // router.put('/api/feeds', FeedsController.editFeed); // Update a feed
-  // Example: {{base_url}}api/feeds/ :: {dropId, emojiUni, title, location, date}
+  router.put('/api/feeds', FeedsController.editFeed); // Update an existing feed
+  // Example: {{base_url}}api/feeds/ :: {dropId, emojiUni, title, videoUrl, imageId, soundCloudUrl, location, date}
 
-  router.delete('/api/feeds/:id', FeedsController.deleteFeed); // Delete a feed
+  router.delete('/api/feeds/:id', FeedsController.deleteFeed); // Delete an existing feed
   // Example: {{base_url}}api/feeds/2
 
 
@@ -61,7 +61,7 @@ module.exports = function (passport) {
   router.post('/api/feeds/:id/comments', CommentsController.postComment); // Create a new comment for an existing feed
   // Example: {{base_url}}api/feeds/1/comments
 
-  // router.put('/api/comments/:id', CommentsController.updateComment); // Update an existing comment
+  // router.put('/api/comments/:id', CommentsController.editComment); // Update an existing comment
   // Example: {{base_url}}api/comments/2
 
   router.delete('/api/comments/:id', CommentsController.deleteComment); // Delete an existing comment
@@ -80,7 +80,7 @@ module.exports = function (passport) {
   // {{base_url}}api/feeds/3/votes :: {userId, vote_type}
 
   router.put('/api/votes', loginCheck, VotesController.editVote); // Edit an existing vote
-  // {{base_url}}api/votes {drop_id, vote_type}
+  // {{base_url}}api/votes :: {drop_id, vote_type}
 
   router.delete('/api/votes', VotesController.deleteVote); // Delete an existing vote
   // {{base_url}}api/votes?dropId=5&userId=2

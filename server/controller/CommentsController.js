@@ -5,7 +5,7 @@ import {
 
 var UsersController = require('./UsersController');
 var FeedsController = require('./FeedsController');
-var MESSAGES = require('./Messages');
+var Messages = require('./Messages');
 
 var CommentsController = {};
 
@@ -17,6 +17,7 @@ CommentsController.apiParse = function (fetchedComment) {
   var userID = -1;
   var avatar = "";
 
+  // Validate user and anonymity
   if (typeof fetchedComment.user != 'undefined') {
     var user = fetchedComment.user;
     if (user.anonymous == 0) {
@@ -53,9 +54,11 @@ CommentsController.apiParse = function (fetchedComment) {
 CommentsController.getFeedComments = function (req, res) {
   const post_id = req.params.id;
 
+  // Find comments belonging to a feed
   Comments.where('post_id', post_id).fetchAll({
     withRelated: ['user']
   }).then(function (comments) {
+
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
@@ -76,7 +79,7 @@ CommentsController.getFeedComments = function (req, res) {
     res.json(parsedComments);
   }).catch(function (err) {
     res.json({
-      error: MESSAGES.ERROR_COMMENT_NOT_FOUND
+      error: Messages.ERROR_FETCHING_COMMENT
     });
   })
 }
@@ -85,9 +88,11 @@ CommentsController.getFeedComments = function (req, res) {
 CommentsController.getUserComments = function (req, res) {
   const user_id = req.params.id;
 
+  // Find comments belonging to a user
   Comments.where('user_id', user_id).fetchAll({
     withRelated: ['user']
   }).then(function (comments) {
+
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
@@ -108,7 +113,7 @@ CommentsController.getUserComments = function (req, res) {
     res.json(parsedComments);
   }).catch(function (err) {
     res.json({
-      error: MESSAGES.ERROR_COMMENT_NOT_FOUND
+      error: Messages.ERROR_FETCHING_COMMENTS
     });
   })
 }
@@ -117,9 +122,11 @@ CommentsController.getUserComments = function (req, res) {
 CommentsController.getComment = function (req, res) {
   const id = req.params.id;
 
+  // Find a specific comment
   Comments.where('id', id).fetch({
     withRelated: ['user']
   }).then(function (comment) {
+
     // Get all comment objects
     var fetchedComment = comment.toJSON();
 
@@ -129,7 +136,7 @@ CommentsController.getComment = function (req, res) {
     res.json(parsedComment);
   }).catch(function (err) {
     res.json({
-      error: MESSAGES.ERROR_COMMENT_NOT_FOUND
+      error: Messages.ERROR_COMMENT_NOT_FOUND
     });
   })
 }
@@ -152,7 +159,7 @@ CommentsController.directComment = function ({
   };
 
   // Promise a user lookup
-  var userPromise = new Promise(function(resolve, reject) {
+  var userPromise = new Promise(function (resolve, reject) {
     Users.where('id', userId).fetch().then(function (user) {
       if (user) {
         resolve(user);
@@ -163,17 +170,17 @@ CommentsController.directComment = function ({
   });
 
   // Promise to store in database, then return an object for socket emission
-  var storePromise = new Promise(function(resolve, reject){
-    new Comments().save(commentHash).then(function(comment) {
+  var storePromise = new Promise(function (resolve, reject) {
+    new Comments().save(commentHash).then(function (comment) {
       if (comment) {
         if (res !== null) {
           res.json(comment.toJSON());
         } else {
-          userPromise.then(function(user) {
+          userPromise.then(function (user) {
             var commentObj = comment;
             commentObj.attributes.user = user.toJSON();
             var jsonObject = CommentsController.apiParse(commentObj.toJSON());
-            console.log("JSON Comment to emit: ",jsonObject);
+            console.log("JSON Comment to emit: ", jsonObject);
             resolve(jsonObject);
           });
 
@@ -203,21 +210,23 @@ CommentsController.postComment = function (req, res) {
   res.end("Comment successfully created.");
 }
 
-// TODO: Delete an existing comment
+// Editing a comment
 
-CommentsController.directDelete = function({id}, res = null) {
-  Comments.where('id', id).destroy().then(function(comment) {
+
+// Deleting a comment
+CommentsController.directDelete = function ({id}, res = null) {
+  Comments.where('id', id).destroy().then(function (comment) {
     res.json(CommentsController.apiParse(comment));
-  }).catch(function(err) {
+  }).catch(function (err) {
     if (res != null) {
       res.json({
-        error: MESSAGES.ERROR_COMMENT_NOT_FOUND
-     });
+        error: Messages.ERROR_COMMENT_NOT_FOUND
+      });
     }
   });
 };
 
-CommentsController.deleteComment = function(req, res) {
+CommentsController.deleteComment = function (req, res) {
 
   var packet = {
     id: req.params.id,
