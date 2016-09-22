@@ -20,6 +20,11 @@ export class List extends Component {
   handleChange = (event, index, value) => this.setState({sortType: value});
 
   render() {
+    const itemsOriginalIdx = this.props.feed.map((feedItem,idx)=> {
+      feedItem.originalIdx=idx
+      return feedItem;
+    });
+
     return (
       <div style={{marginBottom: "27px"}}>
         <div className="row center-xs">
@@ -33,12 +38,12 @@ export class List extends Component {
           </div>
         </div>
 
-      {arraySort(this.props.feed, this.state.sortType, {reverse: true})
+      {arraySort(itemsOriginalIdx, this.state.sortType, {reverse: true})
         .map((feedItem,idx) => {
         return <ListItem
           {...feedItem}
           key={idx}
-          idx={idx}
+          idx={feedItem.originalIdx}
           user={this.props.user}
           isProfile={this.props.isProfile}
           userLocation={this.props.userLocation}

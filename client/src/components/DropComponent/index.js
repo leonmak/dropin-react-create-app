@@ -138,7 +138,11 @@ class DropComponent extends Component {
 			browserHistory.push('/login');
 		}
     const {drops, profileDrops, selectedDrop} = this.props;
-    this.clickedDrop = selectedDrop.source === "drops" ? drops[selectedDrop.selectedDropIdx]: profileDrops[selectedDrop.selectedDropIdx] ;
+    console.log(this.props)
+
+    this.clickedDrop = selectedDrop.selectedDropSrc === "drops"
+    ? drops[selectedDrop.selectedDropIdx]
+    : profileDrops[selectedDrop.selectedDropIdx] ;
 
 	}
 

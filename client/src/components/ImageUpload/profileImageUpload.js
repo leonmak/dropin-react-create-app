@@ -36,7 +36,7 @@ export default class ImageUpload extends Component {
     upload.end((err, response) => {
       if (err) { console.error(err) }
       if (response.body.secure_url !== '') {
-        this.props.input.onChange(response.body.public_id);
+        this.props.input.onChange(response.body.secure_url);
         this.setState({ uploadedUrl: response.body.secure_url, uploading: false });
       }
     });
