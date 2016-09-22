@@ -49,7 +49,7 @@ componentWillMount() {
 	const {drops, profileDrops, selectedDrop} = this.props;
 
 	this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
-	: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
+								   : selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
 }
 
 	//using redux to toggle the top bar button if component mounted

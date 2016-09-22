@@ -24,6 +24,7 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
   }
 
   if(dropId){
+    // If edit/:dropId route
     values.dropId = dropId;
     values.userId = user.userId;
     request
@@ -31,7 +32,7 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
     .send(values)
     .end((err,res) => {
       passSnackbarMessage('Updated message details');
-      browserHistory.push('/drops/' + dropId);
+      browserHistory.push('/profile');
     })
   } else if (navigator.geolocation) {
     passSnackbarMessage('Getting location and submitting..')
@@ -78,16 +79,28 @@ const socketHandler = new SocketHandler();
 
 class AddForm extends Component {
 
+  constructor(props){
+    super(props);
+    this.clickedDrop = null;
+  }
+
   componentDidMount() {
     socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
 
-    if(this.props.dropId){
-      const selectedIdx = this.props.selectedDrop.selectedDropIdx;
-      const selectedDrop = this.props.profileDrops[selectedIdx];
-      if(selectedDrop){
-        selectedDrop.emojiUni = ':'+EmojiUniToAnnotation[selectedDrop.emojiUni]+':';
-        this.props.initialize(selectedDrop);
-      }
+    const {drops, profileDrops, selectedDrop} = this.props;
+    this.clickedDrop = selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
+
+    if(this.clickedDrop){
+        this.clickedDrop.emojiUni = ':'+EmojiUniToAnnotation[selectedDrop.emojiUni]+':';
+        console.log(this.clickedDrop)
+        this.props.initialize(this.clickedDrop);
+    } else{
+      request
+      .get('/api/feeds/'+this.props.params.dropId)
+      .end((err,res) => {
+        res.body.emojiUni = ':'+EmojiUniToAnnotation[res.body.emojiUni]+':';
+        this.props.initialize(res.body);
+      })
     }
   }
 
