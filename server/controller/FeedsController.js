@@ -43,7 +43,6 @@ FeedsController.apiParse = function(fetchedPost, user_id) {
         hasVoted = true;
       }
 
-      console.log(vote);
       voteCount += vote.vote_type;
     }
 
