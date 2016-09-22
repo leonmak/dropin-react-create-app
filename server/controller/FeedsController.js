@@ -20,10 +20,14 @@ FeedsController.apiParse = function(fetchedPost, user_id) {
 
   if (typeof fetchedPost.user != 'undefined') {
     var user = fetchedPost.user;
-    if (user.anonymous == 0) {
+    if (fetchedPost.anonymous == 0) {
       username = user.facebook_name;
       avatar = user.facebook_profile_img;
       userID = user.id;
+    } else {
+      username = "anonymous";
+      userID = user.id;
+      avatar = "http://unshelteredvoices.org/img/people/anon.jpg";
     }
   }
 
