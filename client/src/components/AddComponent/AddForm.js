@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
-import { TextField } from 'redux-form-material-ui'
+import { TextField, Toggle } from 'redux-form-material-ui'
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
 import EmojiInput from './EmojiInput'
@@ -24,7 +24,15 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
   }
 
   if(dropId){
-    console.log("send put request for edit")
+    values.dropId = dropId;
+    values.userId = user.userId;
+    request
+    .put('/api/feeds')
+    .send(values)
+    .end((err,res) => {
+      passSnackbarMessage('Updated message details');
+      browserHistory.push('/drops/' + dropId);
+    })
   } else if (navigator.geolocation) {
     passSnackbarMessage('Getting location and submitting..')
     navigator.geolocation.getCurrentPosition(position=>{
@@ -37,7 +45,8 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
         sound: values.soundcloudUrl,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
-        date: moment()
+        date: moment(),
+        anonymous: values.anonymous ? 1 : 0
       });
       browserHistory.push('/drops')
     });
@@ -111,6 +120,7 @@ class AddForm extends Component {
           floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
           errorStyle={{textAlign: "left"}}
           multiLine={true} rows={2}/>
+          <Field name="anonymous" component={Toggle} label="Anonymous" style={{textAlign:'left'}}/>
           </div>
           <div className="col-xs-12"><h3>Other Options</h3></div>
           <div className="col-xs-10">

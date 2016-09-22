@@ -123,7 +123,7 @@ export default class ProfilePageComponent extends Component{
 
       </div>
       </div>
-      : <CircularProgress className="no-drops"/>
+      : <CircularProgress className="spinner"/>
       }
       </div>
 		)

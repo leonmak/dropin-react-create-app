@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router';
 import profileImageUpload from '../ImageUpload/profileImageUpload';
 import RaisedButton from 'material-ui/RaisedButton';
 import { reduxForm, Field } from 'redux-form';
-import { TextField, Toggle } from 'redux-form-material-ui';
+import { TextField } from 'redux-form-material-ui';
 import request from 'superagent';
 
 
@@ -50,8 +50,7 @@ export class SettingsPageComponent extends Component {
     .put('/api/profile')
     .send({
       user_avatar_url: values.user_avatar_url,
-      user_name: values.user_name,
-      anonymous: values.anonymous,
+      user_name: values.user_name
     })
     .end((err,res) => {
       browserHistory.push('/profile');
@@ -80,7 +79,6 @@ export class SettingsPageComponent extends Component {
         <div className="col-xs-10 col-sm-6 ">
           <h2>User Settings</h2>
           <Field name="user_name" component={TextField} floatingLabelText="Display Name" style={{width: '100%'}} />
-          <Field name="anonymous" component={Toggle} label="Anonymous"/>
         </div>
       </div>
 

@@ -18,7 +18,7 @@ setup(type, data, handler): put in componentDidMount
 
 comment(userId, postId, text): for comment
 post(userId, text): for post feed
-vote(userId, postId, voteType): for vote 
+vote(userId, postId, voteType): for vote
 */
 
 export default class SocketHandler {
@@ -73,37 +73,38 @@ export default class SocketHandler {
 	_packSocket(data) {
 		switch (this.type) {
 			case COMMENTS_SOCKET:
-			return {channelId: this.channelId, event: "comment:send", data: 
+			return {channelId: this.channelId, event: "comment:send", data:
 			{dropId: data.dropId,
-				userId: data.userId, 
+				userId: data.userId,
 				text: data.text,
 				date: data.date}};
 
 				case FEEDS_SOCKET:
-				return {channelId: this.channelId, event: "feed:send", data: 
+				return {channelId: this.channelId, event: "feed:send", data:
 				{userID: data.userID,
-					emoji: data.emoji, 
+					emoji: data.emoji,
 					title: data.title,
 					video: data.video,
 					image: data.image,
-					sound: data.sound, 
-					longitude: data.longitude, 
+					sound: data.sound,
+					longitude: data.longitude,
 					latitude: data.latitude,
-					date: data.date}};
+					date: data.date,
+          anonymous: data.anonymous}};
 
 					case VOTES_SOCKET:
 					//console.log(data);
-					return {channelId: this.channelId, event: "vote:send", data: 
-					{user_id: data.userId, 
-						post_id: data.postId, 
+					return {channelId: this.channelId, event: "vote:send", data:
+					{user_id: data.userId,
+						post_id: data.postId,
 						vote_type: data.voteType}};
 
 						default:
-						return {channelId: this.channelId, event: "error", data: {}}; 
+						return {channelId: this.channelId, event: "error", data: {}};
 					}
 				}
 
-				comment({dropId, userId, text, date}) { 
+				comment({dropId, userId, text, date}) {
 					console.log("sent new comment to server");
 					socket.emit('client:sendEvent', this._packSocket({
 						dropId,
@@ -113,26 +114,27 @@ export default class SocketHandler {
 					}));
 				}
 
-				post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { 
+				post({userID, emoji, title, video, image, sound, longitude, latitude, date, anonymous}) {
 					console.log("sent new post to server");
 					socket.emit('client:sendEvent', this._packSocket({
-						userID, 
+						userID,
 						emoji,
 						title,
 						video,
 						image,
-						sound, 
-						longitude, 
+						sound,
+						longitude,
 						latitude,
-						date}));
+						date,
+            anonymous}));
 				}
 
-				vote({userId, postId, voteType}) { 
+				vote({userId, postId, voteType}) {
 					//console.log("sent new vote to server", userId,postId,voteType);
 					console.log("sent new vote to server",voteType);
 					socket.emit('client:sendEvent', this._packSocket({
-						userId, 
-						postId, 
+						userId,
+						postId,
 						voteType}));
 				}
 			}
