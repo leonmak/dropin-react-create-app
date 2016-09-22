@@ -139,9 +139,9 @@ var Schema = {
       unsigned: true
     },
     vote_type: {
-      type: 'boolean',
+      type: 'integer',
       nullable: false,
-      defaultTo: true
+      defaultTo: 0
     }
   }
 };

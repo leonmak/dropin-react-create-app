@@ -3,6 +3,7 @@ import ListItem from './ListItem';
 import arraySort from 'array-sort';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
 
 export class List extends Component {
 
@@ -26,6 +27,7 @@ export class List extends Component {
     });
 
     return (
+      itemsOriginalIdx.length > 0 ?
       <div style={{marginBottom: "27px"}}>
         <div className="row center-xs">
         <div className="col-xs-10">
@@ -52,10 +54,10 @@ export class List extends Component {
           selectedDropSrc={this.props.selectedDropSrc}
           selectedDropIdx={this.props.selectedDropIdx}
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
-          openDialog={this.props.openDialog}
-          />;
+          openDialog={this.props.openDialog} />;
       })}
       </div>
+      : <CircularProgress className="spinner"/>
     );
   }
 }

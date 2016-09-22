@@ -106,7 +106,6 @@ UsersController.directEdit = function({
 
 UsersController.editUser = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(id) {
-    console.log(id)
   	var packet = {
     	id: id,
     	user_avatar_url: req.body.user_avatar_url,
@@ -118,7 +117,11 @@ UsersController.editUser = function(req, res) {
   	// Response
 	  res.end("user is successfully updated.");
 	}).catch(function(err) {
-		res.json(err);
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_USER_NOT_FOUND
+      });
+    }
 	});
 };
 

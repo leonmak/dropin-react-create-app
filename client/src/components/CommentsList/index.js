@@ -13,8 +13,7 @@ export class CommentsList extends Component {
 
     return (
       <div>
-      {this.props.comments.length > 0 ?
-        this.props.comments.map(comment => {
+      { this.props.comments.map(comment => {
           let {text, created_at, username, id, userId, userAvatarId, dropId} = comment;
           return <Comment
           key={id}
@@ -26,11 +25,8 @@ export class CommentsList extends Component {
           createdAt={created_at}
           isProfile={this.props.isProfile} />
         })
-        : <CircularProgress className="spinner"/>
       }
-
       </div>
-      );
+    );
   }
-
 }

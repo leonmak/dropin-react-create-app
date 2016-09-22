@@ -3,6 +3,7 @@ import {
 } from '../database';
 
 var FeedsController = require('./FeedsController');
+var UsersController = require('./UsersController');
 var MESSAGES = require('./Messages');
 var VotesController = {};
 
@@ -67,7 +68,7 @@ VotesController.getVotesToUser = function(req, res) {
 
       // Collate votes
       var fetchedVotes = fetchedPosts[i].votes;
-      console.log(fetchedVotes);
+      // console.log(fetchedVotes);
       for (var j = 0; j < fetchedVotes.length; ++j) {
         // Count votes
         if (fetchedVotes[j].vote_type == 1) {
@@ -195,8 +196,8 @@ VotesController.directDelete = function({post_id, user_id}, res = null) {
 
 VotesController.deleteVote = function(req, res) {
   var packet = {
-    post_id: req.query.dropId,
-    user_id: req.query.userId
+    post_id: req.query.drop_id,
+    user_id: req.query.user_id
   };
 
   VotesController.directDelete(packet, res);
@@ -205,5 +206,60 @@ VotesController.deleteVote = function(req, res) {
   res.end("Vote has been successfully deleted.");
 };
 
+VotesController.directEdit = function({post_id, vote_type, user_id}, res = null) {
+  var editPromise = new Promise(function(resolve, reject) {
+    Votes.where({post_id: post_id, user_id: user_id}).fetch().then(function(vote) {
+      // update access token
+      if (vote != null) {
+        vote.save({ vote_type }).then(function(vote) {
+          resolve(vote);
+        }).catch(function(err) {
+          reject({
+            error: MESSAGES.ERROR_UPDATING_VOTE
+          });
+        })
+      } else {
+        new Votes().save({ post_id, user_id, vote_type }).then(function(vote) {
+          resolve(vote);
+        }).catch(function(err) {
+          reject({
+            error: MESSAGES.ERROR_UPDATING_VOTE
+          })
+        });
+      }
+    }).catch(function(err) {
+      reject({
+        error: MESSAGES.ERROR_VOTE_NOT_FOUND
+      })
+    });
+  });
+
+  return editPromise;
+}
+
+VotesController.editVote = function(req, res) {
+
+  UsersController.findUserId(req.user.id).then(function(user_id) {
+    var packet = {
+      post_id: req.body.drop_id,
+      vote_type: req.body.vote_type,
+      user_id: user_id
+    }
+    VotesController.directEdit(packet, res).then(function(editRes) {
+      res.json(editRes);
+    }).catch(function(editRes) {
+      res.json(editRes);
+    })
+
+    // Response
+    // res.end("Vote has been successfully updated.");
+  }).catch(function(err) {
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_USER_NOT_FOUND
+      });
+    }
+  })
+}
 
 module.exports = VotesController;

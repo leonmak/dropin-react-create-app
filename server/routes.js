@@ -79,8 +79,8 @@ module.exports = function (passport) {
   router.post('/api/feeds/:id/votes', VotesController.postVote); // Create a new vote
   // {{base_url}}api/feeds/3/votes :: {userId, vote_type}
 
-  // router.put('/api/votes', VotesController.editVote); // Edit an existing vote
-  // {{base_url}}api/votes?dropId=5&userId=2
+  router.put('/api/votes', VotesController.editVote); // Edit an existing vote
+  // {{base_url}}api/votes {drop_id}
 
   router.delete('/api/votes', VotesController.deleteVote); // Delete an existing vote
   // {{base_url}}api/votes?dropId=5&userId=2
@@ -99,8 +99,8 @@ module.exports = function (passport) {
   }); // Get session user profile
   // Example: {{base_url}}api/profile
 
-  //router.put('/api/profile', loginCheck, UsersController.editUser); // Update an existing user
-  // Example: {{base_url}}api/profile :: {id, user_avatar_url, anonymous}
+  router.put('/api/profile', loginCheck, UsersController.editUser); // Update an existing user
+  // Example: {{base_url}}api/profile :: {user_avatar_url, anonymous}
 
   router.delete('/api/users/:id', UsersController.deleteUser); // Delete an existing user
   // Example: {{base_url}}api/users/1
