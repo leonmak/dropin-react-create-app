@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
-import {fetchAllNearbyDrops, updateANearbyDrop, passingFromOthersToDrop} from '../actions';
+import {fetchAllNearbyDrops, updateANearbyDrop, selectedDropSrc, passingFromOthersToDrop} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
 
 import MapPageComponent from '../components/MapPageComponent';
@@ -20,6 +20,7 @@ function mapDispatchToProps(dispatch) {
     passSnackbarMessage: msg => dispatch(passSnackbarMessage(msg)),
     setLocation: lngLat => dispatch(setLocation(lngLat)),
     passingFromOthersToDrop: drop => dispatch(passingFromOthersToDrop(drop)),
+    selectedDropSrc: src => dispatch(selectedDropSrc(src)),
   };
 }
 

@@ -9,23 +9,18 @@ import * as fb from '../utils/facebook-url';
 import * as Icons from '../utils/Icons';
 import * as geo from '../utils/geolocator';
 
-const goToURL = (url,props,drop) => setTimeout(()=>{
-  browserHistory.push(url);
-  props.passingFromOthersToDrop(drop);
-}, 300);
-
 export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoom: 18,
-      // center: props.location
+      zoom: 18
     }
 
     this.map = null;
     this.geoId = null;
     this.socketHandler = new SocketHandler();
     this.updateLocation = this.updateLocation.bind(this);
+    this.setupMap = this.setupMap.bind(this);
   }
 
   updateLocation(coords) {
@@ -38,6 +33,8 @@ export default class MapPageComponent extends Component {
     }else{
       this.props.fetchAllNearbyDrops(null);
     }
+
+    this.props.selectedDropSrc("map");
 
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
   }
@@ -125,7 +122,7 @@ export default class MapPageComponent extends Component {
 
         <div className="my-location">
           <FloatingActionButton
-            onTouchTap={() => this.map.flyTo({ center: location, zoom: 19, bearing: 0, speed: 0.4, curve: 1, easing: t => t }) } >
+            onTouchTap={() => this.map.flyTo({ center: location, zoom: 19, bearing: 0, speed: 0.7, curve: 1, easing: t => t }) } >
             {Icons.MUI('my_location')}
           </FloatingActionButton>
         </div>
@@ -137,6 +134,7 @@ export default class MapPageComponent extends Component {
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[zoom]}
           pitch={60}
+          center={location}
           hash={true}>
 
           <Layer
@@ -157,13 +155,9 @@ export default class MapPageComponent extends Component {
 
           {drops.map((drop, idx) => {
             return (
-              <Layer type="symbol" key={idx} ref="marker-icons"
-                layout={{"icon-padding": 5, "icon-image": drop.emojiUni,"icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
-                <Feature
-                  properties={{"icon": drop.emojiUni, "title": drop.username, "description": drop.description}}
-                  coordinates={drop.location}
-                  onClick={()=> goToURL(`/drops/${drop.dropId}`,this.props, drop)}
-                />
+              <Layer type="symbol" key={idx}
+                layout={{"icon-image": drop.emojiUni || '2753', "icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
+                <Feature coordinates={drop.location} onClick={()=> browserHistory.push(`/drops/${drop.dropId}`)}/>
               </Layer>
             )
           })}
