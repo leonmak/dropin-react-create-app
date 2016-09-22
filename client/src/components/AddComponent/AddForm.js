@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
-
+import { browserHistory } from 'react-router'
+import request from 'superagent'
 import { TextField } from 'redux-form-material-ui'
 import moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton'
@@ -15,33 +16,33 @@ import * as geo from '../../utils/geolocator';
 import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
 import '../../styles/form.css';
 
-const handler = (reset, socketHandler, user, location) => values => {
+const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => values => {
   if(values.emojiUni === null){
-    //values.emojiUni = 'default-marker';
     values.emojiUni='1f61b';
   } else {
     values.emojiUni = EmojiAnnotationToUni[values.emojiUni.substring(1,values.emojiUni.length - 1)];
   }
-  console.log(values);
-  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 
-  console.log('user', user);
-  console.log('location', location);
+  if(dropId){
+    console.log("send put request for edit")
+  } else if (navigator.geolocation) {
+    passSnackbarMessage('Getting location and submitting..')
+    navigator.geolocation.getCurrentPosition(position=>{
+      socketHandler.post({
+        userID: user.userId,
+        emoji: values.emojiUni,
+        title: values.title,
+        video: values.videoUrl,
+        image: values.imageId,
+        sound: values.soundcloudUrl,
+        longitude: position.coords.longitude,
+        latitude: position.coords.latitude,
+        date: moment()
+      });
+      browserHistory.push('/drops')
+    });
+  }
 
-
-  socketHandler.post(
-    {userID: user.userId,
-      emoji: values.emojiUni,
-      title: values.title,
-      video: values.videoUrl,
-      image: values.imageId,
-      sound: values.soundcloudUrl,
-      longitude: location[0],
-      latitude: location[1],
-      date: moment()});
-
-
-  reset();
 }
 
 const validate = values => {
@@ -68,20 +69,9 @@ const socketHandler = new SocketHandler();
 
 class AddForm extends Component {
 
-  constructor(props) {
-    super(props);
-    this.geoId = null;
-    this.updateLocation = this.updateLocation.bind(this);
-  }
-
-  updateLocation(coords) {
-    this.props.setLocation([coords.longitude, coords.latitude])
-  }
-
   componentDidMount() {
     socketHandler.setup(FEEDS_SOCKET, {}, this.postReceive.bind(this));
-    // this.geoId = geo.geoListener(this.updateLocation);
-    // this.props.dropId && this.props.loadFormSucess(this.props.);
+
     if(this.props.dropId){
       const selectedIdx = this.props.selectedDrop.selectedDropIdx;
       const selectedDrop = this.props.profileDrops[selectedIdx];
@@ -100,19 +90,14 @@ class AddForm extends Component {
   }
 
   componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.geoId);
     socketHandler.uninstall();
   }
 
-  postReceive(){
-
-  }
-
   render() {
-    const { handleSubmit, pristine, reset, submitting, dropId } = this.props;
+    const { handleSubmit, pristine, passSnackbarMessage, submitting, dropId, user, location } = this.props;
 
     return (
-      <form onSubmit={ handleSubmit(handler(reset, socketHandler, this.props.user, this.props.location)) }>
+      <form onSubmit={ handleSubmit(handler(passSnackbarMessage, socketHandler, user, location, dropId)) }>
       <h1>{dropId ? 'Edit message' : 'New message'}</h1>
 
       <div className="row center-xs">
