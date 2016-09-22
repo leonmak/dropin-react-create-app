@@ -44,16 +44,6 @@ var https_redirect = function(req, res, next) {
 };
 app.use(https_redirect);
 
-// passport.use(new strategy({
-//     clientID: process.env.FB_CLIENT_ID,
-//     clientSecret: process.env.FB_CLIENT_SECRET,
-//     callbackURL: 'http://localhost:3001/facebook/auth',
-//     scope: ['user_friends', 'email', 'public_profile', 'publish_actions'],
-//     profileFields: ['id', 'emails', 'displayName', 'picture.type(large)', 'profileUrl', 'friends']
-//   },
-//   FacebookController.loginCallback
-// ));
-
 passport.serializeUser(function(user, callback) {
   callback(null, user);
 });
