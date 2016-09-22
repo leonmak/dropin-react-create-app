@@ -124,7 +124,7 @@ export default class MapPageComponent extends Component {
       <div>
 
         <div className="my-location">
-          <FloatingActionButton primary={true}
+          <FloatingActionButton
             onTouchTap={() => this.map.flyTo({ center: location, zoom: 19, bearing: 0, speed: 0.4, curve: 1, easing: t => t }) } >
             {Icons.MUI('my_location')}
           </FloatingActionButton>
