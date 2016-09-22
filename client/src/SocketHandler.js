@@ -55,16 +55,17 @@ export default class SocketHandler {
 
 	//returning the data to the server
 	_eventHandler(packet) {
+		//console.log('received event',packet);
 		if(this.channelId===OPEN_COMMENTS_SOCKET&&packet.event==="comment:send"){
 			console.log("received event handled by open comment socket", packet);
 			this.handler(packet.data);
 		}
 		else if(this.channelId===OPEN_VOTES_SOCKET&&packet.event==="vote:send"){
-			console.log("received event handled by open vote socket", packet);
+			//console.log("received event handled by open vote socket", packet);
 			this.handler(packet.data);
 		}
 		else if (packet.channelId === this.channelId) {
-			console.log("received event handled by normal socket", packet);
+			//console.log("received event handled by normal socket", packet);
 			this.handler(packet.data);
 		}
 	}

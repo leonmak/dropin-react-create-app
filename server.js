@@ -85,7 +85,7 @@ io.on('connection', function(socket) {
       VotesController.directVote(packet.data).then(function(res){
         var newPacket = packet;
         newPacket.data = res;
-        //console.log('vote packet emitted from server', newPacket);
+        console.log('vote packet emitted from server', newPacket);
         io.emit('server:sendEvent', newPacket);
       })
     }

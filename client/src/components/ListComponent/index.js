@@ -72,8 +72,21 @@ class ListComponent extends Component {
   }
 
   newVoteAdded(data){
-    console.log('receivedvote', data);
-    //this.props.updateVoteInListPage(data);
+    //console.log('receivedvote', data);
+    //need to change state of the thing if it is wrong
+    console.log(data.user_id, this.props.user);
+    if(this.props.user){
+      if(data.user_id===this.props.user.userId){
+        console.log('up my vote');
+        this.props.updateMyVoteInListPage(data);
+      }else{
+        console.log('up others vote');
+        this.props.updateOthersVoteInListPage(data);
+      }
+    }else{
+      console.log('up others vote');
+      this.props.updateOthersVoteInListPage(data);
+    }
   }
 
   componentWillUnmount() {
@@ -86,17 +99,17 @@ class ListComponent extends Component {
   render() {
     return (
       <List
-        user={this.props.user}
-        feed={this.props.drops.drops}
-        userLocation={this.props.location}
-        dropSrc={"drops"}
-        selectedDropSrc={this.props.selectedDropSrc}
-        selectedDropIdx={this.props.selectedDropIdx}
-        fetchCommentsForDrop={this.props.fetchCommentsForDrop}
-        passSnackbarMessage={this.props.passSnackbarMessage}
-        makeAVote={this.props.makeAVote}
+      user={this.props.user}
+      feed={this.props.drops.drops}
+      userLocation={this.props.location}
+      dropSrc={"drops"}
+      selectedDropSrc={this.props.selectedDropSrc}
+      selectedDropIdx={this.props.selectedDropIdx}
+      fetchCommentsForDrop={this.props.fetchCommentsForDrop}
+      passSnackbarMessage={this.props.passSnackbarMessage}
+      makeAVote={this.props.makeAVote}
       />
-    )
+      )
   }
 }
 
@@ -106,6 +119,8 @@ ListComponent.PropTypes = {
   passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired,
   updateCommentInListPage: PropTypes.func.isRequired,
+  updateMyVoteInListPage: PropTypes.func.isRequired,
+  updateOthersVoteInListPage: PropTypes.func.isRequired,
   selectedDropIdx: PropTypes.func.isRequired,
   passSnackbarMessage: PropTypes.func.isRequired,
   makeAVote: PropTypes.func.isRequired
