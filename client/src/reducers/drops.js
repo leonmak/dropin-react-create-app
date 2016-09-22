@@ -1,5 +1,5 @@
 import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP, UPDATE_COMMENT_IN_LIST_PAGE} from '../actions';
-import {VOTE_INITIAL_UI_UPDATE,VOTE_UNDO_INITIAL_UI_UPDATE,VOTE_CONFIRM_INITIAL_UI_UPDATE} from '../actions/VoteActions';
+import {VOTE_INITIAL_UI_UPDATE,UPDATE_MY_VOTE_IN_LIST_PAGE,UPDATE_OTHERS_VOTE_IN_LIST_PAGE} from '../actions/VoteActions';
 
 //designing state shape
 const initialState = {
@@ -94,6 +94,28 @@ const initialState = {
 					}
 				}
 			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+		case UPDATE_MY_VOTE_IN_LIST_PAGE:
+		var dropId = action.vote.post_id;
+		var changeInVote = action.vote.vote_type;
+		console.log('update my votes',action);
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+		case UPDATE_OTHERS_VOTE_IN_LIST_PAGE:
+		console.log('update others votes',action);
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
 		}
 		return Object.assign({}, state, {
 			drops: newDrops

@@ -74,17 +74,16 @@ class ListComponent extends Component {
   newVoteAdded(data){
     //console.log('receivedvote', data);
     //need to change state of the thing if it is wrong
-    console.log(data.user_id, this.props.user);
     if(this.props.user){
       if(data.user_id===this.props.user.userId){
-        console.log('up my vote');
+        //console.log('up my vote');
         this.props.updateMyVoteInListPage(data);
       }else{
-        console.log('up others vote');
+        //console.log('up others vote');
         this.props.updateOthersVoteInListPage(data);
       }
     }else{
-      console.log('up others vote');
+      //console.log('up others vote');
       this.props.updateOthersVoteInListPage(data);
     }
   }
