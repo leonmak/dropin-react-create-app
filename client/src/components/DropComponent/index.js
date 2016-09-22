@@ -50,28 +50,7 @@ class DropComponent extends Component {
 
     this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
     : selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
-
-
 	}
-
-	//algo to initialize the comment socket // expensive deep comparison
-
-	// componentDidUpdate(prevProps,prevState){
-	// 	if(
-	// 		(JSON.stringify(prevProps.selectedDrop) == JSON.stringify({
-	// 		selectedDrop:{},
-	// 		comments:[]
-	// 		})) &&
-	// 		(JSON.stringify(this.props.selectedDrop) != JSON.stringify({
-	// 		selectedDrop:{},
-	// 		comments:[]
-	// 		}))
-	// 	){
-	// 		socketHandler.setup(COMMENTS_SOCKET,
-	// 			{postId: this.props.selectedDrop.selectedDrop.dropId},
-	// 			this.commentReceive.bind(this));
-	// 	}
-	// }
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
@@ -127,47 +106,13 @@ class DropComponent extends Component {
 	}
 }
 
-/**/
+DropComponent.propTypes = {
+	toggleBottomBar: PropTypes.func.isRequired,
+	toggleTopBarBackButton: PropTypes.func.isRequired,
+	selectedDrop: PropTypes.object.isRequired,
+	pageVisibility: PropTypes.object.isRequired,
+	setLocation: PropTypes.func.isRequired,
+	updateAComment: PropTypes.func.isRequired
+};
 
-/*			<Drop drop={this.props.selectedDrop.selectedDrop} />
-			<CommentsList className='commentsContainer'
-			comments={this.props.selectedDrop.comments} />
-			<footer>
-			<CommentForm
-			location={location}
-			user={user}
-			socketHandler={socketHandler}
-			drop={this.props.selectedDrop.selectedDrop}/>
-			</footer>*/
-
-			/*<CommentsList comments={comments} />*/
-
-
-
-			DropComponent.propTypes = {
-				toggleBottomBar: PropTypes.func.isRequired,
-				toggleTopBarBackButton: PropTypes.func.isRequired,
-				selectedDrop: PropTypes.object.isRequired,
-				pageVisibility: PropTypes.object.isRequired,
-				setLocation: PropTypes.func.isRequired,
-				updateAComment: PropTypes.func.isRequired,
-				user: PropTypes.object.isRequired
-			};
-
-
-			export default DropComponent;
-
-
-/*
-<button type="button" onClick={()=>this.props.toggleTopBarBackButton(false)}>show bottom bar</button>
-			<button type="button" onClick={()=>this.props.toggleTopBarBackButton(true)}>show bottom bar</button>
-			<button type="button" onClick={()=>console.log(this.props)}>see state</button>*/
-
-/*const DropComponent = (props) => (
-	<div>
-	<Drop drop={drop} />
-	<CommentsList comments={comments} />
-	</div>
-	)
-
-	export default DropComponent;*/
+export default DropComponent;

@@ -46,17 +46,12 @@ class ListComponent extends Component {
   //dynamically reg and dereg sockets on component change
 
   componentDidMount() {
-    //listening to the socket so that you
-    //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
     this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
 
-    //method to fetch all nearby drops and set the state
+    // TODO: method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
-    /*request.get('api/feeds/1/comments').end(function(err,res){
-      console.log(res);
-    });*/
 
 
   }
@@ -64,11 +59,11 @@ class ListComponent extends Component {
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    console.log('receiveddrop', data);
+    // console.log('receiveddrop', data);
     this.props.updateANearbyDrop(data);
   }
   newCommentAdded(data){
-    console.log('receivedcomment', data);
+    // console.log('receivedcomment', data);
     this.props.updateCommentInListPage(data);
   }
 
@@ -77,22 +72,6 @@ class ListComponent extends Component {
     this.commentSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
-
-  /*<ul className="messages" ref='messages'>
-        {this.props.drops.map((id,title) => {
-                    //<span className='msgSender'>{msg.from}:</span>
-                    return <li key={id}>{title + id}</li>
-                })}
-        </ul>*/
-
-        /*<ul>
-        {this.props.drops.map((drop) => {
-                    //<span className='msgSender'>{msg.from}:</span>
-                    return <li key={drop.id}>{drop.title + drop.id}</li>
-                })}
-        </ul>*/
-
-        /*<List feed={data} userLocation={this.state.userLocation} */
 
   render() {
     return (
