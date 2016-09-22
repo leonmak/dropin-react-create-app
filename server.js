@@ -12,7 +12,6 @@ const CommentsController = require('./server/controller/CommentsController');
 const FeedsController = require('./server/controller/FeedsController');
 var url = require('url')
 
-<<<<<<< HEAD
 // var clientSockets = [];
 var cookieParser = require('cookie-parser');
 
@@ -22,8 +21,6 @@ const env = require('node-env-file');
 if(process.env.NODE_ENV !== 'production')
   env(__dirname + '/.env');
 
-=======
->>>>>>> dev
 passport.use(new FacebookTokenStrategy({
   clientID: process.env.REACT_APP_FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
@@ -34,7 +31,6 @@ passport.use(new FacebookTokenStrategy({
 FacebookController.loginCallback
 ));
 
-<<<<<<< HEAD
 var https_redirect = function(req, res, next) {
     if (process.env.NODE_ENV === 'production') {
         if (req.headers['x-forwarded-proto'] != 'https') {
@@ -58,8 +54,6 @@ app.use(https_redirect);
 //   FacebookController.loginCallback
 // ));
 
-=======
->>>>>>> dev
 passport.serializeUser(function(user, callback) {
   callback(null, user);
 });
