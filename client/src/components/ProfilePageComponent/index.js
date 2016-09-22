@@ -74,7 +74,7 @@ export default class ProfilePageComponent extends Component{
     ];
     const { profile : { drops, comments } } = this.props;
     const { userInfo } = this.state;
-    console.log(userInfo)
+
 		return (
       <div>
       <Dialog actions={actions} modal={false} open={this.state.isDialogOpen} onRequestClose={this.closeDialog}>
