@@ -43,17 +43,6 @@ UsersController.getUser = function(req, res) {
   })
 }
 
-// Get a user object reference for back-end parsing and JSON object construction
-UsersController.getUserObject = function(id) {
-
-
-  Users.where('id', id).fetch().then(function(user) {
-    console.log(user.toJSON());
-  }).catch(function(err) {
-    //...
-  })
-}
-
 // Creating a new user
 UsersController.createUser = function(accessToken, profile, callback) {
   Users.where('facebook_id', profile.id).fetch().then(function(user) {
@@ -94,15 +83,12 @@ UsersController.directEdit = function({
 }, res = null) {
   Users.where('id', id).fetch().then(function(user) {
     // update access token
-    console.log(user);
-    console.log(anonymous);
     if (user_avatar_url != undefined) {
 	    user.save({
     	  user_avatar_url: user_avatar_url,
     	});
 	  }
     if (anonymous != undefined) {
-	    console.log('saving anonymous');
 	    user.save({
       	anonymous: anonymous
     	});

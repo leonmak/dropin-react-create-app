@@ -106,43 +106,6 @@ FeedsController.apiParse = function(fetchedPost, user_id) {
   return parsedPost;
 }
 
-//TODO: trying to get feeds from get request in chronological order
-/*FeedsController.getFeeds = function(req, res) {
-
-  // Get joint table objects
-  Posts.query(function(qb){
-    qb.orderBy('date','DESC');
-  }).fetchAll({
-    withRelated: ['votes', 'comments', 'user']
-  }).then(function(posts) {
-    console.log('posts sorted', posts);
-    // Get all posts objects
-    var fetchedPosts = posts.toJSON();
-    var parsedPosts = [];
-
-    for (var i = 0; i < fetchedPosts.length; ++i) {
-
-      // Get post object
-      var fetchedPost = fetchedPosts[i];
-
-      // Parse post
-      var parsedPost = FeedsController.apiParse(fetchedPost);
-
-      // Collate post
-      parsedPosts.push(parsedPost);
-      // console.log(parsedPost);
-    }
-
-    // console.log(fetchedPosts);
-    res.json(parsedPosts);
-
-  }).catch(function(err) {
-    res.json({
-      error: MESSAGES.ERROR_POST_NOT_FOUND
-    });
-  });
-}*/
-
 /*** Front-end Queries ***/
 
 // Get all the feeds across the database
@@ -261,7 +224,6 @@ FeedsController.getUserFeeds = function(req, res) {
 
       // Collate post
       parsedPosts.push(parsedPost);
-      // console.log(parsedPost);
     }
 
     res.json(parsedPosts);
@@ -340,11 +302,9 @@ FeedsController.directPost = function({
           res.json(post.toJSON());
         } else {
           userPromise.then(function(user) {
-            console.log('output from user query',user);
             var postObj = post;
             postObj.attributes.user = user.toJSON();
             var jsonObject = FeedsController.apiParse(postObj.toJSON());
-            console.log("JSON Post to emit: ",jsonObject);
             resolve(jsonObject);
           });
 
