@@ -19,10 +19,14 @@ FeedsController.apiParse = function (fetchedPost, user_id) {
   // Validate user and anonymity
   if (typeof fetchedPost.user != 'undefined') {
     var user = fetchedPost.user;
-    if (user.anonymous == 0) {
+    if (fetchedPost.anonymous == 0) {
       username = user.facebook_name;
       avatar = user.facebook_profile_img;
       userID = user.id;
+    } else {
+      username = "anonymous";
+      userID = user.id;
+      avatar = "http://unshelteredvoices.org/img/people/anon.jpg";
     }
   }
 
@@ -42,12 +46,7 @@ FeedsController.apiParse = function (fetchedPost, user_id) {
         voteState = vote.vote_type;
       }
 
-      // Count votes
-      if (vote.vote_type == 1) {
-        voteCount++;
-      } else if (vote.vote_type == -1) {
-        voteCount--;
-      }
+      voteCount += vote.vote_type;
     }
   }
 

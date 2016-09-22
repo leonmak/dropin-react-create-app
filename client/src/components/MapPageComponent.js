@@ -145,7 +145,7 @@ export default class MapPageComponent extends Component {
               layout={
               { "icon-image": drop.emojiUni,
                 "icon-size": 0.5+drop.replies/100+drop.votes/100 }}>
-                <Feature
+                <xx
                   coordinates={drop.location}
                   onClick={()=> goToURL(`/drops/${drop.dropId}`,this.props, drop)}
                 />

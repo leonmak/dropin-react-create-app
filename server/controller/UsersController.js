@@ -81,16 +81,12 @@ UsersController.createUser = function(accessToken, profile, callback) {
 UsersController.directEdit = function({
 	id,
 	user_avatar_url,
-	anonymous,
   user_name
 }, res = null) {
   Users.where('id', id).fetch().then(function(user) {
     // update access token
     if (user_avatar_url != undefined) {
 	    user.save({ user_avatar_url });
-	  }
-    if (anonymous != undefined) {
-	    user.save({ anonymous });
 	  }
     if (user_name != undefined) {
       user.save({ user_name: user_name });
@@ -109,7 +105,6 @@ UsersController.editUser = function(req, res) {
   	var packet = {
     	id: id,
     	user_avatar_url: req.body.user_avatar_url,
-    	anonymous: req.body.anonymous,
       user_name: req.body.user_name
   	};
   	UsersController.directEdit(packet, res);
