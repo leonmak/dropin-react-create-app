@@ -21,7 +21,7 @@ ACTION IS CALLED ON THE LIST PAGE
 //function for you to call to fetch all nearby drops
 export function fetchAllNearbyDrops(userId){
 	return (dispatch)=>{
-		BackendHelper.getAllDrops(userId)
+		BackendHelper.getAllNearbyDrops(userId)
 		.then(response=>dispatch(receiveAllNearbyDrops(response)));
 	}
 }
