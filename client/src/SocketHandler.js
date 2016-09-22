@@ -2,6 +2,7 @@ export const FEEDS_SOCKET = "feeds";
 export const COMMENTS_SOCKET = "comments";
 export const VOTES_SOCKET = "votes";
 export const OPEN_COMMENTS_SOCKET = "open_comments";
+export const OPEN_VOTES_SOCKET = 'open_votes';
 
 //import socket from 'react-socket';
 
@@ -32,7 +33,7 @@ export default class SocketHandler {
 			this.channelId = "feed:";
 			break;
 			case VOTES_SOCKET:
-			this.channelId = "vote:" + data.commentId;
+			this.channelId = "vote:" + data.postId;
 			break;
 			case OPEN_COMMENTS_SOCKET:
 			this.channelId = "open_comments";
@@ -52,9 +53,11 @@ export default class SocketHandler {
 
 	//returning the data to the server
 	_eventHandler(packet) {
-		console.log('sameobject1',packet);
-		//console.log("received event", packet);
+		console.log("received event", packet);
 		if(this.channelId===OPEN_COMMENTS_SOCKET){
+			this.handler(packet.data);
+		}
+		if(this.channelId===OPEN_VOTES_SOCKET){
 			this.handler(packet.data);
 		}
 		else if (packet.channelId === this.channelId) {
@@ -84,10 +87,11 @@ export default class SocketHandler {
 					date: data.date}};
 
 					case VOTES_SOCKET:
+					//console.log(data);
 					return {channelId: this.channelId, event: "vote:send", data: 
-					{userId: data.userId, 
-						postId: data.postId, 
-						voteType: data.voteType}};
+					{user_id: data.userId, 
+						post_id: data.postId, 
+						vote_type: data.voteType}};
 
 						default:
 						return {channelId: this.channelId, event: "error", data: {}}; 
@@ -119,6 +123,7 @@ export default class SocketHandler {
 				}
 
 				vote({userId, postId, voteType}) { 
+					//console.log("sent new vote to server", userId,postId,voteType);
 					console.log("sent new vote to server");
 					socket.emit('client:sendEvent', this._packSocket({
 						userId, 

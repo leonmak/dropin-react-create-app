@@ -79,12 +79,12 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1,1)}}
+          (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1,1,props.user.userId)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,-1)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,-1,props.user.userId)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
-            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,1,0,props.user.userId)}}
             > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
           )
         )
@@ -99,12 +99,12 @@ const redirectToLogin = props =>{
 
       {props.user?
         ((props.voted===1)?
-          (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,1)}}
+          (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,1,props.user.userId)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
           ((props.voted===-1)?
-            (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,-1,-1)}}
+            (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,-1,-1,props.user.userId)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,0)}}
+            (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,0,props.user.userId)}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
           )
         )
@@ -168,7 +168,8 @@ const redirectToLogin = props =>{
     <div className="col-xs-2">
     <ItemVoting votes={props.votes} user={props.user} 
     dropId={props.dropId} passSnackbarMessage={props.passSnackbarMessage}
-    voted={props.voted} makeAVote={props.makeAVote} undoAVote={props.undoAVote}/>
+    voted={props.voted} makeAVote={props.makeAVote} undoAVote={props.undoAVote}
+    userId={props.userId}/>
     </div>
     <div className="col-xs-9">
     <ItemDetails
@@ -206,7 +207,8 @@ const redirectToLogin = props =>{
       selectedDropIdx: PropTypes.func.isRequired,
       user: PropTypes.object.isRequired,
       makeAVote: PropTypes.func.isRequired,
-      undoAVote: PropTypes.func.isRequired
+      undoAVote: PropTypes.func.isRequired,
+      userId: PropTypes.object.isRequired
     }
 
     export default ListItem;

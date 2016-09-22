@@ -30,27 +30,27 @@ class DropComponent extends Component {
 
     /*this.state ={
       directLinkDrop: null
-    }*/
+  }*/
 
-		this.geoId = null;
-    this.clickedDrop = null;
-		this.updateLocation = this.updateLocation.bind(this);
+  this.geoId = null;
+  this.clickedDrop = null;
+  this.updateLocation = this.updateLocation.bind(this);
+}
+
+updateLocation(coords) {
+	this.props.setLocation([coords.longitude, coords.latitude])
+}
+
+componentWillMount() {
+	if(!this.props.user) {
+		this.props.passSnackbarMessage('Log in to view message')
+		browserHistory.push('/login');
 	}
+	const {drops, profileDrops, selectedDrop} = this.props;
 
-	updateLocation(coords) {
-		this.props.setLocation([coords.longitude, coords.latitude])
-	}
-
-	componentWillMount() {
-		if(!this.props.user) {
-			this.props.passSnackbarMessage('Log in to view message')
-			browserHistory.push('/login');
-		}
-    const {drops, profileDrops, selectedDrop} = this.props;
-
-    this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
-    : selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
-	}
+	this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
+	: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
+}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
@@ -59,21 +59,24 @@ class DropComponent extends Component {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
 
-    if(this.clickedDrop)
-      socketHandler.setup(COMMENTS_SOCKET, {postId: this.clickedDrop.dropId}, this.commentReceive.bind(this));
-    else
-      request
-      .get('/api/feeds/'+this.props.params.dropId)
-      .end((err,res) => {
-        //this.setState({directLinkDrop: res.body})
-        this.props.passingFromOthersToDrop(res.body);
+		if(this.clickedDrop){
+			voteSocketHandler.setup(VOTES_SOCKET, {postId: this.clickedDrop.dropId}, this.voteReceive.bind(this));
+			socketHandler.setup(COMMENTS_SOCKET, {postId: this.clickedDrop.dropId}, this.commentReceive.bind(this));
+		}
+		else{
+			request
+			.get('/api/feeds/'+this.props.params.dropId)
+			.end((err,res) => {
+				this.props.passingFromOthersToDrop(res.body);
+				socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
+				voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
+			})
+		}
 
-        console.log(res.body)
-        socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
-      })
 
-    this.props.fetchCommentsForDrop(this.props.params.dropId);
+		this.props.fetchCommentsForDrop(this.props.params.dropId);
 	}
+
 
 	componentWillUnmount() {
 		socketHandler.uninstall();
@@ -87,13 +90,18 @@ class DropComponent extends Component {
 		console.log('received comment', data);
 		this.props.updateAComment(data);
     	//this.props.updateANearbyDrop(data);
+    }
+
+    voteReceive(data){
+    	console.log('received vote', data);
+		//this.props.updateAComment(data);
 	}
 
 	render() {
 		console.log("testing",(null||null));
 		const {location, user, drops, profileDrops, selectedDrop} = this.props;
-    const directLinkDrop = this.props.selectedDrop.selectedDrop;
-    const resolvedDrop = this.clickedDrop || directLinkDrop;
+		const directLinkDrop = this.props.selectedDrop.selectedDrop;
+		const resolvedDrop = this.clickedDrop || directLinkDrop;
 
 		return (resolvedDrop ?
 			<div>
@@ -105,7 +113,7 @@ class DropComponent extends Component {
 			socketHandler={socketHandler}
 			drop={resolvedDrop}/>
 			</div>
-      : <CircularProgress className="spinner"/>
+			: <CircularProgress className="spinner"/>
 			)
 	}
 }
