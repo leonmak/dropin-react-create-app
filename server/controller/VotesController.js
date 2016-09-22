@@ -219,6 +219,9 @@ VotesController.directEdit = function({post_id, vote_type, user_id}, res = null)
           });
         })
       } else {
+        if (vote_type == undefined) {
+          vote_type = 0;
+        }
         new Votes().save({ post_id, user_id, vote_type }).then(function(vote) {
           resolve(vote);
         }).catch(function(err) {
