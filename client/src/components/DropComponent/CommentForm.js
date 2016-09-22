@@ -23,23 +23,28 @@ const validate = values => {
 	return errors;
 }
 
+const handleKeyPress = (submitHandler) => (event) => {
+  if (event.key == "Enter" && !(event.shiftKey || event.ctrlKey || event.altKey))
+    submitHandler();
+};
 
 export class CommentForm extends Component{
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting, location, user, drop } = this.props;
+		const { handleSubmit, pristine, reset, submitting, location, user, drop, socketHandler } = this.props;
+    const submitHandler = handleSubmit(handler(reset, socketHandler, user, location, drop))
 		return(
-		<form onSubmit={ handleSubmit(handler(reset, this.props.socketHandler,
-				this.props.user, this.props.location, this.props.drop)) }>
+		<form onSubmit={ submitHandler }>
 			<div className="row center-xs middle-xs">
 
   			<div className="col-xs-8">
-    			<Field name="title" component={TextField} fullWidth={false}
+    			<Field name="title" component={TextField} fullWidth={true}
             floatingLabelText="Write Message" floatingLabelStyle={{left: 0}}
-      			errorStyle={{textAlign: "left"}} multiLine={true} rows={2}/>
+      			errorStyle={{textAlign: "left"}} rows={2}
+            onKeyPress={ handleKeyPress(submitHandler) } />
   			</div>
 
-  			<div className="col-xs-3">
+  			<div className="col-xs-2">
           <IconButton type="submit" iconStyle={{color: "#00bcd4"}} disabled={pristine || submitting}>{Icons.MUI('send')}</IconButton>
   			</div>
 			</div>
