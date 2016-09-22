@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTE_SOCKET} from '../../SocketHandler';
+import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTES_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
 
 /*
@@ -51,7 +51,7 @@ class ListComponent extends Component {
 
     this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
 
-    this.voteSocketHandler.setup(OPEN_VOTE_SOCKET,{},this.newVoteAdded.bind(this));
+    this.voteSocketHandler.setup(OPEN_VOTES_SOCKET,{},this.newVoteAdded.bind(this));
 
     // TODO: method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
@@ -67,11 +67,13 @@ class ListComponent extends Component {
   }
   newCommentAdded(data){
     // console.log('receivedcomment', data);
+    console.log('receivedcomment', data);
     this.props.updateCommentInListPage(data);
   }
 
   newVoteAdded(data){
-    this.props.updateVoteInListPage(data);
+    console.log('receivedvote', data);
+    //this.props.updateVoteInListPage(data);
   }
 
   componentWillUnmount() {
