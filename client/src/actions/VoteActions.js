@@ -3,12 +3,19 @@ import {passSnackBarAction} from './SnackBarActions'
 export const VOTE_INITIAL_UI_UPDATE = 'VOTE_INITIAL_UI_UPDATE';
 export const VOTE_UNDO_INITIAL_UI_UPDATE = 'VOTE_UNDO_INITIAL_UI_UPDATE';
 export const VOTE_CONFIRM_INITIAL_UI_UPDATE = 'VOTE_CONFIRM_INITIAL_UI_UPDATE';
+import SocketHandler from '../SocketHandler'; 
 
 /*VOTE ACTION 
 */
-export function makeAVote(dropId, voteAction, initialVoted){
+export function makeAVote(dropId, voteAction, initialVoted, userId){
 	return(dispatch)=>{
 		dispatch(voteInitialUIUpdate(dropId,voteAction,initialVoted));
+		var socketHandler = new SocketHandler();
+		socketHandler.setup('votes',{postId: dropId},getNewVote);
+		//vote({userId, postId, voteType}) 
+		socketHandler.vote({userId: userId, postId: dropId, voteType: voteAction});
+		socketHandler.uninstall();
+
 		/*request
 		.put('api/votes')
 		.send({
@@ -20,6 +27,10 @@ export function makeAVote(dropId, voteAction, initialVoted){
 		});*/
 	}
 }
+
+function getNewVote(data){
+}
+	
 
 function voteInitialUIUpdate(dropId,voteAction,initialVoted){
 	return {

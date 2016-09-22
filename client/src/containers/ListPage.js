@@ -25,7 +25,8 @@ function mapDispatchToProps(dispatch) {
     setLocation: lngLat => dispatch(setLocation(lngLat)),
     updateCommentInListPage: comment=>dispatch(updateCommentInListPage(comment)),
     passSnackbarMessage: msg=>dispatch(passSnackbarMessage(msg)),
-    makeAVote:(dropId,voteAction, initialVoted)=>dispatch(makeAVote(dropId,voteAction, initialVoted))
+    makeAVote:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVote(dropId,voteAction, initialVoted, userId))
+    //receiveVoteChange:()
   };
 }
 

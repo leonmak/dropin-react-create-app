@@ -8,6 +8,7 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
 var FeedsController = require('./server/controller/FeedsController');
+var VotesController = require('./server/controller/VotesController');
 var url = require('url')
 
 passport.use(new FacebookTokenStrategy({
@@ -76,8 +77,16 @@ io.on('connection', function(socket) {
           newPacket.data = res;
           io.emit('server:sendEvent', newPacket);
         });
-
       }
+
+    if(packet.event=='vote:send'){
+      VotesController.directVote(packet.data).then(function(res){
+        var newPacket = packet;
+        newPacket.data = res;
+        io.emit('vote:sendEvent', newPacket);
+      })
+    }
+
     })
   });
 

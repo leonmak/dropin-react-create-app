@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
 import ScrollArea from 'react-scrollbar';
-import CircularProgress from 'material-ui/CircularProgress';
 
 export class CommentsList extends Component {
 

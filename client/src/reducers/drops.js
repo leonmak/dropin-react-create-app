@@ -65,43 +65,34 @@ const initialState = {
 
 				//it is an upvote
 				if(voteAction===1){
-					console.log('voteAction',voteAction);
 					if(initalVoted===1){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes-1;
 						newDrops[i].voted=0;
 					}
 					if(initalVoted===0){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes+1;
 						newDrops[i].voted=1;
 					}
 					if(initalVoted===-1){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes+2;
 						newDrops[i].voted=1;
 					}
 				}
 				//if it is downvote
 				if(voteAction===-1){
-					console.log('voteAction',voteAction);
 					if(initalVoted===1){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes-2;
 						newDrops[i].voted=-1;
 					}
 					if(initalVoted===0){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes-1;
 						newDrops[i].voted=-1;
 					}
 					if(initalVoted===-1){
-						console.log('initalVoted',initalVoted);
 						newDrops[i].votes=state.drops[i].votes+1;
 						newDrops[i].voted=0;
 					}
 				}
-				console.log('dropid:',action.dropId, 'new vote state:', newDrops[i].voted);
 			}
 		}
 		return Object.assign({}, state, {

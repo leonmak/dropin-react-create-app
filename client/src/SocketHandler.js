@@ -2,6 +2,7 @@ export const FEEDS_SOCKET = "feeds";
 export const COMMENTS_SOCKET = "comments";
 export const VOTES_SOCKET = "votes";
 export const OPEN_COMMENTS_SOCKET = "open_comments";
+export const OPEN_VOTES_SOCKET = 'open_votes';
 
 //import socket from 'react-socket';
 
@@ -32,10 +33,12 @@ export default class SocketHandler {
 			this.channelId = "feed:";
 			break;
 			case VOTES_SOCKET:
-			this.channelId = "vote:" + data.commentId;
+			this.channelId = "vote:" + data.postId;
 			break;
 			case OPEN_COMMENTS_SOCKET:
 			this.channelId = "open_comments";
+			case OPEN_VOTES_SOCKET:
+			this.channelId = "open_votes";
 			default:
 			break;
 		}
@@ -52,6 +55,9 @@ export default class SocketHandler {
 	_eventHandler(packet) {
 		console.log("received event", packet);
 		if(this.channelId===OPEN_COMMENTS_SOCKET){
+			this.handler(packet.data);
+		}
+		if(this.channelId===OPEN_VOTES_SOCKET){
 			this.handler(packet.data);
 		}
 		else if (packet.channelId === this.channelId) {
@@ -81,53 +87,47 @@ export default class SocketHandler {
 					date: data.date}};
 
 					case VOTES_SOCKET:
-					return {channelId: this.channelId, event: "vote:send", data: {userId: data.userId, postId: data.postId, voteType: data.voteType}};
-					default:
-					return {channelId: this.channelId, event: "error", data: {}}; 
+					//console.log(data);
+					return {channelId: this.channelId, event: "vote:send", data: 
+					{user_id: data.userId, 
+						post_id: data.postId, 
+						vote_type: data.voteType}};
+
+						default:
+						return {channelId: this.channelId, event: "error", data: {}}; 
+					}
+				}
+
+				comment({dropId, userId, text, date}) { 
+					console.log("sent new comment to server");
+					socket.emit('client:sendEvent', this._packSocket({
+						dropId,
+						userId,
+						text,
+						date
+					}));
+				}
+
+				post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { 
+					console.log("sent new post to server");
+					socket.emit('client:sendEvent', this._packSocket({
+						userID, 
+						emoji,
+						title,
+						video,
+						image,
+						sound, 
+						longitude, 
+						latitude,
+						date}));
+				}
+
+				vote({userId, postId, voteType}) { 
+					//console.log("sent new vote to server", userId,postId,voteType);
+					console.log("sent new vote to server");
+					socket.emit('client:sendEvent', this._packSocket({
+						userId, 
+						postId, 
+						voteType}));
 				}
 			}
-
-	comment({dropId, userId, text, date}) { //accept a hash {userId: , postId: , text: }
-	console.log("sent new comment to server");
-	socket.emit('client:sendEvent', this._packSocket({
-		dropId,
-		userId,
-		text,
-		date
-	}));
-}
-
-	post({userID, emoji, title, video, image, sound, longitude, latitude, date}) { //accept a hash {userId: , title: , longitude: , latitude: }
-	console.log("sent new post to server");
-	socket.emit('client:sendEvent', this._packSocket({
-		userID, 
-		emoji,
-		title,
-		video,
-		image,
-		sound, 
-		longitude, 
-		latitude,
-		date}));
-}
-
-	vote({userId, postId, voteType}) { //accept a hash {userId: , postId: , voteType: }
-	console.log("sent new vote to server");
-	socket.emit('client:sendEvent', this._packSocket({userId, postId, voteType}));
-}
-
-
-	/*var drop = {
-      "id": "003",
-      "username":"Leon",
-      "userId":"002",
-      "userAvatarId":"drop/002idasdf",
-      "imageId": "drop/gmzf4d8vbyxc50wefkap",
-      "emojiUni": "1f602",
-      "title": "To the cute guy studying outside the LT, WOWOW",
-      "votes": 6,
-      "location": [103.7730933, 1.3056169],
-      "date": "2016-09-08T11:06:43.511Z",
-      "replies": 12
-  };*/
-}
