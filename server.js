@@ -76,8 +76,16 @@ io.on('connection', function(socket) {
           newPacket.data = res;
           io.emit('server:sendEvent', newPacket);
         });
-
       }
+      
+    if(packet.event=='vote:send'){
+      VotesController.directVote(packet.data).then(function(res){
+        var newPacket = packet;
+        newPacket.data = res;
+        io.emit('vote:sendEvent', newPacket);
+      })
+    }
+
     })
   });
 
