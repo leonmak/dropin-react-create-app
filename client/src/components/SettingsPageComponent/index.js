@@ -50,8 +50,7 @@ export class SettingsPageComponent extends Component {
     .put('/api/profile')
     .send({
       user_avatar_url: values.user_avatar_url,
-      user_name: values.user_name,
-      anonymous: values.anonymous,
+      user_name: values.user_name
     })
     .end((err,res) => {
       browserHistory.push('/profile');

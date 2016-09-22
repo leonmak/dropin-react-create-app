@@ -37,7 +37,8 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
         sound: values.soundcloudUrl,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
-        date: moment()
+        date: moment(),
+        anonymous: values.anonymous
       });
       browserHistory.push('/drops')
     });
