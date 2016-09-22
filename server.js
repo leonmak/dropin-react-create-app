@@ -12,6 +12,7 @@ const CommentsController = require('./server/controller/CommentsController');
 const FeedsController = require('./server/controller/FeedsController');
 var url = require('url')
 
+<<<<<<< HEAD
 // var clientSockets = [];
 var cookieParser = require('cookie-parser');
 
@@ -21,6 +22,8 @@ const env = require('node-env-file');
 if(process.env.NODE_ENV !== 'production')
   env(__dirname + '/.env');
 
+=======
+>>>>>>> dev
 passport.use(new FacebookTokenStrategy({
   clientID: process.env.REACT_APP_FB_CLIENT_ID,
   clientSecret: process.env.FB_CLIENT_SECRET,
@@ -31,6 +34,7 @@ passport.use(new FacebookTokenStrategy({
 FacebookController.loginCallback
 ));
 
+<<<<<<< HEAD
 var https_redirect = function(req, res, next) {
     if (process.env.NODE_ENV === 'production') {
         if (req.headers['x-forwarded-proto'] != 'https') {
@@ -54,6 +58,8 @@ app.use(https_redirect);
 //   FacebookController.loginCallback
 // ));
 
+=======
+>>>>>>> dev
 passport.serializeUser(function(user, callback) {
   callback(null, user);
 });
@@ -67,19 +73,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 var session = require('express-session');
-// var MySQLStore = require('express-mysql-session')(session);
 
-// var options = {
-//     host: process.env.MYSQL_HOST || 'localhost',
-//     port: process.env.MYSQL_PORT || 3306,
-//     user: process.env.MYSQL_USER || 'root',
-//     password: process.env.MYSQL_PASSWORD || 'password',
-//     database: 'dropin',
-// };
-
-// var sessionStore = new MySQLStore(options);
-
-// app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -112,55 +106,25 @@ io.on('connection', function(socket) {
 
     if (packet.event == 'comment:send') {
       CommentsController.directComment(packet.data).then(function(res) {
-          // console.log('output from commentcontroller',res);
           var newPacket = packet;
           newPacket.data = res;
-          // console.log(newPacket);
         io.emit('server:sendEvent', newPacket);
       });
     }
     if (packet.event == 'feed:send') {
-        //feedscontroller needs to return an id for me to work with
-        console.log('input to feed controller', packet.data);
+        // console.log('input to feed controller', packet.data);
         FeedsController.directPost(packet.data).then(function(res) {
-          // console.log('output from feedcontroller',res);
           var newPacket = packet;
           newPacket.data = res;
-          // console.log(newPacket);
           io.emit('server:sendEvent', newPacket);
         });
 
       }
     })
-    // based on feeds/ comments or ... no need
-    // socket.on('client:initialized', function(packet) {
-    //   clientSockets.push({channelId: packet.channelId, socket: socket});
-    // });
-    // for (var eventidx in EVENT_TYPE) {
-    //   const event = EVENT_TYPE[eventidx];
-    //   socket.on(event, function(packet) {
-    //     console.log("received from socket");
-    //     for (var clientidx in clientSockets) {
-    //       const client = clientSockets[clientidx];
-    //       console.log(client.channelId);
-    //       console.log(packet.channelId);
-    //       if ((packet.channelId == client.channelId) && (client.socket !== socket)) {
-    //         client.socket.emit(event, packet);
-    //       }
-    //     }
-    //     if (event == 'comment:send') {
-    //       CommentsController.comment(packet.data.userId, packet.data.postId, packet.data.text);
-    //       // update comment database
-    //     }
-    //     if (event == 'feed:send') {
-    //       // update feed database
-    //     }
-    //   });
-    // }
   });
 
 http.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
 });
 
 setInterval(function() {

@@ -1,6 +1,7 @@
 export const FEEDS_SOCKET = "feeds";
 export const COMMENTS_SOCKET = "comments";
 export const VOTES_SOCKET = "votes";
+export const OPEN_COMMENTS_SOCKET = "open_comments";
 
 //import socket from 'react-socket';
 
@@ -33,6 +34,8 @@ export default class SocketHandler {
 			case VOTES_SOCKET:
 			this.channelId = "vote:" + data.commentId;
 			break;
+			case OPEN_COMMENTS_SOCKET:
+			this.channelId = "open_comments";
 			default:
 			break;
 		}
@@ -48,7 +51,10 @@ export default class SocketHandler {
 	//returning the data to the server
 	_eventHandler(packet) {
 		console.log("received event", packet);
-		if (packet.channelId === this.channelId) {
+		if(this.channelId===OPEN_COMMENTS_SOCKET){
+			this.handler(packet.data);
+		}
+		else if (packet.channelId === this.channelId) {
 			this.handler(packet.data);
 		}
 	}

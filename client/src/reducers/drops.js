@@ -22,6 +22,7 @@ const initialState = {
  	switch (action.type) {
 
  		case FETCH_ALL_NEARBY_DROPS:
+ 		console.log(action.drops.body);
  		return Object.assign({}, state, {
  			drops: action.drops.body
  		})
@@ -34,10 +35,12 @@ const initialState = {
 		})
 
 		case UPDATE_COMMENT_IN_LIST_PAGE:
+		//console.log('dropId commnent is incrementing', action.comment.dropId);
 		var newDrops = state.drops;
 		var arrayLength = newDrops.length;
 		for (var i = 0; i < arrayLength; i++) {
 			if(newDrops[i].dropId==action.comment.dropId){
+				//console.log('it has been incremented');
 				newDrops[i].replies = state.drops[i].replies+1;
 			}
 		}

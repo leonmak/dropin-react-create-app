@@ -9,7 +9,7 @@ function mapStateToProps(state) {
     user: state.userAuthSession.userObject,
     location: state.location.lngLat,
     selectedDrop: state.selectedDrop,
-    drops: state.drops.drops
+    profileDrops: state.profile.drops,
   };
 }
 

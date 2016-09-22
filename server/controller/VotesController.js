@@ -12,7 +12,6 @@ var VotesController = {};
 
 VotesController.getFeedVotes = function(req, res) {
   const post_id = req.params.id;
-  // const user_id = req.params.user_id;
   var user_id = req.query.user_id;
 
 
@@ -124,29 +123,39 @@ VotesController.directVote = function({
     Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function(vote) {
       // Destroy old entry if applicable
       if (vote) {
-        vote.destroy();
-      }
-      // Create and save new entry
-      new Votes().save(voteHash).then(function(vote) {
-        if (vote) {
-          if (res !== null) {
-            res.json(vote.toJSON());
+        vote.save(voteHash).then(function (vote) {
+          if (vote) {
+            if (res !== null) {
+              res.json(vote.toJSON());
+            } else {
+              console.log(vote.toJSON());
+              resolve(vote.toJSON());
+            }
           } else {
-            console.log(vote.toJSON());
-            resolve(vote.toJSON());
+            reject(vote);
           }
-        } else {
-          reject(vote);
-        }
-      });
+        });
+      }
+
+      // Create and save new entry
+      else {
+        new Votes().save(voteHash).then(function (vote) {
+          if (vote) {
+            if (res !== null) {
+              res.json(vote.toJSON());
+            } else {
+              console.log(vote.toJSON());
+              resolve(vote.toJSON());
+            }
+          } else {
+            reject(vote);
+          }
+        });
+      }
     });
   });
 
   return storePromise;
-
-};
-
-VotesController.editVote = function(req, res) {
 
 };
 
@@ -166,12 +175,34 @@ VotesController.postVote = function(req, res) {
 
 // TODO: Delete an existing vote
 
-VotesController.directDelete = function(id, res = null) {
+VotesController.directDelete = function({post_id, user_id}, res = null) {
+
+  var deletePromise = new Promise(function(resolve, reject){
+    Votes.where('post_id', post_id).where('user_id', user_id).destroy().then(function(vote) {
+      if (vote) {
+        if (res === null) {
+          resolve(vote.toJSON());
+        }
+      } else {
+        reject(vote);
+      }
+    });
+  });
+
+  return deletePromise;
 
 };
 
 VotesController.deleteVote = function(req, res) {
+  var packet = {
+    post_id: req.query.dropId,
+    user_id: req.query.userId
+  };
 
+  VotesController.directDelete(packet, res);
+
+  // Response
+  res.end("Vote has been successfully deleted.");
 };
 
 

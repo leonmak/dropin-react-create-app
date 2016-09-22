@@ -43,17 +43,6 @@ UsersController.getUser = function(req, res) {
   })
 }
 
-// Get a user object reference for back-end parsing and JSON object construction
-UsersController.getUserObject = function(id) {
-
-
-  Users.where('id', id).fetch().then(function(user) {
-    console.log(user.toJSON());
-  }).catch(function(err) {
-    //...
-  })
-}
-
 // Creating a new user
 UsersController.createUser = function(accessToken, profile, callback) {
   Users.where('facebook_id', profile.id).fetch().then(function(user) {
@@ -72,7 +61,9 @@ UsersController.createUser = function(accessToken, profile, callback) {
         facebook_id: profile.id,
         facebook_name: profile.displayName,
         facebook_profile_img: profile.photos.length > 0 ? profile.photos[0].value : null,
-        facebook_token: accessToken
+        facebook_token: accessToken,
+        user_avatar_url: profile.photos.length > 0 ? profile.photos[0].value : null,
+        user_name: profile.displayName,
       }
       new Users().save(userHash).then(function(user) {
         profile.userId = user.id;
@@ -91,22 +82,19 @@ UsersController.directEdit = function({
 	id,
 	user_avatar_url,
 	anonymous,
+  user_name
 }, res = null) {
   Users.where('id', id).fetch().then(function(user) {
     // update access token
-    console.log(user);
-    console.log(anonymous);
     if (user_avatar_url != undefined) {
-	    user.save({
-    	  user_avatar_url: user_avatar_url,
-    	});
+	    user.save({ user_avatar_url });
 	  }
     if (anonymous != undefined) {
-	    console.log('saving anonymous');
-	    user.save({
-      	anonymous: anonymous
-    	});
+	    user.save({ anonymous });
 	  }
+    if (user_name != undefined) {
+      user.save({ user_name: user_name });
+    }
   }).catch(function(err) {
   	if (res != null) {
 	    res.json({
@@ -118,10 +106,12 @@ UsersController.directEdit = function({
 
 UsersController.editUser = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(id) {
+    console.log(id)
   	var packet = {
     	id: id,
     	user_avatar_url: req.body.user_avatar_url,
-    	anonymous: req.body.anonymous
+    	anonymous: req.body.anonymous,
+      user_name: req.body.user_name
   	};
   	UsersController.directEdit(packet, res);
 

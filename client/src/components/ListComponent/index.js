@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-import SocketHandler, {FEEDS_SOCKET} from '../../SocketHandler';
+import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
 
 /*
@@ -26,6 +26,7 @@ class ListComponent extends Component {
     super(props);
 
     this.socketHandler = new SocketHandler();
+    this.commentSocketHandler = new SocketHandler();
     this.geoId = null;
   }
 
@@ -34,22 +35,23 @@ class ListComponent extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAllNearbyDrops();
+    if(this.props.user){
+      this.props.fetchAllNearbyDrops(this.props.user.userId);
+    }else{
+      this.props.fetchAllNearbyDrops(null);
+    }
   }
 
   //must register all socket at the start, and dynamically register and
   //dynamically reg and dereg sockets on component change
 
   componentDidMount() {
-    //listening to the socket so that you
-    //can update in real time when a new drop is posted
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
-    //method to fetch all nearby drops and set the state
+    this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
+
+    // TODO: method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
-    /*request.get('api/feeds/1/comments').end(function(err,res){
-      console.log(res);
-    });*/
 
 
   }
@@ -57,30 +59,19 @@ class ListComponent extends Component {
   //when receive the callback that a new drop has been added nearby, update the state
   //state is updated by sending an action to redux
   newDropAdded(data){
-    console.log('receiveddrop', data);
+    // console.log('receiveddrop', data);
     this.props.updateANearbyDrop(data);
+  }
+  newCommentAdded(data){
+    // console.log('receivedcomment', data);
+    this.props.updateCommentInListPage(data);
   }
 
   componentWillUnmount() {
     this.socketHandler.uninstall();
+    this.commentSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
-
-  /*<ul className="messages" ref='messages'>
-        {this.props.drops.map((id,title) => {
-                    //<span className='msgSender'>{msg.from}:</span>
-                    return <li key={id}>{title + id}</li>
-                })}
-        </ul>*/
-
-        /*<ul>
-        {this.props.drops.map((drop) => {
-                    //<span className='msgSender'>{msg.from}:</span>
-                    return <li key={drop.id}>{drop.title + drop.id}</li>
-                })}
-        </ul>*/
-
-        /*<List feed={data} userLocation={this.state.userLocation} */
 
   render() {
     return (
@@ -88,6 +79,8 @@ class ListComponent extends Component {
         user={this.props.user}
         feed={this.props.drops.drops}
         userLocation={this.props.location}
+        dropSrc={"drops"}
+        selectedDropSrc={this.props.selectedDropSrc}
         selectedDropIdx={this.props.selectedDropIdx}
         fetchCommentsForDrop={this.props.fetchCommentsForDrop}
       />
@@ -100,7 +93,8 @@ ListComponent.PropTypes = {
   updateANearbyDrop: PropTypes.func.isRequired,
   passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired,
-  updateCommentInListPage: PropTypes.func.isRequired
+  updateCommentInListPage: PropTypes.func.isRequired,
+  selectedDropIdx: PropTypes.func.isRequired
 }
 
 

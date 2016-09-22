@@ -30,6 +30,31 @@ function defaultPromise(req){
     });
 }
 
+//TODO: Use local drops later
+/*LIST PAGE*/
+// Example: {{base_url}}api/feeds?longitude=123.212&latitude=23.33&user_id=6
+export function getAllDrops(user_id){
+    var req = 'api/feeds/?';
+    if(user_id==null){
+        req = req+'user_id='+user_id+'&';
+    }
+    /*if((longitude!==null)&&(latitude!==null)){
+        req = req+'longitude='+longitude+'&';
+        req = req+'latitude='+latitude+'&';
+    }*/
+    return defaultPromise(req);
+}
+
+/*PROFILE PAGE*/
+
+
+
+
+
+
+
+
+/*NOT USED*/
 export function getAllUsers(){
 	var req = 'api/users/';
 	return defaultPromise(req);
@@ -55,10 +80,7 @@ export function getFacebookAuth(){
 	return defaultPromise(req);
 }
 
-export function getAllDrops(){
-	var req = 'api/feeds/';
-    return defaultPromise(req);
-}
+
 
 export function getMyDrops(userId){
     var req = 'api/users/'+userId+'/feeds';
@@ -82,6 +104,7 @@ export function getMyVotes(userId){
 
 //api/comments/feeds/1
 export function getSingleDropComments(dropId){
+    console.log('dropid',dropId);
 	var req = 'api/feeds/'+dropId+'/comments';
 	return defaultPromise(req);
 }
