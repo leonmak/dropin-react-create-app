@@ -26,29 +26,29 @@ module.exports = function (passport) {
 
   // Feeds API
   router.get('/api/feeds', FeedsController.getFeeds); // Get all the feeds
-  // Example: {{base_url}}api/feeds?user_id=6
+  // Example: {{base_url}}api/feeds
 
   router.get('/api/feeds/local', FeedsController.getFeedsInRadius); // Get all the feeds within a distance
-  // Example: {{base_url}}api/feeds?longitude=123.212&latitude=23.33&user_id=6
+  // Example: {{base_url}}api/feeds/local?longitude=123.212&latitude=23.33
 
   // TODO: Fix the API Call ... '4' in the example is the profile page user and the '6' is the logged-in user
   router.get('/api/users/:id/feeds', FeedsController.getUserFeeds); // Get all the feeds belonging to a user
-  // Example: {{base_url}}api/users/4/feeds?longitude=123.212&latitude=23.33&user_id=6
+  // Example: {{base_url}}api/users/4/feeds
 
   // TODO: Fix the API Call ... need to add the query line '6' as the logged-in user_id
   router.get('/api/feeds/:id', FeedsController.getFeed); // Get a specific feed
-  // Example: {{base_url}}api/feeds/2?user_id=6
+  // Example: {{base_url}}api/feeds/2
 
   // TODO: Add userID as the logged-in user_id
   router.post('/api/feeds', loginCheck, FeedsController.postFeed); // Create a new feed
-  // Example: {{base_url}}api/feeds/ :: {userID, emoji, title, video, image, sound, longitude, latitude, date, anonymous}
+  // Example: {{base_url}}api/feeds :: {userID, emoji, title, video, image, sound, longitude, latitude, date, anonymous}
 
   // TODO: Add userID as the logged-in user_id
   router.put('/api/feeds', loginCheck, FeedsController.editFeed); // Update an existing feed
-  // Example: {{base_url}}api/feeds/ :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
+  // Example: {{base_url}}api/feeds :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
   router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
-  // Example: {{base_url}}api/feeds/ 
+  // Example: {{base_url}}api/feeds/4
 
 
 
@@ -62,12 +62,12 @@ module.exports = function (passport) {
   router.get('/api/comments/:id', CommentsController.getComment); // Get a specific comment
   // Example: {{base_url}}api/comments/4
 
-  router.put('/api/comments/:id', loginCheck, CommentsController.editComment);
+  // router.put('/api/comments/:id', loginCheck, CommentsController.editComment);
 
   router.post('/api/feeds/:id/comments', loginCheck, CommentsController.postComment); // Create a new comment for an existing feed
   // Example: {{base_url}}api/feeds/1/comments
 
-  // router.put('/api/comments/:id', loginCheck, CommentsController.editComment); // Update an existing comment
+  router.put('/api/comments/:id', loginCheck, CommentsController.editComment); // Update an existing comment
   // Example: {{base_url}}api/comments/2
 
   router.delete('/api/comments/:id', loginCheck, CommentsController.deleteComment); // Delete an existing comment
@@ -77,7 +77,7 @@ module.exports = function (passport) {
 
   // Votes API
   router.get('/api/feeds/:id/votes', VotesController.getFeedVotes); // Get votes belonging to a feed
-  // Example: {{base_url}}api/feeds/5/votes?user_id=6
+  // Example: {{base_url}}api/feeds/5/votes
 
   router.get('/api/users/:id/votes', VotesController.getVotesToUser); // Get votes on a user
   // Example: {{base_url}}api/users/4/votes
@@ -89,7 +89,7 @@ module.exports = function (passport) {
   // {{base_url}}api/votes :: {drop_id, vote_type}
 
   router.delete('/api/votes', loginCheck, VotesController.deleteVote); // Delete an existing vote
-  // {{base_url}}api/votes?dropId=5&userId=2
+  // {{base_url}}api/votes?dropId=5
 
 
 

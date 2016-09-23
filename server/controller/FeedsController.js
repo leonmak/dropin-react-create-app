@@ -5,6 +5,7 @@ import {
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
 var VotesController = require('./VotesController');
+var AuthController = require('./AuthController');
 var Messages = require('./Messages');
 
 var FeedsController = {};
@@ -101,41 +102,50 @@ FeedsController.apiParse = function (fetchedPost, user_id) {
 FeedsController.getFeeds = function (req, res) {
 
   // Get the logged-in userID
-  var user_id = -1;
-  if (typeof req.query.user_id != 'undefined') {
-    user_id = req.query.user_id;
+  var sessionFbId = -1;
+  var sessionUser = req.user;
+  console.log("THE SESSION INSIDE REQ : ", req.session);
+  if (typeof req.user != 'undefined') {
+    sessionFbId = req.user.id;
+    // console.log(req.user);
+
   }
 
-  // Get joint table objects
-  Posts.fetchAll({
-    withRelated: ['votes', 'comments', 'user']
-  }).then(function (posts) {
-    // Get all posts objects
-    var fetchedPosts = posts.toJSON();
-    var parsedPosts = [];
-
-    for (var i = 0; i < fetchedPosts.length; ++i) {
-
-      // Get post object
-      var fetchedPost = fetchedPosts[i];
-
-      // Parse post
-      var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
-
-      // Collate post
-      parsedPosts.push(parsedPost);
-      // console.log(parsedPost);
+  UsersController.findUserId(sessionFbId).then(function(user_id) {
+    if (!user_id) {
+      user_id = -1;
     }
+    // Get joint table objects
+    Posts.fetchAll({
+      withRelated: ['votes', 'comments', 'user']
+    }).then(function (posts) {
+      // Get all posts objects
+      var fetchedPosts = posts.toJSON();
+      var parsedPosts = [];
 
-    // console.log("GET ALL FEEDS : ", fetchedPosts);
-    res.json(parsedPosts);
+      for (var i = 0; i < fetchedPosts.length; ++i) {
 
-  }).catch(function (err) {
-    res.json({
-      error: Messages.ERROR_FETCHING_POST
+        // Get post object
+        var fetchedPost = fetchedPosts[i];
+
+        // Parse post
+        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+
+        // Collate post
+        parsedPosts.push(parsedPost);
+        // console.log(parsedPost);
+      }
+
+      // console.log("GET ALL FEEDS : ", fetchedPosts);
+      res.json(parsedPosts);
+
+    }).catch(function (err) {
+      res.json({
+        error: Messages.ERROR_FETCHING_POST
+      });
     });
   });
-}
+};
 
 // Calculate shortest distance away
 FeedsController._dist = function (long1, lat1, long2, lat2) {
@@ -146,122 +156,135 @@ FeedsController._dist = function (long1, lat1, long2, lat2) {
 FeedsController.getFeedsInRadius = function (req, res) {
 
   // Get the logged-in userID
-  var user_id = -1;
-  if (typeof req.query.user_id != 'undefined') {
-    user_id = req.query.user_id;
+  var sessionFbId = -1;
+  if (typeof req.user != 'undefined') {
+    sessionFbId = req.user.id;
   }
 
-  // Compute range and query for feeds within range
-  var userLong = parseFloat(req.query.longitude);
-  var userLat = parseFloat(req.query.latitude);
-  var userRadius = parseFloat(req.query.radius);
-  // console.log(userLong + userRadius);
-
-  // Get joint table objects
-  Posts.query(function (qb) {
-    qb.where('longitude', '>=', userLong - userRadius)
-      .andWhere('longitude', '<=', userLong + userRadius)
-      .andWhere('latitude', '>=', userLat - userRadius)
-      .andWhere('latitude', '<=', userLat + userRadius)
-  }).fetchAll({
-    withRelated: ['votes', 'comments', 'user']
-  }).then(function (posts) {
-
-    // Get all posts objects
-    var fetchedPosts = posts.toJSON();
-    var parsedPosts = [];
-
-    for (var i = 0; i < fetchedPosts.length; ++i) {
-
-      // Get post object
-      var fetchedPost = fetchedPosts[i];
-      if (FeedsController._dist(fetchedPost.longitude, fetchedPost.latitude, userLong, userLat) <= userRadius) {
-        // Parse post
-        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
-        // Collate post
-        parsedPosts.push(parsedPost);
-        // console.log(parsedPost);
-      }
+  UsersController.findUserId(sessionFbId).then(function(user_id) {
+    if (!user_id) {
+      user_id = -1;
     }
-    // console.log("GET FEEDS IN RANGE : ", fetchedPosts);
-    res.json(parsedPosts);
+    // Compute range and query for feeds within range
+    var userLong = parseFloat(req.query.longitude);
+    var userLat = parseFloat(req.query.latitude);
+    var userRadius = parseFloat(req.query.radius);
+    // console.log(userLong + userRadius);
 
-  }).catch(function (err) {
-    res.json({
-      error: Messages.ERROR_FETCHING_POST
+    // Get joint table objects
+    Posts.query(function (qb) {
+      qb.where('longitude', '>=', userLong - userRadius)
+        .andWhere('longitude', '<=', userLong + userRadius)
+        .andWhere('latitude', '>=', userLat - userRadius)
+        .andWhere('latitude', '<=', userLat + userRadius)
+    }).fetchAll({
+      withRelated: ['votes', 'comments', 'user']
+    }).then(function (posts) {
+
+      // Get all posts objects
+      var fetchedPosts = posts.toJSON();
+      var parsedPosts = [];
+
+      for (var i = 0; i < fetchedPosts.length; ++i) {
+
+        // Get post object
+        var fetchedPost = fetchedPosts[i];
+        if (FeedsController._dist(fetchedPost.longitude, fetchedPost.latitude, userLong, userLat) <= userRadius) {
+          // Parse post
+          var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+          // Collate post
+          parsedPosts.push(parsedPost);
+          // console.log(parsedPost);
+        }
+      }
+      // console.log("GET FEEDS IN RANGE : ", fetchedPosts);
+      res.json(parsedPosts);
+
+    }).catch(function (err) {
+      res.json({
+        error: Messages.ERROR_FETCHING_POST
+      });
     });
   });
-}
+};
 
 // Get all the feeds that belongs to a specific user
 FeedsController.getUserFeeds = function (req, res) {
   const id = req.params.id;
 
   // Get the logged-in userID
-  var user_id = -1;
-
-  if (typeof req.query.user_id != 'undefined') {
-    user_id = req.query.user_id;
+  var sessionFbId = -1;
+  if (typeof req.user != 'undefined') {
+    sessionFbId = req.user.id;
   }
+  console.log(sessionFbId);
 
-  // Display or hide anonymous posts according to login session
-  if (user_id != id) {
-    // Get joint table objects
-    Posts.where({'user_id': id, 'anonymous': 0}).fetchAll({
-      withRelated: ['votes', 'comments', 'user']
-    }).then(function (posts) {
-      // Get all posts objects
-      var fetchedPosts = posts.toJSON();
-      var parsedPosts = [];
+  UsersController.findUserId(sessionFbId).then(function(user_id) {
+    console.log("USER_ID : ", user_id);
+    console.log("ID : ", id);
 
-      for (var i = 0; i < fetchedPosts.length; ++i) {
+    if (user_id == null || typeof user_id == 'undefined' ) {
+      user_id = -1;
+    }
+    // Display or hide anonymous posts according to login session
+    if (user_id != id) {
+      // Get joint table objects
+      Posts.where({'user_id': id, 'anonymous': 0}).fetchAll({
+        withRelated: ['votes', 'comments', 'user']
+      }).then(function (posts) {
+        // Get all posts objects
+        var fetchedPosts = posts.toJSON();
+        var parsedPosts = [];
 
-        // Get post object
-        var fetchedPost = fetchedPosts[i];
+        for (var i = 0; i < fetchedPosts.length; ++i) {
 
-        // Parse post
-        var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
+          // Get post object
+          var fetchedPost = fetchedPosts[i];
 
-        // Collate post
-        parsedPosts.push(parsedPost);
-      }
+          // Parse post
+          var parsedPost = FeedsController.apiParse(fetchedPost, user_id);
 
-      console.log("GET USER FEEDS : ", parsedPosts);
-      res.json(parsedPosts);
-    }).catch(function (err) {
-      res.json({
-        error: Messages.ERROR_FETCHING_POST
-      });
-    })
-  } else {
-    // Get joint table objects
-    Posts.where('user_id', id).fetchAll({
-      withRelated: ['votes', 'comments', 'user']
-    }).then(function (posts) {
-      // Get all posts objects
-      var fetchedPosts = posts.toJSON();
-      var parsedPosts = [];
+          // Collate post
+          parsedPosts.push(parsedPost);
+        }
 
-      for (var i = 0; i < fetchedPosts.length; ++i) {
+        console.log("GET USER FEEDS : ", parsedPosts);
+        res.json(parsedPosts);
+      }).catch(function (err) {
+        res.json({
+          error: Messages.ERROR_FETCHING_POST
+        });
+      })
+    } else {
+      // Get joint table objects
+      Posts.where('user_id', id).fetchAll({
+        withRelated: ['votes', 'comments', 'user']
+      }).then(function (posts) {
+        // Get all posts objects
+        var fetchedPosts = posts.toJSON();
+        var parsedPosts = [];
 
-        // Get post object
-        var fetchedPost = fetchedPosts[i];
+        for (var i = 0; i < fetchedPosts.length; ++i) {
 
-        // Parse post
-        var parsedPost = FeedsController.apiParse(fetchedPost, id);
+          // Get post object
+          var fetchedPost = fetchedPosts[i];
 
-        // Collate post
-        parsedPosts.push(parsedPost);
-      }
+          // Parse post
+          var parsedPost = FeedsController.apiParse(fetchedPost, id);
 
-      console.log("GET USER FEEDS : ", parsedPosts);
-      res.json(parsedPosts);
-    }).catch(function (err) {
-      res.json({
-        error: Messages.ERROR_FETCHING_POST
-      });
-    })
-  }
+          // Collate post
+          parsedPosts.push(parsedPost);
+        }
+
+        console.log("GET USER FEEDS : ", parsedPosts);
+        res.json(parsedPosts);
+      }).catch(function (err) {
+        res.json({
+          error: Messages.ERROR_FETCHING_POST
+        });
+      })
+    }
+  });
 };
 
 // Get a specific feed
@@ -269,21 +292,27 @@ FeedsController.getFeed = function (req, res) {
   const id = req.params.id;
 
   // Get the logged-in userID
-  var user_id = -1;
-  if (typeof req.query.user_id != 'undefined') {
-    user_id = req.query.user_id;
+  var sessionFbId = -1;
+  if (typeof req.user != 'undefined') {
+    sessionFbId = req.user.id;
   }
 
-  Posts.where('id', id).fetch({
-    withRelated: ['votes', 'comments', 'user']
-  }).then(function (post) {
-    var parsedPost = FeedsController.apiParse(post.toJSON(), user_id);
-    res.json(parsedPost);
-  }).catch(function (err) {
-    res.json({
-      error: Messages.ERROR_FETCHING_POST
+  UsersController.findUserId(sessionFbId).then(function(user_id) {
+    if (!user_id) {
+      user_id = -1;
+    }
+    Posts.where('id', id).fetch({
+      withRelated: ['votes', 'comments', 'user']
+    }).then(function (post) {
+      var parsedPost = FeedsController.apiParse(post.toJSON(), user_id);
+      res.json(parsedPost);
+    }).catch(function (err) {
+      res.json({
+        error: Messages.ERROR_FETCHING_POST
+      });
     });
-  })
+
+  });
 };
 
 // Socket link to write new feed to database
@@ -346,7 +375,7 @@ FeedsController.directPost = function ({
   });
 
   return storePromise;
-}
+};
 
 // Post a new feed
 FeedsController.postFeed = function (req, res) {
@@ -539,13 +568,24 @@ FeedsController.directDelete = function ({id, fb_id}, res = null) {
 
 // Delete feed wrapper
 FeedsController.deleteFeed = function (req, res) {
+// Get the logged-in userID
+  var sessionFbId = -1;
+  if (typeof req.user != 'undefined') {
+    sessionFbId = req.user.id;
+  }
 
-  var packet = {
-    id: req.params.id,
-    fb_id: req.user.id
-  };
+  UsersController.findUserId(sessionFbId).then(function(user_id) {
+    if (!user_id) {
+      user_id = -1;
+    }
+    var packet = {
+      id: req.params.id,
+      fb_id: user_id
+    };
 
-  FeedsController.directDelete(packet, res);
+    FeedsController.directDelete(packet, res);
+  });
+
 };
 
 module.exports = FeedsController;

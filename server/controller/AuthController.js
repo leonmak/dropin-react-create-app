@@ -11,12 +11,12 @@ AuthController.login = function(req, res, next) {
       return res.json(info);
     }
     if (user) {
-      req.session.save();
       req.login(user, (err) => {
         if (err) {
           return next(err);
+        } else {
+          return res.json(user);
         }
-        return res.json(user);
       });
     }
   })(req, res, next);
@@ -24,6 +24,7 @@ AuthController.login = function(req, res, next) {
 
 AuthController.checkSession = function(req, res) {
   var isLoggedIn = req.isAuthenticated();
+  console.log(isLoggedIn)
   if (isLoggedIn)
     return res.json({
       isLoggedIn: isLoggedIn,

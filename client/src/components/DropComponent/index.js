@@ -57,7 +57,9 @@ class DropComponent extends Component {
 		request
 		.get('/api/feeds/'+this.props.params.dropId)
 		.end((err,res) => {
-			this.props.passingFromOthersToDrop(res.body);
+			console.log('sanitycheck');
+			//this.props.passingFromOthersToDrop(res.body);
+			this.state.selectedDrop=res.body;
 			socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
 			voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
 			this.props.fetchCommentsForDrop(res.body.dropId);
@@ -76,46 +78,44 @@ class DropComponent extends Component {
 
 	commentReceive(data){
 		console.log('received comment', data);
-		
+		this.selectedDrop.replies+=1;
+		this.comments.push(data);
 		//this.props.updateAComment(data);
     	//this.props.updateANearbyDrop(data);
     }
 
-    voteReceive(data){
-    	console.log('received vote', data);
-		//this.props.updateAComment(data);
+    voteReceive(vote){
+    	console.log('received vote', vote);
+    	if(this.props.user){
+    		if(vote.user_id===this.props.user.userId){
+        		//console.log('up my vote');
+        		this.state.selectedDrop.votes=vote.votes;
+        		this.state.selectedDrop.voted.vote_type;
+        	}else{
+        		//console.log('up others vote');
+        		this.state.selectedDrop.votes=vote.votes;
+        	}
+        }
+        else{
+      		//console.log('up others vote');
+      		this.state.selectedDrop.votes=vote.votes;
+      	}
 	}
 
 	render() {
-		//console.log("testing",(null||null));
-		const {location, user, drops, profileDrops, selectedDrop} = this.props;
-		const directLinkDrop = this.props.selectedDrop.selectedDrop;
-		const resolvedDrop = this.state.clickedDrop || directLinkDrop;
+		const {location, user} = this.props;
 
 		return (
-			resolvedDrop ?
-			(this.state.clickedDrop)?
-			(<div>
-				<Drop drop={resolvedDrop} user={this.props.user} 
-				makeAVoteDropPage={this.props.makeAVote}/>
-				<CommentsList comments={selectedDrop.comments} />
+			this.state.selectedDrop ?(<div>
+				<Drop drop={this.state.selectedDrop} user={this.props.user} 
+				voteSocketHandler={voteSocketHandler}/>
+				<CommentsList comments={this.state.comments} />
 				<CommentForm
 				location={location}
 				user={user}
 				socketHandler={socketHandler}
-				drop={resolvedDrop}/>
+				drop={this.state.selectedDrop}/>
 				</div>)
-			:(<div>
-				<Drop drop={resolvedDrop} user={this.props.user} 
-				makeAVoteDropPage={this.props.makeAVoteDropPage}/>
-				<CommentsList comments={selectedDrop.comments} />
-				<CommentForm
-				location={location}
-				user={user}
-				socketHandler={socketHandler}
-				drop={resolvedDrop}/>
-				</div>
-				)
 			: <CircularProgress className="spinner"/>
 			)
 	}
@@ -124,9 +124,15 @@ class DropComponent extends Component {
 DropComponent.propTypes = {
 	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired,
-	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	setLocation: PropTypes.func.isRequired,
+	setLocation: PropTypes.func.isRequired
+};
+
+export default DropComponent;
+
+
+/*,
+selectedDrop: PropTypes.object.isRequired,
 	updateAComment: PropTypes.func.isRequired,
 	passingFromOthersToDrop: PropTypes.func.isRequired,
 	clearSingleDropHistory: PropTypes.func.isRequired,
@@ -134,7 +140,4 @@ DropComponent.propTypes = {
 	updateMyVoteInDropPage: PropTypes.func.isRequired,
 	updateOthersVoteInDropPage: PropTypes.func.isRequired,
 	makeAVoteDropPageSrcList: PropTypes.func.isRequired,
-	makeAVote:PropTypes.func.isRequired
-};
-
-export default DropComponent;
+	makeAVote:PropTypes.func.isRequired*/
