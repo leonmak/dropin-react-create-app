@@ -103,12 +103,8 @@ FeedsController.getFeeds = function (req, res) {
 
   // Get the logged-in userID
   var sessionFbId = -1;
-  var sessionUser = req.user;
-  console.log("THE SESSION INSIDE REQ : ", req.session);
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;
-    // console.log(req.user);
-
   }
 
   UsersController.findUserId(sessionFbId).then(function(user_id) {
@@ -133,10 +129,7 @@ FeedsController.getFeeds = function (req, res) {
 
         // Collate post
         parsedPosts.push(parsedPost);
-        // console.log(parsedPost);
       }
-
-      // console.log("GET ALL FEEDS : ", fetchedPosts);
       res.json(parsedPosts);
 
     }).catch(function (err) {
@@ -157,7 +150,6 @@ FeedsController.getFeedsInRadius = function (req, res) {
 
   // Get the logged-in userID
   var sessionFbId = -1;
-  console.log("THE SESSION INSIDE REQ : ", req.session);
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;
   }
@@ -546,25 +538,23 @@ FeedsController.editFeed = function (req, res) {
 };
 
 // Deleting a Feed
-FeedsController.directDelete = function ({id, fb_id}, res = null) {
-  UsersController.findUserId(fb_id).then(function(user_id) {
-    Posts.where({'id': id, 'user_id': user_id}).fetch().then(function (post) {
-      if (post) {
-        post.destroy().then(function(post) {
-          if (res != null) {
-            res.json(FeedsController.apiParse(post.toJSON()));
-          }
-        });
-      } else {
+FeedsController.directDelete = function ({id, user_id}, res = null) {
+  Posts.where({'id': id, 'user_id': user_id}).fetch().then(function (post) {
+    if (post) {
+      post.destroy().then(function(post) {
         if (res != null) {
-          res.json(Messages.ERROR_POST_NOT_FOUND);
+          res.json(FeedsController.apiParse(post.toJSON()));
         }
-      }
-    }).catch(function (err) {
+      });
+    } else {
       if (res != null) {
         res.json(Messages.ERROR_POST_NOT_FOUND);
       }
-    });
+    }
+  }).catch(function (err) {
+    if (res != null) {
+      res.json(Messages.ERROR_POST_NOT_FOUND);
+    }
   });
 };
 
@@ -582,7 +572,7 @@ FeedsController.deleteFeed = function (req, res) {
     }
     var packet = {
       id: req.params.id,
-      fb_id: user_id
+      user_id: user_id
     };
 
     FeedsController.directDelete(packet, res);
