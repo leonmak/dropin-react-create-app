@@ -54,6 +54,7 @@ class DropComponent extends Component {
 	componentDidMount() {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
+		//console.log('what is this magic', this.props.params.dropId);
 		request
 		.get('/api/feeds/'+this.props.params.dropId)
 		.end((err,res) => {
@@ -66,7 +67,7 @@ class DropComponent extends Component {
 			request
 			.get('/api/feeds/'+this.props.params.dropId+'/comments')
 			.end((err,res) => {
-				console.log(res);
+				//console.log('comment successfully gotten',res);
 				//this.props.passingFromOthersToDrop(res.body);
 				this.setState({comments:res.body});
 			})
@@ -96,18 +97,17 @@ class DropComponent extends Component {
 	}
 
 	voteReceive(vote){
-		console.log('received vote', vote);
+		console.log('received vote', vote, this.state.selectedDrop.voted);
 		if(this.props.user){
 			if(vote.user_id===this.props.user.userId){
-        		//console.log('up my vote');
-
+        		console.log('up my vote');
         		var newSelectedDrop = this.state.selectedDrop;
         		newSelectedDrop.votes=vote.votes;
         		newSelectedDrop.voted=vote.vote_type;
         		this.setState({selectedDrop:newSelectedDrop});
 
         	}else{
-        		//console.log('up others vote');
+        		console.log('up others vote');
         		var newSelectedDrop = this.state.selectedDrop;
         		newSelectedDrop.votes=vote.votes;
         		this.setState({selectedDrop:newSelectedDrop});

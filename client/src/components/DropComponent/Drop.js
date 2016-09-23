@@ -127,9 +127,9 @@ const ItemVoting = (props) => (
       (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1})}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
       ((props.voted===-1)?
-        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1})}}
+        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0})}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0})}}
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1})}}
             > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
         )
       )

@@ -32,7 +32,7 @@ const goToURL = (props) => {
   browserHistory.push(`/drops/${props.dropId}`);
   props.selectedDropIdx(props.idx);
   props.selectedDropSrc(props.dropSrc);
-  props.fetchCommentsForDrop(props.dropId);
+  //props.fetchCommentsForDrop(props.dropId);
 }
 
 const goToEdit = props => {
