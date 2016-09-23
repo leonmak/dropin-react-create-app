@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import * as Icons from '../../utils/Icons';
 
 import '../../styles/SplashPage.css'
-import logo from '../../res/icon128.png';
+import logo from '../../../../favicons/apple-icon-120x120.png';
 
 
 const responseFacebook = attemptLogin => (response) => attemptLogin(response.accessToken);
