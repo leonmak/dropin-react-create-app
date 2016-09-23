@@ -1,9 +1,25 @@
 .top-container{
+  position: relative;
   margin: auto;
   margin-bottom: 0;
   margin-top: 20px;
   padding: 5px;
   border-radius: 9px 9px 9px 9px !important;
+}
+
+.edit-delete-btn{
+  position: absolute;
+  top: 9px;
+  right: 9px;
+}
+
+.edit-delete-btn > button {
+  padding: 0px !important;
+  max-width: 36px;
+  max-height: 36px;
+}
+.edit-delete-btn > button > div > span {
+  color: #dddddd !important;
 }
 
 .button-div{
@@ -34,7 +50,7 @@
   text-align: left;
   opacity: 50% !important;
   font-size: 12px;
-  margin: 12px;
+  margin: 21px 0;
   padding: 0 9px;
   padding-left: 0;
 }
@@ -48,7 +64,15 @@
 .item-voting > div {
   padding: 0;
 }
-.item-voting > div > button > div > span {
+/*.item-voting > div > button > div > span {
+  color: #808080 !important;
+}*/
+
+.voted >div> span {
+  color: #00bcd4 !important;
+}
+
+.not-voted>div>span{
   color: #808080 !important;
 }
 
@@ -60,6 +84,7 @@
   margin: 9px 0;
 }
 .item-title {
+  z-index: 1;
   font-size: 18px;
   font-weight: 100;
 }
@@ -67,7 +92,7 @@
 .quote-top {
   transform: rotateY(180deg);
   position: absolute;
-  left: 5%;
+  left: 3%;
   font-size: 21px;
 }
 
@@ -78,7 +103,7 @@
 
 .quote-btm {
   position: absolute;
-  right: 5%;
+  right: 3%;
   font-size: 21px;
 }
 

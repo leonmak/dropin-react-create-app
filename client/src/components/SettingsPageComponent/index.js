@@ -1,29 +1,38 @@
 import React, { Component } from 'react';
 import {browserHistory} from 'react-router';
-import Avatar from 'material-ui/Avatar';
 import profileImageUpload from '../ImageUpload/profileImageUpload';
 import RaisedButton from 'material-ui/RaisedButton';
 import { reduxForm, Field } from 'redux-form';
-import { Toggle } from 'redux-form-material-ui';
-import UsernameTextField from './UsernameTextField';
+import { TextField } from 'redux-form-material-ui';
+import request from 'superagent';
+
 
 import '../../styles/Settings.css';
-
-const handler = (reset) => values => {
-  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-}
 
 export class SettingsPageComponent extends Component {
 
   constructor(props){
     super(props)
 
+    this.state = {
+      userInfo: null
+    }
+
     this.logout = this.logout.bind(this);
     this.goToLoginIfLoggedOut = this.goToLoginIfLoggedOut.bind(this);
+    this.handler = this.handler.bind(this);
   }
 
   componentWillMount() {
     this.goToLoginIfLoggedOut();
+
+    if(this.props.user)
+      request
+      .get(`/api/users/${this.props.user.userId}`)
+      .end((err,res) => {
+        this.setState({ userInfo: res.body });
+        this.props.initialize(res.body)
+      })
   }
 
   componentDidUpdate() {
@@ -36,27 +45,40 @@ export class SettingsPageComponent extends Component {
     }
   }
 
+  handler(values) {
+    request
+    .put('/api/profile')
+    .send({
+      user_avatar_url: values.user_avatar_url,
+      user_name: values.user_name
+    })
+    .end((err,res) => {
+      browserHistory.push('/profile');
+      this.props.passSnackbarMessage('Profile settings updated')
+    })
+  }
+
   logout() {
     this.props.attemptLogout();
-    this.props.passSnackbarMessage('Logged out')
+    this.props.passSnackbarMessage('Logged out');
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, user } = this.props;
+    const { handleSubmit, pristine, submitting } = this.props;
+    const { userInfo } = this.state;
 
     return (
-    <form onSubmit={ handleSubmit(handler(reset)) }>
-    {user &&
     <div>
+    {userInfo &&
+    <form onSubmit={ handleSubmit(this.handler) }>
       <div className="row center-xs sm-xs settings-container">
-        <Field name="imageId" component={profileImageUpload} user={user}/>
+        <Field name="user_avatar_url" component={profileImageUpload} userInfo={userInfo} />
       </div>
 
       <div className="row center-xs settings-options">
         <div className="col-xs-10 col-sm-6 ">
           <h2>User Settings</h2>
-          <Field name="username" component={UsernameTextField} user={user} />
-          <Field name="anonymous" component={Toggle} defaultToggled={user.anonymous} label="Anonymous"/>
+          <Field name="user_name" component={TextField} floatingLabelText="Display Name" style={{width: '100%'}} />
         </div>
       </div>
 
@@ -77,9 +99,8 @@ export class SettingsPageComponent extends Component {
         </div>
       </div>
       </div>
-
-    </div>}
-    </form>
+    </form>}
+    </div>
     )
   }
 

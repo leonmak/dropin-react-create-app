@@ -15,11 +15,6 @@ var Schema = {
       type: 'string',
       nullable: false
     },
-    anonymous: {
-      type: 'boolean',
-      nullable: false,
-      defaultTo: true
-    },
     facebook_id: {
       type: 'string',
       nullable: false,
@@ -74,11 +69,20 @@ var Schema = {
     },
     longitude: {
       type: 'float',
-      nullable: false
+      nullable: false,
+      precision: 9,
+      scale: 6
     },
     latitude: {
       type: 'float',
-      nullable: false
+      nullable: false,
+      precision: 8,
+      scale: 6
+    },
+    anonymous: {
+      type: 'boolean',
+      nullable: false,
+      defaultTo: true
     },
     created_at: {
       type: 'string',
@@ -139,9 +143,9 @@ var Schema = {
       unsigned: true
     },
     vote_type: {
-      type: 'boolean',
+      type: 'integer',
       nullable: false,
-      defaultTo: true
+      defaultTo: 0
     }
   }
 };

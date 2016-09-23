@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {},
   "dependencies": {
+    "array-sort": "^0.1.2",
     "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "foreman": "^2.0.0",
@@ -39,6 +40,7 @@
     "redux-form": "^6.0.2",
     "redux-form-material-ui": "^4.0.1",
     "redux-thunk": "^2.1.0",
+    "sort-array": "^1.1.1",
     "superagent": "^2.2.0",
     "sw-precache": "^4.0.0",
     "sw-toolbox": "^3.2.1",
@@ -48,7 +50,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-sw": "npm run build && npm run cp-setup && sw-precache --root='build/' --config=build/sw-precache-config.json",
-    "cp-setup": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\; && cp manifest.json sw-precache-config.json runtime-sw.js sw-toolbox.js build/ ",
+    "cp-setup": "cp manifest.json sw-precache-config.json runtime-sw.js sw-toolbox.js build/ && cp -R favicons/ build/favicons/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

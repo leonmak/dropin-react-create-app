@@ -1,4 +1,7 @@
-import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP} from '../actions';
+import {FETCH_ALL_NEARBY_DROPS, UPDATE_A_NEARBY_DROP, UPDATE_COMMENT_IN_LIST_PAGE} from '../actions';
+import {VOTE_INITIAL_UI_UPDATE,UPDATE_MY_VOTE_IN_LIST_PAGE,UPDATE_OTHERS_VOTE_IN_LIST_PAGE,
+MAKE_A_VOTE_DROP_PAGE,UPDATE_MY_VOTE_IN_DROP_PAGE,UPDATE_OTHERS_VOTE_IN_DROP_PAGE,
+MAKE_A_VOTE_DROP_PAGE_SRC_LIST} from '../actions/VoteActions';
 
 //designing state shape
 const initialState = {
@@ -17,14 +20,14 @@ const initialState = {
  "date": "2016-09-08T11:06:43.511Z",
  "replies": 12*/
 
-export function drops(state=initialState, action) {
+ export function drops(state=initialState, action) {
 
-	switch (action.type) {
+ 	switch (action.type) {
 
-		case FETCH_ALL_NEARBY_DROPS:
-		return Object.assign({}, state, {
-			drops: action.drops.body
-		})
+ 		case FETCH_ALL_NEARBY_DROPS:
+ 		return Object.assign({}, state, {
+ 			drops: action.drops.body
+ 		})
 
 		//need logic to append new drops here
 		case UPDATE_A_NEARBY_DROP:
@@ -32,6 +35,158 @@ export function drops(state=initialState, action) {
 		return Object.assign({}, state, {
 			drops: state.drops
 		})
+
+		case UPDATE_COMMENT_IN_LIST_PAGE:
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==action.comment.dropId){
+				//console.log('it has been incremented');
+				newDrops[i].replies = state.drops[i].replies+1;
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+
+
+
+
+		/***********************************
+		VOTE RELATED 
+		***********************************/
+		case VOTE_INITIAL_UI_UPDATE:
+		var dropId = action.dropId;
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				var voteAction = action.voteAction;
+				var initalVoted =action.initialVoted;
+				console.log('action', voteAction, 'initialVoted', initalVoted);
+
+				//it is an upvote
+				if(voteAction===1){
+					if(initalVoted===1){
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=0;
+					}
+					if(initalVoted===0){
+						console.log('upvote from zero');
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=1;
+					}
+					if(initalVoted===-1){
+						newDrops[i].votes=state.drops[i].votes+2;
+						newDrops[i].voted=1;
+					}
+				}
+				//if it is downvote
+				if(voteAction===-1){
+					if(initalVoted===1){
+						newDrops[i].votes=state.drops[i].votes-2;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===0){
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===-1){
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=0;
+					}
+				}
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+		case UPDATE_MY_VOTE_IN_LIST_PAGE:
+		var dropId = action.vote.post_id;
+		var voteAction = action.vote.vote_type;
+		var votes = action.vote.votes;
+		console.log('update my votes',action);
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				newDrops[i].votes=votes;
+				newDrops[i].voted=voteAction;
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+		case UPDATE_OTHERS_VOTE_IN_LIST_PAGE:
+		var dropId = action.vote.post_id;
+		var voteAction = action.vote.vote_type;
+		var votes = action.vote.votes;
+		console.log('update others votes',action);
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				newDrops[i].votes=votes;
+			}
+		}
+		return Object.assign({}, state, {
+			drops: newDrops
+		})
+
+
+		/*case MAKE_A_VOTE_DROP_PAGE:
+		console.log('hello from drops reducer, src outside');
+		return Object.assign({}, state, {
+		})*/
+
+		case MAKE_A_VOTE_DROP_PAGE_SRC_LIST:
+		var dropId = action.dropId;
+		var newDrops = state.drops;
+		var arrayLength = newDrops.length;
+		for (var i = 0; i < arrayLength; i++) {
+			if(newDrops[i].dropId==dropId){
+				var voteAction = action.voteAction;
+				var initalVoted =action.initialVoted;
+
+				//it is an upvote
+				if(voteAction===1){
+					if(initalVoted===1){
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=0;
+					}
+					if(initalVoted===0){
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=1;
+					}
+					if(initalVoted===-1){
+						newDrops[i].votes=state.drops[i].votes+2;
+						newDrops[i].voted=1;
+					}
+				}
+				//if it is downvote
+				if(voteAction===-1){
+					if(initalVoted===1){
+						newDrops[i].votes=state.drops[i].votes-2;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===0){
+						newDrops[i].votes=state.drops[i].votes-1;
+						newDrops[i].voted=-1;
+					}
+					if(initalVoted===-1){
+						newDrops[i].votes=state.drops[i].votes+1;
+						newDrops[i].voted=0;
+					}
+				}
+			}
+		}
+		return Object.assign({}, state, {
+			drops:newDrops
+		})
+
 		default:
 		return state
 	}
