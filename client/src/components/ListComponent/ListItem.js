@@ -76,8 +76,7 @@ const redirectToLogin = props =>{
     const ItemVoting = (props) => (
       <div className="row item-voting">
       <div className="col-xs-12">
-
-      {props.user?
+      {!props.isProfile ? props.user ?
         ((props.voted===1)?
           (<IconButton className='voted' onClick={()=>{props.makeAVote(props.dropId,1,1,props.user.userId)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
@@ -91,13 +90,13 @@ const redirectToLogin = props =>{
         :
         (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
-      }
+      : null }
 
       </div>
       <div className="col-xs-12 votes-container">{props.votes}</div>
       <div className="col-xs-12">
 
-      {props.user?
+      {!props.isProfile ? props.user ?
         ((props.voted===1)?
           (<IconButton className='not-voted' onClick={()=>{props.makeAVote(props.dropId,-1,1,props.user.userId)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
@@ -111,7 +110,7 @@ const redirectToLogin = props =>{
         :
         (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
-      }
+      : null }
 
       </div>
       </div>
@@ -149,27 +148,34 @@ const redirectToLogin = props =>{
       <EmojiDisplay emojiUni={props.emojiUni} />
       {(props.isProfile&&(props.userId===props.user.userId)) && <div className="edit-delete-btn">
       <IconButton tooltipPosition="bottom-center" tooltip="Edit" onTouchTap={()=>goToEdit(props)}>
-      {Icons.MUI('mode_edit')}
+        {Icons.MUI('mode_edit')}
       </IconButton>
       <IconButton tooltipPosition="bottom-center" tooltip="Delete" onTouchTap={()=>props.openDialog(props.dropId)} >
-      {Icons.MUI('delete')}
+        {Icons.MUI('delete')}
       </IconButton>
       </div>
     }
     <ItemTitle title={props.title}/>
     {!props.isDrop &&
       <div className="row center-xs item-media-icon">
-      {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
-      {props.videoUrl && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
-      {props.soundCloudUrl && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
+        {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
+        {props.videoUrl && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
+        {props.soundCloudUrl && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
       </div>
     }
     <div className="row center-xs middle-xs item-description">
     <div className="col-xs-2">
-    <ItemVoting votes={props.votes} user={props.user} 
-    dropId={props.dropId} passSnackbarMessage={props.passSnackbarMessage}
-    voted={props.voted} makeAVote={props.makeAVote} undoAVote={props.undoAVote}
-    userId={props.userId}/>
+    <ItemVoting
+      isProfile={props.isProfile}
+      votes={props.votes}
+      user={props.user}
+      dropId={props.dropId}
+      passSnackbarMessage={props.passSnackbarMessage}
+      voted={props.voted}
+      makeAVote={props.makeAVote}
+      undoAVote={props.undoAVote}
+      userId={props.userId}
+    />
     </div>
     <div className="col-xs-9">
     <ItemDetails
@@ -179,7 +185,7 @@ const redirectToLogin = props =>{
     </div>
     </div>
 
-        {/* Media content
+        {/* Media content*/}
 
         {props.isDrop && props.imageId &&
           <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
@@ -188,7 +194,7 @@ const redirectToLogin = props =>{
           <ReactPlayer url={props.videoUrl} width="100%" height="auto" />}
 
         {props.isDrop && props.soundCloudUrl &&
-        <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
+        <SoundPlayer resolveUrl={props.soundCloudUrl} />}
 
         <div className="button-div">
         {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
