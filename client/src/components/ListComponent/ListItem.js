@@ -9,9 +9,6 @@ import moment from 'moment';
 import EmojiDisplay from './EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
 
-//import { CloudinaryImage } from 'react-cloudinary';
-//import ReactPlayer from 'react-player';
-//import SoundPlayer from '../SoundPlayer';
 import geolib from 'geolib';
 //import {CommentsInput} from './CommentsInput';
 
@@ -185,22 +182,9 @@ const redirectToLogin = props =>{
     </div>
     </div>
 
-        {/* Media content*/}
 
-        {props.isDrop && props.imageId &&
-          <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
-
-        {props.isDrop && props.videoUrl &&
-          <ReactPlayer url={props.videoUrl} width="100%" height="auto" />}
-
-        {props.isDrop && props.soundCloudUrl &&
-        <SoundPlayer resolveUrl={props.soundCloudUrl} />}
-
-        <div className="button-div">
-        {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
-{/*
-        <CommentsInput dropId={props.dropId}/>
-      */}
+      <div className="button-div">
+      {!props.isDrop && <FlatButton onTouchTap={ ()=> goToURL(props) } label="Drop in" backgroundColor="#00bcd4" hoverColor="#ffffff"/> }
       </div>
 
       </Paper>

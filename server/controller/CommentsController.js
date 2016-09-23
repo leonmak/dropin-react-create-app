@@ -60,7 +60,6 @@ CommentsController.getFeedComments = function (req, res) {
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
-console.log('62', fetchedComments)
 
     for (var i = 0; i < fetchedComments.length; ++i) {
 

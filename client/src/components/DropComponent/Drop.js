@@ -8,9 +8,9 @@ import moment from 'moment';
 import EmojiDisplay from '../ListComponent/EmojiDisplay';
 import {Link, browserHistory} from 'react-router';
 
-//import { CloudinaryImage } from 'react-cloudinary';
-//import ReactPlayer from 'react-player';
-//import SoundPlayer from '../SoundPlayer';
+import { CloudinaryImage } from 'react-cloudinary';
+import ReactPlayer from 'react-player';
+import SoundPlayer from '../SoundPlayer';
 import geolib from 'geolib';
 //import {CommentsInput} from './CommentsInput';
 
@@ -26,7 +26,7 @@ export class Drop extends Component {
     	{...this.props.drop}
     	user={this.props.user}
     	isProfile={false}
-    	isDrop={true} 
+    	isDrop={true}
       voteSocketHandler={this.props.voteSocketHandler}/>
       )
   }
@@ -53,7 +53,7 @@ const ListItem = props => (
   }
   <div className="row center-xs middle-xs item-description">
   <div className="col-xs-2">
-  <ItemVoting votes={props.votes} user={props.user} dropId={props.dropId} voted={props.voted} 
+  <ItemVoting votes={props.votes} user={props.user} dropId={props.dropId} voted={props.voted}
   voteSocketHandler={props.voteSocketHandler} userId={props.userId}/>
   </div>
   <div className="col-xs-9">
@@ -64,7 +64,7 @@ const ListItem = props => (
   </div>
   </div>
 
-  {/* Media content
+  {/* Media content */}
 
   {props.isDrop && props.imageId &&
   <CloudinaryImage className="drop-image" publicId={props.imageId} options={{ height: 300, crop: 'scale' }} /> }
@@ -73,7 +73,7 @@ const ListItem = props => (
   <ReactPlayer url={props.videoUrl} width="100%" height="auto" />}
 
   {props.isDrop && props.soundCloudUrl &&
-  <SoundPlayer resolveUrl={props.soundCloudUrl} />}*/}
+  <SoundPlayer resolveUrl={props.soundCloudUrl} />}
 
   <div className="button-div">
   </div>
