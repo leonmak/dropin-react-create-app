@@ -98,7 +98,8 @@ class AddForm extends Component {
       request
       .get('/api/feeds/'+this.props.params.dropId)
       .end((err,res) => {
-        res.body.emojiUni = ':'+EmojiUniToAnnotation[res.body.emojiUni]+':';
+        const emojiName = EmojiUniToAnnotation[res.body.emojiUni];
+        res.body.emojiUni = ':'+emojiName+':';
         this.props.initialize(res.body);
       })
     }
