@@ -57,12 +57,19 @@ class DropComponent extends Component {
 		request
 		.get('/api/feeds/'+this.props.params.dropId)
 		.end((err,res) => {
-			console.log('sanitycheck');
+			//console.log(res);
 			//this.props.passingFromOthersToDrop(res.body);
-			this.state.selectedDrop=res.body;
+			this.setState({selectedDrop:res.body});
 			socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
 			voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
-			this.props.fetchCommentsForDrop(res.body.dropId);
+			//this.props.fetchCommentsForDrop(res.body.dropId);
+			request
+			.get('/api/feeds/'+this.props.params.dropId+'/comments')
+			.end((err,res) => {
+				console.log(res);
+				//this.props.passingFromOthersToDrop(res.body);
+				this.setState({comments:res.body});
+			})
 		})		
 	}
 
@@ -78,57 +85,69 @@ class DropComponent extends Component {
 
 	commentReceive(data){
 		console.log('received comment', data);
-		this.selectedDrop.replies+=1;
-		this.comments.push(data);
-		//this.props.updateAComment(data);
-    	//this.props.updateANearbyDrop(data);
-    }
 
-    voteReceive(vote){
-    	console.log('received vote', vote);
-    	if(this.props.user){
-    		if(vote.user_id===this.props.user.userId){
+		var newSelectedDrop = this.state.selectedDrop;
+		newSelectedDrop.replies+=1;
+		this.setState({selectedDrop:newSelectedDrop});
+
+		var newComments = this.state.comments;
+		newComments.push(data);
+		this.setState({comments:newComments});
+	}
+
+	voteReceive(vote){
+		console.log('received vote', vote);
+		if(this.props.user){
+			if(vote.user_id===this.props.user.userId){
         		//console.log('up my vote');
-        		this.state.selectedDrop.votes=vote.votes;
-        		this.state.selectedDrop.voted.vote_type;
+
+        		var newSelectedDrop = this.state.selectedDrop;
+        		newSelectedDrop.votes=vote.votes;
+        		newSelectedDrop.voted=vote.vote_type;
+        		this.setState({selectedDrop:newSelectedDrop});
+
         	}else{
         		//console.log('up others vote');
-        		this.state.selectedDrop.votes=vote.votes;
+        		var newSelectedDrop = this.state.selectedDrop;
+        		newSelectedDrop.votes=vote.votes;
+        		this.setState({selectedDrop:newSelectedDrop});
         	}
         }
         else{
       		//console.log('up others vote');
-      		this.state.selectedDrop.votes=vote.votes;
+      		var newSelectedDrop = this.state.selectedDrop;
+      		newSelectedDrop.votes=vote.votes;
+      		this.setState({selectedDrop:newSelectedDrop});
       	}
-	}
+      }
 
-	render() {
-		const {location, user} = this.props;
+      render() {
+      	const {location, user} = this.props;
 
-		return (
-			this.state.selectedDrop ?(<div>
-				<Drop drop={this.state.selectedDrop} user={this.props.user} 
-				voteSocketHandler={voteSocketHandler}/>
-				<CommentsList comments={this.state.comments} />
-				<CommentForm
-				location={location}
-				user={user}
-				socketHandler={socketHandler}
-				drop={this.state.selectedDrop}/>
-				</div>)
-			: <CircularProgress className="spinner"/>
-			)
-	}
-}
+      	return (
+      		this.state.selectedDrop ?(<div>
+      			<Drop drop={this.state.selectedDrop} user={this.props.user} 
+      			voteSocketHandler={voteSocketHandler}/>
+      			<CommentsList comments={this.state.comments} />
+      			<CommentForm
+      			location={location}
+      			user={user}
+      			socketHandler={socketHandler}
+      			drop={this.state.selectedDrop}/>
+      			</div>)
+      		: <CircularProgress className="spinner"/>
+      		)
+      }
+  }
 
-DropComponent.propTypes = {
-	toggleBottomBar: PropTypes.func.isRequired,
-	toggleTopBarBackButton: PropTypes.func.isRequired,
-	pageVisibility: PropTypes.object.isRequired,
-	setLocation: PropTypes.func.isRequired
-};
+  DropComponent.propTypes = {
+  	toggleBottomBar: PropTypes.func.isRequired,
+  	toggleTopBarBackButton: PropTypes.func.isRequired,
+  	pageVisibility: PropTypes.object.isRequired,
+  	setLocation: PropTypes.func.isRequired
+  };
 
-export default DropComponent;
+  export default DropComponent;
 
 
 /*,
