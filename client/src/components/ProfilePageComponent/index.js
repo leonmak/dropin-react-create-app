@@ -57,13 +57,15 @@ export default class ProfilePageComponent extends Component{
     }else{
       const userId = this.props.params.profileId ? this.props.params.profileId : this.props.user.userId;
 
+      console.log('accessing id:',userId);
+
       request
       .get(`/api/users/${userId}`)
       .end((err,res) => this.setState({ userInfo: res.body }));
 
       this.props.fetchAllMyDrops(userId);
       this.props.fetchAllMyComments(userId);
-      this.props.fetchAllMyVotes(userId);
+      //this.props.fetchAllMyVotes(userId);
     }
   }
 

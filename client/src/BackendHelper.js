@@ -107,15 +107,18 @@ export function getFacebookAuth(){
 	return defaultPromise(req);
 }
 
+/*request
+      .get(`/api/users/${userId}`)
+      .end((err,res) => this.setState({ userInfo: res.body }));*/
 
 
 export function getMyDrops(userId){
-    var req = 'api/users/'+userId+'/feeds';
+    var req = '/api/users/'+userId+'/feeds';
     return defaultPromise(req);
 }
 
 export function getMyComments(userId){
-    var req = 'api/users/'+userId+'/comments';
+    var req = '/api/users/'+userId+'/comments';
     return defaultPromise(req);
 }
 
