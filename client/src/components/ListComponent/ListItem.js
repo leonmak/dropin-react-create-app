@@ -208,7 +208,8 @@ const redirectToLogin = props =>{
       user: PropTypes.object.isRequired,
       makeAVote: PropTypes.func.isRequired,
       undoAVote: PropTypes.func.isRequired,
-      userId: PropTypes.object.isRequired
+      userId: PropTypes.object.isRequired,
+      makeAVote: PropTypes.func.isRequired
     }
 
     export default ListItem;

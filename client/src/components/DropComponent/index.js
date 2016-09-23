@@ -27,59 +27,49 @@ class DropComponent extends Component {
 
 	constructor(props) {
 		super(props);
-
-    /*this.state ={
-      directLinkDrop: null
-  }*/
-
-  this.geoId = null;
-  this.clickedDrop = null;
-  this.updateLocation = this.updateLocation.bind(this);
-}
-
-updateLocation(coords) {
-	this.props.setLocation([coords.longitude, coords.latitude])
-}
-
-componentWillMount() {
-	if(!this.props.user) {
-		this.props.passSnackbarMessage('Log in to view message')
-		browserHistory.push('/login');
+		this.state={
+			selectedDrop:null,
+			comments:[]
+		}
+		this.geoId = null;
+		this.updateLocation = this.updateLocation.bind(this);
 	}
-	const {drops, profileDrops, selectedDrop} = this.props;
 
-	this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
-								   : selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
-}
+	updateLocation(coords) {
+		this.props.setLocation([coords.longitude, coords.latitude]);
+	}
+
+	componentWillMount() {
+		if(!this.props.user) {
+			this.props.passSnackbarMessage('Log in to view message')
+			browserHistory.push('/login');
+		}
+		//const {drops, profileDrops, selectedDrop} = this.props;
+		/*this.state.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
+		: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;*/
+	}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
-		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-
-		if(this.clickedDrop){
-			voteSocketHandler.setup(VOTES_SOCKET, {postId: this.clickedDrop.dropId}, this.voteReceive.bind(this));
-			socketHandler.setup(COMMENTS_SOCKET, {postId: this.clickedDrop.dropId}, this.commentReceive.bind(this));
-		}
-		else{
-			request
-			.get('/api/feeds/'+this.props.params.dropId)
-			.end((err,res) => {
-				this.props.passingFromOthersToDrop(res.body);
-				socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
-				voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
-			})
-		}
-
-
-		this.props.fetchCommentsForDrop(this.props.params.dropId);
+		request
+		.get('/api/feeds/'+this.props.params.dropId)
+		.end((err,res) => {
+			console.log('sanitycheck');
+			//this.props.passingFromOthersToDrop(res.body);
+			this.state.selectedDrop=res.body;
+			socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
+			voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
+			this.props.fetchCommentsForDrop(res.body.dropId);
+		})		
 	}
 
 
 	componentWillUnmount() {
 		socketHandler.uninstall();
+		voteSocketHandler.uninstall();
 		navigator.geolocation.clearWatch(this.geoId);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
@@ -88,31 +78,44 @@ componentWillMount() {
 
 	commentReceive(data){
 		console.log('received comment', data);
-		this.props.updateAComment(data);
+		this.selectedDrop.replies+=1;
+		this.comments.push(data);
+		//this.props.updateAComment(data);
     	//this.props.updateANearbyDrop(data);
     }
 
-    voteReceive(data){
-    	console.log('received vote', data);
-		//this.props.updateAComment(data);
+    voteReceive(vote){
+    	console.log('received vote', vote);
+    	if(this.props.user){
+    		if(vote.user_id===this.props.user.userId){
+        		//console.log('up my vote');
+        		this.state.selectedDrop.votes=vote.votes;
+        		this.state.selectedDrop.voted.vote_type;
+        	}else{
+        		//console.log('up others vote');
+        		this.state.selectedDrop.votes=vote.votes;
+        	}
+        }
+        else{
+      		//console.log('up others vote');
+      		this.state.selectedDrop.votes=vote.votes;
+      	}
 	}
 
 	render() {
-		console.log("testing",(null||null));
-		const {location, user, drops, profileDrops, selectedDrop} = this.props;
-		const directLinkDrop = this.props.selectedDrop.selectedDrop;
-		const resolvedDrop = this.clickedDrop || directLinkDrop;
+		const {location, user} = this.props;
 
-		return (resolvedDrop ?
-			<div>
-			<Drop drop={resolvedDrop} user={this.props.user} />
-			<CommentsList comments={selectedDrop.comments} />
-			<CommentForm
-			location={location}
-			user={user}
-			socketHandler={socketHandler}
-			drop={resolvedDrop}/>
-			</div>
+		return (
+			this.state.selectedDrop ?(<div>
+				<Drop drop={this.state.selectedDrop} user={this.props.user} 
+				voteSocketHandler={voteSocketHandler}/>
+				<CommentsList comments={this.state.comments} />
+				<CommentForm
+				location={location}
+				user={user}
+				socketHandler={socketHandler}
+				drop={this.state.selectedDrop}/>
+				</div>)
 			: <CircularProgress className="spinner"/>
 			)
 	}
@@ -121,12 +124,20 @@ componentWillMount() {
 DropComponent.propTypes = {
 	toggleBottomBar: PropTypes.func.isRequired,
 	toggleTopBarBackButton: PropTypes.func.isRequired,
-	selectedDrop: PropTypes.object.isRequired,
 	pageVisibility: PropTypes.object.isRequired,
-	setLocation: PropTypes.func.isRequired,
-	updateAComment: PropTypes.func.isRequired,
-	passingFromOthersToDrop: PropTypes.func.isRequired,
-	clearSingleDropHistory: PropTypes.func.isRequired
+	setLocation: PropTypes.func.isRequired
 };
 
 export default DropComponent;
+
+
+/*,
+selectedDrop: PropTypes.object.isRequired,
+	updateAComment: PropTypes.func.isRequired,
+	passingFromOthersToDrop: PropTypes.func.isRequired,
+	clearSingleDropHistory: PropTypes.func.isRequired,
+	makeAVoteDropPage: PropTypes.func.isRequired,
+	updateMyVoteInDropPage: PropTypes.func.isRequired,
+	updateOthersVoteInDropPage: PropTypes.func.isRequired,
+	makeAVoteDropPageSrcList: PropTypes.func.isRequired,
+	makeAVote:PropTypes.func.isRequired*/
