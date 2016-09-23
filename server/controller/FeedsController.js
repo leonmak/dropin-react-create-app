@@ -157,6 +157,7 @@ FeedsController.getFeedsInRadius = function (req, res) {
 
   // Get the logged-in userID
   var sessionFbId = -1;
+  console.log("THE SESSION INSIDE REQ : ", req.session);
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;
   }
@@ -213,6 +214,7 @@ FeedsController.getUserFeeds = function (req, res) {
   const id = req.params.id;
 
   // Get the logged-in userID
+  console.log("THE SESSION INSIDE REQ : ", req.session);
   var sessionFbId = -1;
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;

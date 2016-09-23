@@ -20,7 +20,7 @@ CommentsController.apiParse = function (fetchedComment) {
   // Validate user and anonymity
   if (typeof fetchedComment.user != 'undefined') {
     var user = fetchedComment.user;
-    if (user.anonymous == 0) {
+    if (fetchedComment.anonymous == 0) {
       username = user.facebook_name;
       avatar = user.facebook_profile_img;
       userID = user.id;
@@ -86,10 +86,10 @@ CommentsController.getFeedComments = function (req, res) {
 
 // Get comments from a specific user
 CommentsController.getUserComments = function (req, res) {
-  const user_id = req.params.id;
+  const id = req.params.id;
 
   // Find comments belonging to a user
-  Comments.where('user_id', user_id).fetchAll({
+  Comments.where('user_id', id).fetchAll({
     withRelated: ['user']
   }).then(function (comments) {
 
@@ -228,7 +228,7 @@ CommentsController.editComment = function (req, res) {
             res.json({error: Messages.ERROR_UPDATING_COMMENT});
           }
         })
-      } 
+      }
     }).catch(function (err) {
       if (res != null) {
         res.json({error: Messages.ERROR_COMMENT_NOT_FOUND});
