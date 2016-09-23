@@ -13,7 +13,6 @@ var FeedsController = require('./server/controller/FeedsController');
 var VotesController = require('./server/controller/VotesController');
 var cookieParser = require('cookie-parser');
 
-// var clientSockets = [];
 var cookieParser = require('cookie-parser');
 
 const EVENT_TYPE = ['comment:send', 'feed:send']
