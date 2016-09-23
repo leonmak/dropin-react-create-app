@@ -92,7 +92,7 @@ class AddForm extends Component {
 
     if(this.clickedDrop){
         this.clickedDrop.emojiUni = ':'+EmojiUniToAnnotation[this.clickedDrop.emojiUni]+':';
-        console.log(this.clickedDrop)
+
         this.props.initialize(this.clickedDrop);
     } else{
       request

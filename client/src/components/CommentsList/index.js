@@ -12,10 +12,10 @@ export class CommentsList extends Component {
 
     return (
       <div>
-      { this.props.comments.map(comment => {
+      { this.props.comments.map((comment,idx) => {
           let {text, created_at, username, id, userId, userAvatarId, dropId} = comment;
           return <Comment
-          key={id}
+          key={idx}
           text={text}
           dropId={dropId}
           username={username}
