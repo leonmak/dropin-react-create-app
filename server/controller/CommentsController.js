@@ -22,7 +22,7 @@ CommentsController.apiParse = function (fetchedComment) {
     var user = fetchedComment.user;
     // if (fetchedComment.anonymous == 0) {
       username = user.facebook_name;
-      avatar = user.facebook_profile_img;
+      avatar = user.user_avatar_url;
       userID = user.id;
     // }
   }
