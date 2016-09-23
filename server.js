@@ -9,7 +9,7 @@ const FacebookController = require('./server/controller/FacebookController');
 var CommentsController = require('./server/controller/CommentsController');
 var FeedsController = require('./server/controller/FeedsController');
 var VotesController = require('./server/controller/VotesController');
-var url = require('url')
+var cookieParser = require('cookie-parser');
 
 passport.use(new FacebookTokenStrategy({
   clientID: process.env.REACT_APP_FB_CLIENT_ID,
@@ -33,16 +33,9 @@ app.set('port', (process.env.API_PORT || 3001));
 
 var session = require('express-session');
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(session({
-  key: 'session_id',
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -94,5 +87,5 @@ io.on('connection', function(socket) {
   });
 
 http.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
