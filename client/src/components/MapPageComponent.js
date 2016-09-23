@@ -13,7 +13,8 @@ export default class MapPageComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoom: 18
+      zoom: 18,
+      center: props.location
     }
 
     this.map = null;
@@ -76,7 +77,7 @@ export default class MapPageComponent extends Component {
     // Append the marker to the map.
     map.getContainer().appendChild(marker);
     map.on('move', function() {
-      // Update the x/y coordinates based on the new center of the map.
+      // Update the x/y coordinates based on the new location of user
       position = map.project(self.props.location);
       marker.style.top = position.y - height / 2 + 'px';
       marker.style.left = position.x - width / 2 + 'px';
@@ -109,20 +110,20 @@ export default class MapPageComponent extends Component {
 
       map.boxZoom.disable();
       map.keyboard.disable();
+      map.setPitch(60);
       this.map = map;
     }
   }
 
   render() {
-    const {zoom} = this.state
+    const {zoom, center} = this.state
         , {location, user, drops} = this.props;
 
     return (
       <div>
-
         <div className="my-location">
           <FloatingActionButton
-            onTouchTap={() => this.map.flyTo({ center: location, zoom: 19, bearing: 0, speed: 0.5, curve: 1, easing: t => t }) } >
+            onTouchTap={() => this.map.flyTo({ center: location, zoom: 20, bearing: 0, speed: 0.6, curve: 1, easing: t => t }) } >
             {Icons.MUI('my_location')}
           </FloatingActionButton>
         </div>
@@ -134,7 +135,7 @@ export default class MapPageComponent extends Component {
           accessToken={process.env.REACT_APP_MAPBOX_API_KEY}
           zoom={[zoom]}
           pitch={60}
-          center={location}
+          center={center}
           hash={true}>
 
           <Layer
