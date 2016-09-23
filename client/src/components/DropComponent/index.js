@@ -27,59 +27,47 @@ class DropComponent extends Component {
 
 	constructor(props) {
 		super(props);
-
-    this.state ={
-      clickedDrop: null
-  }
-
-  this.geoId = null;
-  //this.clickedDrop = null;
-  this.updateLocation = this.updateLocation.bind(this);
-}
-
-updateLocation(coords) {
-	this.props.setLocation([coords.longitude, coords.latitude])
-}
-
-componentWillMount() {
-	if(!this.props.user) {
-		this.props.passSnackbarMessage('Log in to view message')
-		browserHistory.push('/login');
+		this.state={
+			selectedDrop:null,
+			comments:[]
+		}
+		this.geoId = null;
+		this.updateLocation = this.updateLocation.bind(this);
 	}
-	const {drops, profileDrops, selectedDrop} = this.props;
 
-	this.state.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
-	: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
-}
+	updateLocation(coords) {
+		this.props.setLocation([coords.longitude, coords.latitude]);
+	}
+
+	componentWillMount() {
+		if(!this.props.user) {
+			this.props.passSnackbarMessage('Log in to view message')
+			browserHistory.push('/login');
+		}
+		//const {drops, profileDrops, selectedDrop} = this.props;
+		/*this.state.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
+		: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;*/
+	}
 
 	//using redux to toggle the top bar button if component mounted
 	//using redux to hide bottom bar if component mounted
 	componentDidMount() {
-		// this.geoId = geoListener(this.updateLocation);
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
-
-		if(this.state.clickedDrop){
-			voteSocketHandler.setup(VOTES_SOCKET, {postId: this.state.clickedDrop.dropId}, this.voteReceive.bind(this));
-			socketHandler.setup(COMMENTS_SOCKET, {postId: this.state.clickedDrop.dropId}, this.commentReceive.bind(this));
-		}
-		else{
-			request
-			.get('/api/feeds/'+this.props.params.dropId)
-			.end((err,res) => {
-				this.props.passingFromOthersToDrop(res.body);
-				socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
-				voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
-			})
-		}
-
-
-		this.props.fetchCommentsForDrop(this.props.params.dropId);
+		request
+		.get('/api/feeds/'+this.props.params.dropId)
+		.end((err,res) => {
+			this.props.passingFromOthersToDrop(res.body);
+			socketHandler.setup(COMMENTS_SOCKET, {postId: res.body.dropId}, this.commentReceive.bind(this));
+			voteSocketHandler.setup(VOTES_SOCKET, {postId: res.body.dropId}, this.voteReceive.bind(this));
+			this.props.fetchCommentsForDrop(res.body.dropId);
+		})		
 	}
 
 
 	componentWillUnmount() {
 		socketHandler.uninstall();
+		voteSocketHandler.uninstall();
 		navigator.geolocation.clearWatch(this.geoId);
 		this.props.toggleTopBarBackButton(false);
 		this.props.toggleBottomBar(true);
@@ -88,7 +76,8 @@ componentWillMount() {
 
 	commentReceive(data){
 		console.log('received comment', data);
-		this.props.updateAComment(data);
+		
+		//this.props.updateAComment(data);
     	//this.props.updateANearbyDrop(data);
     }
 
