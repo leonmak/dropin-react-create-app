@@ -22,23 +22,29 @@ export function makeAVote(dropId, voteAction, initialVoted, userId){
 		
 		if(voteAction===1){
 			if(initialVoted===1){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: 0});
 			}
 			if(initialVoted===0){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: 1});
 			}
 			if(initialVoted===-1){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: 1});
 			}
 		}
 		if(voteAction===-1){
 			if(initialVoted===1){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: -1});
 			}
 			if(initialVoted===0){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: -1});
 			}
 			if(initialVoted===-1){
+				//console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
 				socketHandler.vote({userId: userId, postId: dropId, voteType: 0});
 			}
 		}

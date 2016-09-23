@@ -27,15 +27,15 @@ export class Drop extends Component {
     	user={this.props.user}
     	isProfile={false}
     	isDrop={true} 
-        voteSocketHandler={this.props.voteSocketHandler}/>
-        )
-}
+      voteSocketHandler={this.props.voteSocketHandler}/>
+      )
+  }
 }
 
 Drop.PropTypes={
-    drop:PropTypes.object.isRequired,
-    user:PropTypes.object.isRequired,
-    voteSocketHandler:PropTypes.object.isRequired
+  drop:PropTypes.object.isRequired,
+  user:PropTypes.object.isRequired,
+  voteSocketHandler:PropTypes.object.isRequired
 }
 
 const ListItem = props => (
@@ -45,11 +45,11 @@ const ListItem = props => (
   <EmojiDisplay emojiUni={props.emojiUni} />
   <ItemTitle title={props.title}/>
   {!props.isDrop &&
-      <div className="row center-xs item-media-icon">
-      {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
-      {props.videoUrl && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
-      {props.soundCloudUrl && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
-      </div>
+    <div className="row center-xs item-media-icon">
+    {props.imageId && <div className="col-xs-2">{Icons.MUI("photo_camera")}</div>}
+    {props.videoUrl && <div className="col-xs-2">{Icons.MUI("videocam")}</div>}
+    {props.soundCloudUrl && <div className="col-xs-2">{Icons.MUI("music_note")}</div>}
+    </div>
   }
   <div className="row center-xs middle-xs item-description">
   <div className="col-xs-2">
@@ -104,43 +104,55 @@ const ItemVoting = (props) => (
 
   {props.user?
     ((props.voted===1)?
-        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0})}}
-          > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
+      (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
+      }}
+        > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
       ((props.voted===-1)?
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1})}}
-            > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1})}}
-            > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
+      }}
+          > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
+      }}
+          > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
         )
       )
     :
     (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
       > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
-}
+  }
 
-</div>
-<div className="col-xs-12 votes-container">{props.votes}</div>
-<div className="col-xs-12">
+  </div>
+  <div className="col-xs-12 votes-container">{props.votes}</div>
+  <div className="col-xs-12">
 
-{props.user?
+  {props.user?
     ((props.voted===1)?
-      (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1})}}
-          > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
+      (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
+      }}
+        > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
       ((props.voted===-1)?
-        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0})}}
-            > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1})}}
-            > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
+        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
+      }}
+          > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1});
+        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
+      }}
+          > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
         )
       )
     :
     (<IconButton className='not-voted' onClick={()=>{redirectToLogin(props)}}
       > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
-}
+  }
 
-</div>
-</div>
-);
+  </div>
+  </div>
+  );
 
 const ItemDetails = (props) => (
   <div className="row item-details-container">
@@ -153,17 +165,17 @@ const ItemDetails = (props) => (
       <span>by <Link style={{color:"#808080"}} to={`profile/${props.userId}`}>{props.username}</Link> </span>}
       {props.time}</span>
       : <span> Posted by {props.username} {props.time}</span>
-  }
-  </strong>
-  </div>
-  <div className="col-xs-12 details">
-  {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
-  </div>
-  {!props.isDrop && props.userLocation &&
+    }
+    </strong>
+    </div>
+    <div className="col-xs-12 details">
+    {Icons.FAFixedWidth('comments')}<strong>&nbsp; {props.replies} REPLIES</strong>
+    </div>
+    {!props.isDrop && props.userLocation &&
       <div className="col-xs-12 details">
       {Icons.FAFixedWidth('map-marker')}<span>&nbsp;  <Link to={`/map#18/${props.location[1]}/${props.location[0]}/10`}>{getDistanceFromUser(props.location, props.userLocation)}km away</Link></span>
       </div>
-  }
-  </div>
-  );
+    }
+    </div>
+    );
 
