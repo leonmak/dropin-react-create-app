@@ -1,5 +1,6 @@
 import * as BackendHelper from '../BackendHelper';
 
+
 export const FETCH_ALL_NEARBY_DROPS = 'FETCH_ALL_NEARBY_DROPS';
 export const FETCH_COMMENT_FOR_DROP = 'FETCH_COMMENT_FOR_DROP';
 export const UPDATE_A_NEARBY_DROP = 'UPDATE_A_NEARBY_DROP';
@@ -20,7 +21,7 @@ ACTION IS CALLED ON THE LIST PAGE
 //function for you to call to fetch all nearby drops
 export function fetchAllNearbyDrops(userId){
 	return (dispatch)=>{
-		BackendHelper.getAllDrops(userId)
+		BackendHelper.getAllNearbyDrops(userId)
 		.then(response=>dispatch(receiveAllNearbyDrops(response)));
 	}
 }
@@ -114,7 +115,7 @@ export function passingFromOthersToDrop(drop){
 
 	return (dispatch)=>{
 		// dispatch(clearSingleDropHistory()); // redundant
-		dispatch(fetchCommentsForDrop(drop.dropId));
+		//dispatch(fetchCommentsForDrop(drop.dropId));
 		dispatch(populatingDropFromOthrs(drop));
 	}
 }
@@ -189,6 +190,7 @@ export function receiveAllMyVotes(allMyVotes){
 		votes: allMyVotes
 	}
 }
+
 
 /*export function selectDrop()*/
 

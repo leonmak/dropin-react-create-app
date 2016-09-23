@@ -3,32 +3,30 @@ import {
 } from '../database';
 
 var FeedsController = require('./FeedsController');
+var UsersController = require('./UsersController');
 var MESSAGES = require('./Messages');
 var VotesController = {};
 
 /*** Front-end Queries ***/
 
-// TODO: Get all votes for a specific feed
-
-VotesController.getFeedVotes = function(req, res) {
+// Get all votes for a specific feed
+VotesController.getFeedVotes = function (req, res) {
   const post_id = req.params.id;
   var user_id = req.query.user_id;
-
 
   Votes.where('post_id', post_id).fetchAll({
     withRelated: ['user']
   }).then(function (votes) {
     // Get all votes objects
     var fetchedVotes = votes.toJSON();
-    var parsedVotes = {upvotes: 0, downvotes: 0, voted: 1};
-    var hasVoted = false;
-
+    var parsedVotes = {upvotes: 0, downvotes: 0, voted: 0};
+    var voteState = 0;
 
     for (var i = 0; i < fetchedVotes.length; ++i) {
 
       // Check if user voted
       if (fetchedVotes[i].user_id == user_id) {
-        hasVoted = true;
+        voteState = fetchedVotes[i].vote_type;
       }
 
       // Count votes
@@ -37,13 +35,8 @@ VotesController.getFeedVotes = function(req, res) {
       } else {
         parsedVotes.downvotes += 1;
       }
-
     }
-
-    if (!hasVoted && typeof user_id != 'undefined') {
-      parsedVotes.voted = -1;
-    }
-
+    parsedVotes.voted = voteState;
     res.json(parsedVotes);
   }).catch(function (err) {
     res.json({
@@ -52,9 +45,8 @@ VotesController.getFeedVotes = function(req, res) {
   })
 };
 
-// TODO: Get summary of all votes to a specific user
-
-VotesController.getVotesToUser = function(req, res) {
+// Get summary of all votes to a specific user
+VotesController.getVotesToUser = function (req, res) {
   const user_id = req.params.id;
 
   Posts.where('user_id', user_id).fetchAll({withRelated: ['votes']}).then(function (posts) {
@@ -67,7 +59,7 @@ VotesController.getVotesToUser = function(req, res) {
 
       // Collate votes
       var fetchedVotes = fetchedPosts[i].votes;
-      console.log(fetchedVotes);
+      // console.log(fetchedVotes);
       for (var j = 0; j < fetchedVotes.length; ++j) {
         // Count votes
         if (fetchedVotes[j].vote_type == 1) {
@@ -88,9 +80,8 @@ VotesController.getVotesToUser = function(req, res) {
 };
 
 
-// TODO: Get a specific vote
-
-VotesController.getVote = function(req, res) {
+// Get a specific vote
+VotesController.getVote = function (req, res) {
   const vote_id = req.params.id;
 
   Votes.where('id', vote_id).fetch().then(function (vote) {
@@ -103,12 +94,12 @@ VotesController.getVote = function(req, res) {
 
 };
 
-// TODO: Create a vote
-
-VotesController.directVote = function({
+// Create a vote
+VotesController.directVote = function ({
   user_id,
   post_id,
-  vote_type}, res = null) {
+  vote_type
+}, res = null) {
 
   // Prepare the formatted object to store in database
   var voteHash = {
@@ -118,51 +109,142 @@ VotesController.directVote = function({
   };
 
   // Promise to store in database, then return an object for socket emission
-  var storePromise = new Promise(function(resolve, reject) {
+  var storePromise = new Promise(function (resolve, reject) {
 
-    Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function(vote) {
-      // Destroy old entry if applicable
-      if (vote) {
-        vote.save(voteHash).then(function (vote) {
-          if (vote) {
-            if (res !== null) {
-              res.json(vote.toJSON());
-            } else {
-              console.log(vote.toJSON());
-              resolve(vote.toJSON());
+    Votes.where('post_id', post_id).where('user_id', user_id).fetch().then(function (vote) {
+      // Existing vote found
+      if (vote != null) {
+        // Destroy useless vote
+        if (vote_type == 0) {
+          vote.destroy().then(function (vote) {
+
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
+              }
+              var parsedVote = vote.toJSON();
+              parsedVote.votes = count;
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
+
+              // Resolve
+              if (vote) {
+                if (res !== null) {
+                  console.log(parsedVote);
+                  res.json(parsedVote);
+                } else {
+                  // console.log(vote.toJSON());
+                  console.log(parsedVote);
+                  resolve(parsedVote);
+                }
+              } else {
+                reject(vote);
+              }
+
+            });
+          });
+        }
+        // Save useful vote
+        else {
+          vote.save(voteHash).then(function (vote) {
+            // Count votes
+            Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+              var votesJSON = votes.toJSON();
+              var count = 0;
+              for (var i = 0; i < votesJSON.length; ++i) {
+                count += votesJSON[i].vote_type;
+              }
+              var parsedVote = vote.toJSON();
+              parsedVote.votes = count;
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
+
+              // Resolve
+              if (vote) {
+                if (res !== null) {
+                  console.log(parsedVote);
+                  res.json(parsedVote);
+                } else {
+                  // console.log(vote.toJSON());
+                  console.log(parsedVote);
+                  resolve(parsedVote);
+                }
+              } else {
+                reject(parsedVote);
+              }
+
+            });
+          });
+        }
+      }
+      // Create and save new entry
+      else if (vote_type != 0) {
+        new Votes().save(voteHash).then(function (vote) {
+          // Count votes
+          Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+            var votesJSON = votes.toJSON();
+            var count = 0;
+            for (var i = 0; i < votesJSON.length; ++i) {
+              count += votesJSON[i].vote_type;
             }
-          } else {
-            reject(vote);
-          }
+            var parsedVote = vote.toJSON();
+            parsedVote.votes = count;
+            parsedVote.post_id = post_id;
+            parsedVote.user_id = user_id;
+            parsedVote.vote_type = vote_type;
+
+            // Resolve
+            if (vote) {
+              if (res !== null) {
+                console.log(parsedVote);
+                res.json(parsedVote);
+              } else {
+                // console.log(parsedVote);
+                console.log(parsedVote);
+                resolve(parsedVote);
+              }
+            } else {
+              reject(parsedVote);
+            }
+
+          });
+
         });
       }
-
-      // Create and save new entry
+      // Discard useless new vote
       else {
-        new Votes().save(voteHash).then(function (vote) {
-          if (vote) {
-            if (res !== null) {
-              res.json(vote.toJSON());
-            } else {
-              console.log(vote.toJSON());
-              resolve(vote.toJSON());
-            }
-          } else {
-            reject(vote);
+        Votes.where('post_id', post_id).fetchAll().then(function (votes) {
+          var votesJSON = votes.toJSON();
+          var count = 0;
+          for (var i = 0; i < votesJSON.length; ++i) {
+            count += votesJSON[i].vote_type;
           }
+          var parsedVote = vote.toJSON();
+          parsedVote.votes = count;
+          parsedVote.post_id = post_id;
+          parsedVote.user_id = user_id;
+          parsedVote.vote_type = vote_type;
+
+          reject(parsedVote);
         });
       }
     });
+
   });
 
-  return storePromise;
 
+  return storePromise;
 };
 
-VotesController.postVote = function(req, res) {
+VotesController.postVote = function (req, res) {
   var packet = {
-    user_id: req.body.userId,
-    post_id: req.params.id,
+    user_id: req.body.user_id,
+    post_id: req.body.post_id,
     vote_type: req.body.vote_type
   };
 
@@ -172,13 +254,82 @@ VotesController.postVote = function(req, res) {
   res.end("Vote successfully captured.");
 };
 
+// Editing a vote
+VotesController.directEdit = function ({post_id, vote_type, user_id}, res = null) {
+  var editPromise = new Promise(function (resolve, reject) {
+    Votes.where({post_id: post_id, user_id: user_id}).fetch().then(function (vote) {
+      // update access token
+      if (vote != null) {
+        if (vote_type == 0) {
+          vote.destroy();
+        }
 
-// TODO: Delete an existing vote
+        else {
+          vote.save({vote_type}).then(function (vote) {
+            resolve(vote);
+          }).catch(function (err) {
+            reject({
+              error: MESSAGES.ERROR_UPDATING_VOTE
+            });
+          })
+        }
+      }
 
-VotesController.directDelete = function({post_id, user_id}, res = null) {
+      else if (vote_type != 0) {
 
-  var deletePromise = new Promise(function(resolve, reject){
-    Votes.where('post_id', post_id).where('user_id', user_id).destroy().then(function(vote) {
+        new Votes().save({post_id, user_id, vote_type}).then(function (vote) {
+          resolve(vote);
+        }).catch(function (err) {
+          reject({
+            error: MESSAGES.ERROR_UPDATING_VOTE
+          })
+        });
+      }
+
+      else {
+        reject(vote);
+      }
+
+    }).catch(function (err) {
+      reject({
+        error: MESSAGES.ERROR_VOTE_NOT_FOUND
+      })
+    });
+  });
+
+  return editPromise;
+}
+
+VotesController.editVote = function (req, res) {
+
+  UsersController.findUserId(req.user.id).then(function (user_id) {
+    var packet = {
+      post_id: req.params.id,
+      vote_type: req.body.vote_type,
+      user_id: user_id
+    }
+    VotesController.directEdit(packet, res).then(function (editRes) {
+      res.json(editRes);
+    }).catch(function (editRes) {
+      res.json(editRes);
+    })
+
+    // Response
+    // res.end("Vote has been successfully updated.");
+  }).catch(function (err) {
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_USER_NOT_FOUND
+      });
+    }
+  })
+};
+
+// Deleting a vote
+VotesController.directDelete = function ({post_id, user_id}, res = null) {
+
+  var deletePromise = new Promise(function (resolve, reject) {
+    Votes.where('post_id', post_id).where('user_id', user_id).destroy().then(function (vote) {
       if (vote) {
         if (res === null) {
           resolve(vote.toJSON());
@@ -193,10 +344,10 @@ VotesController.directDelete = function({post_id, user_id}, res = null) {
 
 };
 
-VotesController.deleteVote = function(req, res) {
+VotesController.deleteVote = function (req, res) {
   var packet = {
-    post_id: req.query.dropId,
-    user_id: req.query.userId
+    post_id: req.body.post_id,
+    user_id: req.body.user_id
   };
 
   VotesController.directDelete(packet, res);
@@ -204,6 +355,5 @@ VotesController.deleteVote = function(req, res) {
   // Response
   res.end("Vote has been successfully deleted.");
 };
-
 
 module.exports = VotesController;

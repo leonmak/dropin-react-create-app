@@ -1,11 +1,15 @@
 var Messages = {};
 
 // Posts Messages
-Messages.ERROR_POST_NOT_FOUND = "Drop Not Found";
-Messages.ERROR_USER_POST_NOT_FOUND = "Error Retrieving User's Drop";
-Messages.ERROR_POSTING_MESSAGE = "Error Posting Drop";
-Messages.ERROR_CREATING_DROP = "Error Creating New Drop";
-Messages.ERROR_DELETING_MESSAGE = "Error Deleting Existing Drop";
+Messages.ERROR_POST_NOT_FOUND = "Post(s) Not Found";
+Messages.SUCCESS_FETCHED_POST = "Successfully Fetched Drops";
+Messages.ERROR_FETCHING_POST = "Error Fetching Drops";
+Messages.SUCCESS_CREATED_POST = "Successfully Created New Drop";
+Messages.ERROR_CREATING_POST = "Error Creating New Drop";
+Messages.SUCCESS_UPDATED_POST = "Successfully Updated Existing Drop";
+Messages.ERROR_UPDATING_POST = "Error Updating New Drop";
+Messages.SUCCESS_DELETED_POST = "Successfully Deleted Existing Drop";
+Messages.ERROR_DELETING_POST = "Error Deleting Existing Drop";
 
 // Users Messages
 Messages.ERROR_USER_NOT_FOUND = "User Not Found";
@@ -17,6 +21,7 @@ Messages.ERROR_DELETING_USER = "Error Deleting Existing User";
 Messages.ERROR_COMMENT_NOT_FOUND = "Comment Not Found";
 Messages.ERROR_USER_COMMENT_NOT_FOUND = "Error Retrieving User's Comments";
 Messages.ERROR_POSTING_COMMENT = "Error Posting Comment";
+Messages.ERROR_UPDATING_COMMENT = "Error Updating Comment";
 Messages.ERROR_CREATING_COMMENT = "Error Creating New Comment";
 Messages.ERROR_DELETING_COMMENT = "Error Deleting Existing Comment";
 

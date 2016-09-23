@@ -145,7 +145,7 @@ module.exports = {
 "1f490":"bouquet",
 "1f647":"bow",
 "1f3b3":"bowling",
-"null":"trollface",
+"null":"question",
 "1f466":"boy",
 "1f35e":"bread",
 "1f470":"bride_with_veil",

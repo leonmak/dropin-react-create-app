@@ -12,9 +12,10 @@ var UsersController = {};
 UsersController.findUserId = function(facebook_id) {
   var promise = new Promise(function(resolve, reject) {
     Users.where('facebook_id', facebook_id).fetch().then(function(user) {
-      resolve(user.id);
+      resolve(user.toJSON().id);
     }).catch(function(err) {
-      reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
+      // reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
+      resolve(-1);
     });
   })
   return promise;
@@ -81,16 +82,12 @@ UsersController.createUser = function(accessToken, profile, callback) {
 UsersController.directEdit = function({
 	id,
 	user_avatar_url,
-	anonymous,
   user_name
 }, res = null) {
   Users.where('id', id).fetch().then(function(user) {
     // update access token
     if (user_avatar_url != undefined) {
 	    user.save({ user_avatar_url });
-	  }
-    if (anonymous != undefined) {
-	    user.save({ anonymous });
 	  }
     if (user_name != undefined) {
       user.save({ user_name: user_name });
@@ -106,11 +103,9 @@ UsersController.directEdit = function({
 
 UsersController.editUser = function(req, res) {
 	UsersController.findUserId(req.user.id).then(function(id) {
-    console.log(id)
   	var packet = {
     	id: id,
     	user_avatar_url: req.body.user_avatar_url,
-    	anonymous: req.body.anonymous,
       user_name: req.body.user_name
   	};
   	UsersController.directEdit(packet, res);
@@ -118,7 +113,11 @@ UsersController.editUser = function(req, res) {
   	// Response
 	  res.end("user is successfully updated.");
 	}).catch(function(err) {
-		res.json(err);
+    if (res != null) {
+      res.json({
+        error: MESSAGES.ERROR_USER_NOT_FOUND
+      });
+    }
 	});
 };
 

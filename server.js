@@ -8,9 +8,10 @@ const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
 const path = require('path');
 const FacebookController = require('./server/controller/FacebookController');
-const CommentsController = require('./server/controller/CommentsController');
-const FeedsController = require('./server/controller/FeedsController');
-var url = require('url')
+var CommentsController = require('./server/controller/CommentsController');
+var FeedsController = require('./server/controller/FeedsController');
+var VotesController = require('./server/controller/VotesController');
+var cookieParser = require('cookie-parser');
 
 // var clientSockets = [];
 var cookieParser = require('cookie-parser');
@@ -58,16 +59,9 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 var session = require('express-session');
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(session({
-  key: 'session_id',
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: false
-}));
+app.use(session({ key: 'session_id', secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -86,12 +80,13 @@ io.on('connection', function(socket) {
 
   socket.on('client:sendEvent', function(packet) {
 
-    console.log(packet);
+    //console.log('received from client:',packet);
 
     if (packet.event == 'comment:send') {
       CommentsController.directComment(packet.data).then(function(res) {
           var newPacket = packet;
           newPacket.data = res;
+          //console.log('comment packet emitted from server', newPacket);
         io.emit('server:sendEvent', newPacket);
       });
     }
@@ -100,15 +95,25 @@ io.on('connection', function(socket) {
         FeedsController.directPost(packet.data).then(function(res) {
           var newPacket = packet;
           newPacket.data = res;
+          //console.log('feed packet emitted from server', newPacket);
           io.emit('server:sendEvent', newPacket);
         });
-
       }
+
+    if(packet.event=='vote:send'){
+      VotesController.directVote(packet.data).then(function(res){
+        var newPacket = packet;
+        newPacket.data = res;
+        console.log('vote packet emitted from server', newPacket);
+        io.emit('server:sendEvent', newPacket);
+      })
+    }
+
     })
   });
 
 http.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`);
+  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 });
 
 setInterval(function() {

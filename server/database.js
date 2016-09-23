@@ -11,8 +11,8 @@ var Users = bookshelf.Model.extend({
 
 var Posts = bookshelf.Model.extend({
   tableName: 'posts',
-
   hasTimestamps: true,
+
   user: function() {
     return this.belongsTo(Users);
   },
@@ -37,6 +37,7 @@ var Comments = bookshelf.Model.extend({
 
 var Votes = bookshelf.Model.extend({
   tableName: 'votes',
+
   user: function() {
     return this.belongsTo(Users);
   },

@@ -1,23 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {List} from './List';
-import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET} from '../../SocketHandler';
+import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTES_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
-
-/*
-socket:
-To Use:
-setup(type, data, handler): put in componentDidMount
-  type: from the constant above
-  data: every thing to defined the component (comment needs postId, Feed needs nothing, Vote needs commentId)
-  handler: callback(data). data has the form
-    for COMMENTS_SOCKET: {userId: data.userId, text: data.text}
-    for FEEDS_SOCKET: {userId: data.userId, postId: data.postId, text: data.text}
-    for VOTES_SOCKET: {userId: data.userId, postId: data.postId, voteType: data.voteType}
-
-comment(userId, postId, text): for comment
-post(userId, text): for post feed
-vote(userId, postId, voteType): for vote
-*/
 
 class ListComponent extends Component {
 
@@ -27,6 +11,7 @@ class ListComponent extends Component {
 
     this.socketHandler = new SocketHandler();
     this.commentSocketHandler = new SocketHandler();
+    this.voteSocketHandler = new SocketHandler();
     this.geoId = null;
   }
 
@@ -40,17 +25,15 @@ class ListComponent extends Component {
     }else{
       this.props.fetchAllNearbyDrops(null);
     }
-  }
-
-  //must register all socket at the start, and dynamically register and
-  //dynamically reg and dereg sockets on component change
+  }     
 
   componentDidMount() {
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
 
     this.commentSocketHandler.setup(OPEN_COMMENTS_SOCKET, {}, this.newCommentAdded.bind(this));
 
-    // TODO: method to fetch all nearby drops and set the state
+    this.voteSocketHandler.setup(OPEN_VOTES_SOCKET,{},this.newVoteAdded.bind(this));
+
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
 
 
@@ -64,27 +47,48 @@ class ListComponent extends Component {
   }
   newCommentAdded(data){
     // console.log('receivedcomment', data);
+    console.log('receivedcomment', data);
     this.props.updateCommentInListPage(data);
+  }
+
+  newVoteAdded(data){
+    //console.log('receivedvote', data);
+    //need to change state of the thing if it is wrong
+    if(this.props.user){
+      if(data.user_id===this.props.user.userId){
+        //console.log('up my vote');
+        this.props.updateMyVoteInListPage(data);
+      }else{
+        //console.log('up others vote');
+        this.props.updateOthersVoteInListPage(data);
+      }
+    }else{
+      //console.log('up others vote');
+      this.props.updateOthersVoteInListPage(data);
+    }
   }
 
   componentWillUnmount() {
     this.socketHandler.uninstall();
     this.commentSocketHandler.uninstall();
+    this.voteSocketHandler.uninstall();
     navigator.geolocation.clearWatch(this.geoId);
   }
 
   render() {
     return (
       <List
-        user={this.props.user}
-        feed={this.props.drops.drops}
-        userLocation={this.props.location}
-        dropSrc={"drops"}
-        selectedDropSrc={this.props.selectedDropSrc}
-        selectedDropIdx={this.props.selectedDropIdx}
-        fetchCommentsForDrop={this.props.fetchCommentsForDrop}
+      user={this.props.user}
+      feed={this.props.drops.drops}
+      userLocation={this.props.location}
+      dropSrc={"drops"}
+      selectedDropSrc={this.props.selectedDropSrc}
+      selectedDropIdx={this.props.selectedDropIdx}
+      fetchCommentsForDrop={this.props.fetchCommentsForDrop}
+      passSnackbarMessage={this.props.passSnackbarMessage}
+      makeAVote={this.props.makeAVote}
       />
-    )
+      )
   }
 }
 
@@ -94,7 +98,11 @@ ListComponent.PropTypes = {
   passingFromOthersToDrop: PropTypes.func.isRequired,
   drops: PropTypes.object.isRequired,
   updateCommentInListPage: PropTypes.func.isRequired,
-  selectedDropIdx: PropTypes.func.isRequired
+  updateMyVoteInListPage: PropTypes.func.isRequired,
+  updateOthersVoteInListPage: PropTypes.func.isRequired,
+  selectedDropIdx: PropTypes.func.isRequired,
+  passSnackbarMessage: PropTypes.func.isRequired,
+  makeAVote: PropTypes.func.isRequired
 }
 
 
