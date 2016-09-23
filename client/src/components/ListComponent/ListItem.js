@@ -34,6 +34,7 @@ const goToURL = (props) => {
 
 const goToEdit = props => {
   browserHistory.push('/edit/'+props.dropId);
+  props.selectedDropSrc('profile');
   props.selectedDropIdx(props.idx);
 };
 

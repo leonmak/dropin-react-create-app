@@ -43,7 +43,7 @@ const handler = (passSnackbarMessage, socketHandler, user, location, dropId) => 
         title: values.title,
         video: values.videoUrl,
         image: values.imageId,
-        sound: values.soundcloudUrl,
+        sound: values.soundCloudUrl,
         longitude: position.coords.longitude,
         latitude: position.coords.latitude,
         date: moment(),
@@ -63,7 +63,7 @@ const validate = values => {
       errors[ field ] = 'Required'
     }
   });
-  const urlFields = [ 'soundcloudUrl', 'videoUrl' ];
+  const urlFields = [ 'soundCloudUrl', 'videoUrl' ];
   urlFields.forEach(field => {
     const str = values[field];
     if(str && str.length > 0 && !validUrl.isUri(str)){
@@ -90,10 +90,14 @@ class AddForm extends Component {
     const {drops, profileDrops, selectedDrop} = this.props;
     this.clickedDrop = selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
 
-    if(this.clickedDrop){
-        this.clickedDrop.emojiUni = ':'+EmojiUniToAnnotation[this.clickedDrop.emojiUni]+':';
+    if(this.props.route.path === "add"){
+      this.props.initialize({});
 
-        this.props.initialize(this.clickedDrop);
+    }else if(this.clickedDrop){
+      console.log(this.clickedDrop)
+      this.clickedDrop.emojiUni = ':'+EmojiUniToAnnotation[this.clickedDrop.emojiUni]+':';
+      this.props.initialize(this.clickedDrop);
+
     } else{
       request
       .get('/api/feeds/'+this.props.params.dropId)
@@ -107,9 +111,9 @@ class AddForm extends Component {
 
   componentDidUpdate(prevProps) {
     // Clear form if going from edit to add message route
-    if(prevProps.dropId && !this.props.dropId){
-      this.props.initialize({});
-    }
+    console.log()
+    if(prevProps.routes[1].path.substring(0,4) === "edit" && this.props.route.path === "add")
+      this.props.initialize({})
   }
 
   componentWillUnmount() {
@@ -140,7 +144,7 @@ class AddForm extends Component {
           <div className="col-xs-10">
           <Field name="imageId" component={ImageUpload} />
           <Field name="videoUrl" component={TextField} hintText="Youtube/ Vimeo Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
-          <Field name="soundcloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
+          <Field name="soundCloudUrl" component={TextField} hintText="Soundcloud Link" fullWidth={true} errorStyle={{textAlign: "left"}} />
         </div>
 
         <div className="col-xs-12">
