@@ -56,7 +56,8 @@ export class List extends Component {
           fetchCommentsForDrop={this.props.fetchCommentsForDrop}
           openDialog={this.props.openDialog}
           passSnackbarMessage={this.props.passSnackbarMessage}
-          makeAVote={this.props.makeAVote}/>;
+          makeAVote={this.props.makeAVote}
+          isOwnProfile={this.props.isOwnProfile}/>;
       })}
       </div>
       : <NoDrops />

@@ -23,6 +23,7 @@ export default class ProfilePageComponent extends Component{
       isDialogOpen: false,
       dropId: null,
       userInfo: null,
+      isOwnProfile:false
     }
 
     this.openDialog = this.openDialog.bind(this);
@@ -56,6 +57,21 @@ export default class ProfilePageComponent extends Component{
       browserHistory.push('/login');
     }else{
       const userId = this.props.params.profileId ? this.props.params.profileId : this.props.user.userId;
+
+      //restricting access if this is someone else profile
+      if(this.props.params.profileId){
+        //console.log(this.props.params.profileId, this.props.user.userId);
+        if(parseInt(this.props.params.profileId)===parseInt(this.props.user.userId)){
+          this.setState({ isOwnProfile: true});
+          //console.log('isOwnProfile', true);
+        }else{
+          this.setState({ isOwnProfile: false});
+          //console.log('isOwnProfile', false);
+        }
+      }else{
+        this.setState({ isOwnProfile: true});
+        //console.log('isOwnProfile', true);
+      }
 
       console.log('accessing id:',userId);
 
@@ -116,6 +132,7 @@ export default class ProfilePageComponent extends Component{
               openDialog={this.openDialog}
               user={this.props.user}
               makeAVote={this.props.makeAVote}
+              isOwnProfile={this.state.isOwnProfile}
             />
           </Tab>
           <Tab label="Recent Comments" >

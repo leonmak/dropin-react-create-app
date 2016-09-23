@@ -3,22 +3,6 @@ import {List} from './List';
 import SocketHandler, {FEEDS_SOCKET, OPEN_COMMENTS_SOCKET, OPEN_VOTES_SOCKET} from '../../SocketHandler';
 import * as geo from '../../utils/geolocator';
 
-/*
-socket:
-To Use:
-setup(type, data, handler): put in componentDidMount
-  type: from the constant above
-  data: every thing to defined the component (comment needs postId, Feed needs nothing, Vote needs commentId)
-  handler: callback(data). data has the form
-    for COMMENTS_SOCKET: {userId: data.userId, text: data.text}
-    for FEEDS_SOCKET: {userId: data.userId, postId: data.postId, text: data.text}
-    for VOTES_SOCKET: {userId: data.userId, postId: data.postId, voteType: data.voteType}
-
-comment(userId, postId, text): for comment
-post(userId, text): for post feed
-vote(userId, postId, voteType): for vote
-*/
-
 class ListComponent extends Component {
 
 
@@ -41,10 +25,7 @@ class ListComponent extends Component {
     }else{
       this.props.fetchAllNearbyDrops(null);
     }
-  }
-
-  //must register all socket at the start, and dynamically register and
-  //dynamically reg and dereg sockets on component change
+  }     
 
   componentDidMount() {
     this.socketHandler.setup(FEEDS_SOCKET, {}, this.newDropAdded.bind(this));
@@ -53,7 +34,6 @@ class ListComponent extends Component {
 
     this.voteSocketHandler.setup(OPEN_VOTES_SOCKET,{},this.newVoteAdded.bind(this));
 
-    // TODO: method to fetch all nearby drops and set the state
     this.geoId = geo.geoListener(this.updateLocation.bind(this));
 
 

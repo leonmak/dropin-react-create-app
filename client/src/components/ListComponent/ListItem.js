@@ -141,13 +141,15 @@ const redirectToLogin = props =>{
         }
         </div>
         );
+    //onTouchTap={()=>goToEdit(props)
+      //console.log(props.isProfile,props.isOwnProfile,((props.isProfile)?(props.isOwnProfile):false))
 
     const ListItem = props => (
       <div className="row center-xs">
       <div className="col-xs-11 col-sm-4">
       <Paper className="top-container" zDepth={0}>
       <EmojiDisplay emojiUni={props.emojiUni} />
-      {(props.isProfile&&(props.userId===props.user.userId)) && <div className="edit-delete-btn">
+      {((props.isProfile)?(props.isOwnProfile):false) && <div className="edit-delete-btn">
       <IconButton tooltipPosition="bottom-center" tooltip="Edit" onTouchTap={()=>goToEdit(props)}>
       {Icons.MUI('mode_edit')}
       </IconButton>
