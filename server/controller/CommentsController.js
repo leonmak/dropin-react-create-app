@@ -22,7 +22,7 @@ CommentsController.apiParse = function (fetchedComment) {
     var user = fetchedComment.user;
     // if (fetchedComment.anonymous == 0) {
       username = user.facebook_name;
-      avatar = user.facebook_profile_img;
+      avatar = user.user_avatar_url;
       userID = user.id;
     // }
   }
@@ -60,7 +60,6 @@ CommentsController.getFeedComments = function (req, res) {
     // Get all comment objects
     var fetchedComments = comments.toJSON();
     var parsedComments = [];
-console.log('62', fetchedComments)
 
     for (var i = 0; i < fetchedComments.length; ++i) {
 

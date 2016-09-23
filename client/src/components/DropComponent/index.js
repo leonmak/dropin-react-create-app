@@ -72,7 +72,7 @@ class DropComponent extends Component {
 				//this.props.passingFromOthersToDrop(res.body);
 				this.setState({comments:res.body});
 			})
-		})		
+		})
 	}
 
 
@@ -92,9 +92,7 @@ class DropComponent extends Component {
 		newSelectedDrop.replies+=1;
 		this.setState({selectedDrop:newSelectedDrop});
 
-		var newComments = this.state.comments;
-		newComments.push(data);
-		this.setState({comments:newComments});
+		this.setState({ comments:this.state.comments.concat([data]) });
 	}
 
 	voteReceive(vote){
@@ -128,14 +126,9 @@ class DropComponent extends Component {
 
       	return (
       		this.state.selectedDrop ?(<div>
-      			<Drop drop={this.state.selectedDrop} user={this.props.user} 
-      			voteSocketHandler={voteSocketHandler}/>
+      			<Drop drop={this.state.selectedDrop} user={this.props.user} voteSocketHandler={voteSocketHandler} />
       			<CommentsList comments={this.state.comments} />
-      			<CommentForm
-      			location={location}
-      			user={user}
-      			socketHandler={socketHandler}
-      			drop={this.state.selectedDrop}/>
+      			<CommentForm location={location} user={user} socketHandler={socketHandler} drop={this.state.selectedDrop} />
       			</div>)
       		: <CircularProgress className="spinner"/>
       		)
