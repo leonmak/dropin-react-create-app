@@ -346,8 +346,8 @@ VotesController.directDelete = function ({post_id, user_id}, res = null) {
 
 VotesController.deleteVote = function (req, res) {
   var packet = {
-    post_id: req.query.drop_id,
-    user_id: req.query.user_id
+    post_id: req.body.post_id,
+    user_id: req.body.user_id
   };
 
   VotesController.directDelete(packet, res);

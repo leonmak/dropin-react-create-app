@@ -48,7 +48,7 @@ module.exports = function (passport) {
   // Example: {{base_url}}api/feeds :: {postID, userID, emoji, title, video, image, sound, longitude, latitude, updated_at, anonymous}
 
   router.delete('/api/feeds/:id', loginCheck, FeedsController.deleteFeed); // Delete an existing feed
-  // Example: {{base_url}}api/feeds/4
+  // Example: {{base_url}}api/feeds/4 :: {id, user_id}
 
 
 
@@ -71,7 +71,7 @@ module.exports = function (passport) {
   // Example: {{base_url}}api/comments/2
 
   router.delete('/api/comments/:id', loginCheck, CommentsController.deleteComment); // Delete an existing comment
-  // Example: {{base_url}}api/comments/4
+  // Example: {{base_url}}api/comments/4 :: {id, user_id}
 
 
 
@@ -89,7 +89,7 @@ module.exports = function (passport) {
   // {{base_url}}api/votes :: {drop_id, vote_type}
 
   router.delete('/api/votes', loginCheck, VotesController.deleteVote); // Delete an existing vote
-  // {{base_url}}api/votes?dropId=5
+  // {{base_url}}api/votes {post_id, user_id}
 
 
 

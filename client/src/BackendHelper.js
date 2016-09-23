@@ -13,8 +13,8 @@ const HOST = 'http://localhost:3001/';
 
 function defaultPromise(req){
     return new Promise(function(resolve, reject) {
-        var final = HOST+req;
-        request.get(final).end(
+        // var final = HOST+req;
+        request.get(req).end(
             function(err,res){
                 if(err===null){
                 	if(res.body.error){
@@ -39,8 +39,8 @@ export function getAllNearbyDrops(){
         const longitude = position.coords.longitude;
         const latitude = position.coords.latitude;
         req = `${req}longitude=${longitude}&latitude=${latitude}&radius=0.1`
-        const final = HOST+req;
-        request.get(final).end(
+        // const final = HOST+req;
+        request.get(req).end(
             function(err,res){
                 if(err===null){
                   if(res.body.error){

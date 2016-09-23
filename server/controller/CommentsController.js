@@ -241,7 +241,7 @@ CommentsController.editComment = function (req, res) {
       });
     }
   });
-}
+};
 
 // Deleting a comment
 CommentsController.directDelete = function ({id, fb_id}, res = null) {
@@ -273,7 +273,7 @@ CommentsController.directDelete = function ({id, fb_id}, res = null) {
 CommentsController.deleteComment = function (req, res) {
   var packet = {
     id: req.params.id,
-    fb_id: req.user.id
+    user_id: req.body.user_id
   };
 
   CommentsController.directDelete(packet, res);
