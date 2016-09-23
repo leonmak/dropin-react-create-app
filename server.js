@@ -118,4 +118,4 @@ http.listen(app.get('port'), () => {
 
 setInterval(function() {
     http.get("https://dropins.space");
-}, 300000); // ping every 5 minutes
+}, 600000); // ping every 5 minutes
