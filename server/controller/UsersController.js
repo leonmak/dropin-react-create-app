@@ -14,7 +14,8 @@ UsersController.findUserId = function(facebook_id) {
     Users.where('facebook_id', facebook_id).fetch().then(function(user) {
       resolve(user.id);
     }).catch(function(err) {
-      reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
+      // reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
+      resolve(-1);
     });
   })
   return promise;

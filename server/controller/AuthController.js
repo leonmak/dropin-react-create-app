@@ -15,8 +15,9 @@ AuthController.login = function(req, res, next) {
       req.login(user, (err) => {
         if (err) {
           return next(err);
+        } else {
+          return res.json(user);
         }
-        return res.json(user);
       });
     }
   })(req, res, next);
