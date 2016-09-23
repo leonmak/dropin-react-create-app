@@ -50,7 +50,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-sw": "npm run build && npm run cp-setup && sw-precache --root='build/' --config=build/sw-precache-config.json",
-    "cp-setup": "find ./src/res -maxdepth 1 -name 'icon*.png' -exec cp {} build \\; && cp manifest.json sw-precache-config.json runtime-sw.js sw-toolbox.js build/ ",
+    "cp-setup": "cp manifest.json sw-precache-config.json runtime-sw.js sw-toolbox.js build/ && cp -R favicons/ build/favicons/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
