@@ -184,7 +184,7 @@ VotesController.directVote = function ({
       }
       // Create and save new entry
       else if (vote_type != 0) {
-        new Votes().save(voteHash).then(function (vote) {
+        new Votes().save(voteHash).then(function (newVote) {
           // Count votes
           Votes.where('post_id', post_id).fetchAll().then(function (votes) {
             var votesJSON = votes.toJSON();
@@ -192,14 +192,16 @@ VotesController.directVote = function ({
             for (var i = 0; i < votesJSON.length; ++i) {
               count += votesJSON[i].vote_type;
             }
-            var parsedVote = vote.toJSON();
-            parsedVote.votes = count;
-            parsedVote.post_id = post_id;
-            parsedVote.user_id = user_id;
-            parsedVote.vote_type = vote_type;
-
             // Resolve
-            if (vote) {
+            console.log(newVote);
+            if (newVote) {
+
+              var parsedVote = newVote.toJSON();
+              parsedVote.votes = count;
+              parsedVote.post_id = post_id;
+              parsedVote.user_id = user_id;
+              parsedVote.vote_type = vote_type;
+
               if (res !== null) {
                 console.log(parsedVote);
                 res.json(parsedVote);
@@ -209,7 +211,7 @@ VotesController.directVote = function ({
                 resolve(parsedVote);
               }
             } else {
-              reject(parsedVote);
+            //   reject(vote);
             }
 
           });
@@ -224,7 +226,7 @@ VotesController.directVote = function ({
           for (var i = 0; i < votesJSON.length; ++i) {
             count += votesJSON[i].vote_type;
           }
-          var parsedVote = vote.toJSON();
+          var parsedVote = {votes: 0, post_id: 0, user_id: 0, vote_type: 0};
           parsedVote.votes = count;
           parsedVote.post_id = post_id;
           parsedVote.user_id = user_id;
