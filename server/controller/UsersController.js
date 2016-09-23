@@ -12,7 +12,7 @@ var UsersController = {};
 UsersController.findUserId = function(facebook_id) {
   var promise = new Promise(function(resolve, reject) {
     Users.where('facebook_id', facebook_id).fetch().then(function(user) {
-      resolve(user.id);
+      resolve(user.toJSON().id);
     }).catch(function(err) {
       // reject(MESSAGES.ERROR_AUTHENTICATION_FAILURE);
       resolve(-1);

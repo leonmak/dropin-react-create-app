@@ -5,6 +5,7 @@ import {
 var UsersController = require('./UsersController');
 var CommentsController = require('./CommentsController');
 var VotesController = require('./VotesController');
+var AuthController = require('./AuthController');
 var Messages = require('./Messages');
 
 var FeedsController = {};
@@ -102,6 +103,8 @@ FeedsController.getFeeds = function (req, res) {
 
   // Get the logged-in userID
   var sessionFbId = -1;
+  var sessionUser = req.user;
+  console.log("THE SESSION INSIDE REQ : ", req.session);
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;
     // console.log(req.user);
@@ -214,6 +217,7 @@ FeedsController.getUserFeeds = function (req, res) {
   if (typeof req.user != 'undefined') {
     sessionFbId = req.user.id;
   }
+  console.log(sessionFbId);
 
   UsersController.findUserId(sessionFbId).then(function(user_id) {
     console.log("USER_ID : ", user_id);

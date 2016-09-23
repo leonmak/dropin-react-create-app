@@ -62,12 +62,12 @@ module.exports = function (passport) {
   router.get('/api/comments/:id', CommentsController.getComment); // Get a specific comment
   // Example: {{base_url}}api/comments/4
 
-  router.put('/api/comments/:id', loginCheck, CommentsController.editComment);
+  // router.put('/api/comments/:id', loginCheck, CommentsController.editComment);
 
   router.post('/api/feeds/:id/comments', loginCheck, CommentsController.postComment); // Create a new comment for an existing feed
   // Example: {{base_url}}api/feeds/1/comments
 
-  // router.put('/api/comments/:id', loginCheck, CommentsController.editComment); // Update an existing comment
+  router.put('/api/comments/:id', loginCheck, CommentsController.editComment); // Update an existing comment
   // Example: {{base_url}}api/comments/2
 
   router.delete('/api/comments/:id', loginCheck, CommentsController.deleteComment); // Delete an existing comment
@@ -77,7 +77,7 @@ module.exports = function (passport) {
 
   // Votes API
   router.get('/api/feeds/:id/votes', VotesController.getFeedVotes); // Get votes belonging to a feed
-  // Example: {{base_url}}api/feeds/5/votes?user_id=6
+  // Example: {{base_url}}api/feeds/5/votes
 
   router.get('/api/users/:id/votes', VotesController.getVotesToUser); // Get votes on a user
   // Example: {{base_url}}api/users/4/votes
@@ -89,7 +89,7 @@ module.exports = function (passport) {
   // {{base_url}}api/votes :: {drop_id, vote_type}
 
   router.delete('/api/votes', loginCheck, VotesController.deleteVote); // Delete an existing vote
-  // {{base_url}}api/votes?dropId=5&userId=2
+  // {{base_url}}api/votes?dropId=5
 
 
 
