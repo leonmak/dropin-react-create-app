@@ -52,9 +52,8 @@ export function attemptSignUp(token) {
     .withCredentials()
     .send({ access_token: token })
     .end(function(err,res){
-      if(err){
-        console.log(err)
-        dispatch(signUpFail(err))
+      if(res.body.message){
+        dispatch(signUpFail({error:res.body.message}))
       } else {
         dispatch(signUpSuccess(res.body))
       }
@@ -84,11 +83,10 @@ export function attemptLogin(token) {
     .withCredentials()
     .send({ access_token: token })
     .end(function(err,res){
-      if(err){
-        console.log(err)
-        dispatch(signUpFail(err))
+      if(res.body.message){
+        dispatch(loginFail({error:res.body.message}))
       } else {
-        dispatch(signUpSuccess(res.body))
+        dispatch(loginSuccess(res.body))
       }
     })
   }
