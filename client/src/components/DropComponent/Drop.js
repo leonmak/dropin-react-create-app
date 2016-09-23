@@ -104,17 +104,17 @@ const ItemVoting = (props) => (
 
   {props.user?
     ((props.voted===1)?
-      (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
+      (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: 0});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: 0});
       }}
         > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
       ((props.voted===-1)?
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: 1});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: 1});
       }}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>):
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 1});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 1});
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: 1});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: 1});
       }}
           > {Icons.MUI('keyboard_arrow_up')}</IconButton>)
         )
@@ -130,17 +130,17 @@ const ItemVoting = (props) => (
 
   {props.user?
     ((props.voted===1)?
-      (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
+      (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: -1});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: -1});
       }}
         > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
       ((props.voted===-1)?
-        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: 0});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: 0});
+        (<IconButton className='voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: 0});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: 0});
       }}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>):
-        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.userId, postId: props.dropId, voteType: -1});
-        //console.log('sent to server:',{userId: userId, postId: dropId, voteType: -1});
+        (<IconButton className='not-voted' onClick={()=>{props.voteSocketHandler.vote({userId: props.user.userId, postId: props.dropId, voteType: -1});
+        console.log('sent to server:',{userId: props.user.userId, postId: props.dropId, voteType: -1});
       }}
           > {Icons.MUI('keyboard_arrow_down')}</IconButton>)
         )

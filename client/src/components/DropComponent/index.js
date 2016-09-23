@@ -54,6 +54,7 @@ class DropComponent extends Component {
 	componentDidMount() {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
+		console.log(this.props.user);
 		//console.log('what is this magic', this.props.params.dropId);
 		request
 		.get('/api/feeds/'+this.props.params.dropId)
@@ -123,6 +124,7 @@ class DropComponent extends Component {
 
       render() {
       	const {location, user} = this.props;
+      	//console.log('user you are passing in', this.props.user);
 
       	return (
       		this.state.selectedDrop ?(<div>

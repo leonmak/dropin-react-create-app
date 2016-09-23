@@ -113,6 +113,7 @@ export default class ProfilePageComponent extends Component{
               fetchCommentsForDrop={this.props.fetchCommentsForDrop}
               openDialog={this.openDialog}
               user={this.props.user}
+              makeAVote={this.props.makeAVote}
             />
           </Tab>
           <Tab label="Recent Comments" >
@@ -137,5 +138,6 @@ ProfilePageComponent.PropTypes = {
   passSnackbarMessage: PropTypes.func.isRequired,
   passingFromOthersToDrop: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  makeAVote:PropTypes.object.isRequired
 }

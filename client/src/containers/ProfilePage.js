@@ -4,7 +4,7 @@ import ProfilePageComponent from '../components/ProfilePageComponent';
 import {passSnackbarMessage} from '../actions/SnackBarActions';
 
 import {fetchAllMyDrops, fetchAllMyComments, fetchAllMyVotes, passingFromOthersToDrop, selectedDropIdx, selectedDropSrc, fetchCommentsForDrop} from '../actions';
-
+import {makeAVote} from '../actions/VoteActions';
 ///import {}
 
 function mapStateToProps(state) {
@@ -23,6 +23,7 @@ function mapDispatchToProps(dispatch) {
     selectedDropIdx: idx => dispatch(selectedDropIdx(idx)),
     selectedDropSrc: src => dispatch(selectedDropSrc(src)),
     fetchCommentsForDrop: idx => dispatch(fetchCommentsForDrop(idx)),
+    makeAVote:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVote(dropId,voteAction, initialVoted, userId))
   };
 }
 
