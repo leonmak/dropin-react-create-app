@@ -5,7 +5,7 @@ import {toggleBottomBarVisibility} from '../actions/PageVisibilityActions';
 import {toggleTopBarBackButtonVisibility} from '../actions/PageVisibilityActions';
 import { getDropId, updateAComment, fetchCommentsForDrop, passingFromOthersToDrop, clearSingleDropHistory} from '../actions';
 import {setLocation} from '../actions/LngLatActions';
-import {makeAVoteDropPage,updateMyVoteInDropPage,updateOthersVoteInDropPage,makeAVoteDropPageSrcList} from '../actions/VoteActions'
+import {makeAVoteDropPage,updateMyVoteInDropPage,updateOthersVoteInDropPage,makeAVoteDropPageSrcList, makeAVote} from '../actions/VoteActions'
 
 import DropComponent from '../components/DropComponent';
 
@@ -34,6 +34,7 @@ function mapDispatchToProps(dispatch) {
     clearSingleDropHistory:()=>dispatch(clearSingleDropHistory()),
     makeAVoteDropPageSrcList:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVoteDropPageSrcList(dropId,voteAction, initialVoted, userId)),
     makeAVoteDropPage:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVoteDropPage(dropId,voteAction, initialVoted, userId)),
+    makeAVote:(dropId,voteAction, initialVoted, userId)=>dispatch(makeAVote(dropId,voteAction, initialVoted, userId))
 
     
   };

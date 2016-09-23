@@ -28,12 +28,12 @@ class DropComponent extends Component {
 	constructor(props) {
 		super(props);
 
-    /*this.state ={
-      directLinkDrop: null
-  }*/
+    this.state ={
+      clickedDrop: null
+  }
 
   this.geoId = null;
-  this.clickedDrop = null;
+  //this.clickedDrop = null;
   this.updateLocation = this.updateLocation.bind(this);
 }
 
@@ -48,7 +48,7 @@ componentWillMount() {
 	}
 	const {drops, profileDrops, selectedDrop} = this.props;
 
-	this.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
+	this.state.clickedDrop = selectedDrop.selectedDropSrc === "drops" ? drops[selectedDrop.selectedDropIdx]
 	: selectedDrop.selectedDropSrc === "profile" ? profileDrops[selectedDrop.selectedDropIdx] : null;
 }
 
@@ -59,9 +59,9 @@ componentWillMount() {
 		this.props.toggleTopBarBackButton(true);
 		this.props.toggleBottomBar(false);
 
-		if(this.clickedDrop){
-			voteSocketHandler.setup(VOTES_SOCKET, {postId: this.clickedDrop.dropId}, this.voteReceive.bind(this));
-			socketHandler.setup(COMMENTS_SOCKET, {postId: this.clickedDrop.dropId}, this.commentReceive.bind(this));
+		if(this.state.clickedDrop){
+			voteSocketHandler.setup(VOTES_SOCKET, {postId: this.state.clickedDrop.dropId}, this.voteReceive.bind(this));
+			socketHandler.setup(COMMENTS_SOCKET, {postId: this.state.clickedDrop.dropId}, this.commentReceive.bind(this));
 		}
 		else{
 			request
@@ -101,19 +101,32 @@ componentWillMount() {
 		//console.log("testing",(null||null));
 		const {location, user, drops, profileDrops, selectedDrop} = this.props;
 		const directLinkDrop = this.props.selectedDrop.selectedDrop;
-		const resolvedDrop = this.clickedDrop || directLinkDrop;
+		const resolvedDrop = this.state.clickedDrop || directLinkDrop;
 
-		return (resolvedDrop ?
-			<div>
-			<Drop drop={resolvedDrop} user={this.props.user} 
-			makeAVoteDropPage={this.props.makeAVoteDropPage}/>
-			<CommentsList comments={selectedDrop.comments} />
-			<CommentForm
-			location={location}
-			user={user}
-			socketHandler={socketHandler}
-			drop={resolvedDrop}/>
-			</div>
+		return (
+			resolvedDrop ?
+			(this.state.clickedDrop)?
+			(<div>
+				<Drop drop={resolvedDrop} user={this.props.user} 
+				makeAVoteDropPage={this.props.makeAVote}/>
+				<CommentsList comments={selectedDrop.comments} />
+				<CommentForm
+				location={location}
+				user={user}
+				socketHandler={socketHandler}
+				drop={resolvedDrop}/>
+				</div>)
+			:(<div>
+				<Drop drop={resolvedDrop} user={this.props.user} 
+				makeAVoteDropPage={this.props.makeAVoteDropPage}/>
+				<CommentsList comments={selectedDrop.comments} />
+				<CommentForm
+				location={location}
+				user={user}
+				socketHandler={socketHandler}
+				drop={resolvedDrop}/>
+				</div>
+				)
 			: <CircularProgress className="spinner"/>
 			)
 	}
@@ -131,7 +144,8 @@ DropComponent.propTypes = {
 	makeAVoteDropPage: PropTypes.func.isRequired,
 	updateMyVoteInDropPage: PropTypes.func.isRequired,
 	updateOthersVoteInDropPage: PropTypes.func.isRequired,
-	makeAVoteDropPageSrcList: PropTypes.func.isRequired
+	makeAVoteDropPageSrcList: PropTypes.func.isRequired,
+	makeAVote:PropTypes.func.isRequired
 };
 
 export default DropComponent;

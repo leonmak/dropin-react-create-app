@@ -7,7 +7,7 @@ import {
 	SELECT_DROP_SRC,
 } from '../actions';
 
-import {MAKE_A_VOTE_DROP_PAGE} from '../actions/VoteActions'
+import {MAKE_A_VOTE_DROP_PAGE, MAKE_A_VOTE_DROP_PAGE_SRC_LIST} from '../actions/VoteActions'
 
 //designing initial state
 const initialState = {
@@ -62,6 +62,11 @@ export function selectedDrop(state=initialState, action) {
 
 		case MAKE_A_VOTE_DROP_PAGE:
 		console.log('hello from selectedDrop reducer');
+		return Object.assign({}, state, {
+		})
+
+		case MAKE_A_VOTE_DROP_PAGE_SRC_LIST:
+		console.log('hello from drops reducer, src clicked');
 		return Object.assign({}, state, {
 		})
 
