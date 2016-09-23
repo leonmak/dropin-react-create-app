@@ -18,22 +18,15 @@ export class CommentsInput extends Component {
       }
   }
 
-  /*
-
-    state = {
-        messages: [{text: "hihi"}],
-    }
-    */
-
     componentDidMount() {
         // socket:
         this.socketHandler.setup(COMMENTS_SOCKET, {postId: this.props.dropId}, this.commentReceive.bind(this));
-        request.get('/api/feeds').end(function(err,res){
-            console.log(res);
-        });
+        // request.get('/api/feeds').end(function(err,res){
+        //     console.log(res);
+        // });
 
     }
-    
+
 
     updateState(text) {
         const message = {text: text};
@@ -63,11 +56,11 @@ export class CommentsInput extends Component {
         <div>
         <ul className="messages" ref='messages'>
         {this.state.messages.map((msg,i) => {
-                    //<span className='msgSender'>{msg.from}:</span> 
+                    //<span className='msgSender'>{msg.from}:</span>
                     return <li key={i}>{msg.text}</li>
                 })}
         </ul>
-        <form onSubmit={this.sendMessage.bind(this)}> 
+        <form onSubmit={this.sendMessage.bind(this)}>
         <input type="text" ref={(ref) => {this.myTextInput = ref}} />
         </form>
         </div>
