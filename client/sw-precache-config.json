@@ -1,0 +1,6 @@
+{
+  "staticFileGlobs": [
+    "build/**.png",
+    "build/**/!(*map*)"
+  ]
+}

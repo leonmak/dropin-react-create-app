@@ -1,0 +1,37 @@
+{
+  "short_name": "Drop",
+  "name": "Drop",
+  "gcm_sender_id": "593836075156",
+  "icons": [
+    {
+      "src": "/favicon/android-icon-192x192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/ms-icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./",
+  "orientation": "portrait",
+  "background_color": "#aaf6ff",
+  "theme_color": "#00bcd4",
+  "display": "standalone"
+}

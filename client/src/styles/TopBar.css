@@ -1,0 +1,10 @@
+#app-title {
+  letter-spacing: 3px;
+  font-size: 27px;
+  text-align: center;
+  text-shadow: 3px 3px 0 #019eb3, -1px -1px 0 #019eb3, 1px -1px 0 #019eb3, -1px 1px 0 #019eb3, 1px 1px 0 #019eb3;
+}
+
+.back-btn > div:first-child {
+    position: absolute;
+}

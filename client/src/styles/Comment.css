@@ -1,0 +1,30 @@
+.comment-container {
+  padding: 20px 16px 0;
+  border-radius: 9px 9px 9px 9px !important;
+}
+.comment-container > div {
+  background-color: #ffffff;
+}
+.comment {
+  text-align: left !important;
+  padding: 12px;
+}
+
+.comment > p {
+  margin: 3px 0;
+  font-weight: 100;
+  color: #808080;
+}
+
+.comment > small {
+  padding-bottom: 10px !important;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #b1b1b1;
+}
+
+.comment > small > a {
+  color: #b1b1b1;
+}
+

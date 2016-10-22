@@ -1,0 +1,17 @@
+.mapboxgl-map {
+  width: 100%;
+}
+
+.custom-marker {
+  position:absolute;
+  z-index:1;
+  display:block;
+  border-radius:50%;
+}
+
+.my-location {
+  position: absolute;
+  z-index: 1;
+  bottom: 87px;
+  right: 21px;
+}
